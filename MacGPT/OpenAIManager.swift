@@ -15,11 +15,11 @@ class OpenAIManager {
     func askQuestion(prompt: String, systemMessage: String, completion: @escaping (Result<String, Error>) -> Void) {
 
         guard let url = URL(string: "https://api.openai.com/v1/chat/completions"),
-              let apiKey = UserDefaults.standard.string(forKey: "OpenAI_APIKey"),
-              let systemMessage = UserDefaults.standard.string(forKey: "OpenAI_InitPrompt") else {
-            print("Error: API Key or Init Prompt not set in UserDefaults")
-            return
-        }
+                    let apiKey = UserDefaults.standard.string(forKey: "OpenAI_APIKey") else {
+                  print("Error: API Key not set in UserDefaults")
+                  completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "API Key not set"])))
+                  return
+              }
 
         var request = URLRequest(url: url)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
