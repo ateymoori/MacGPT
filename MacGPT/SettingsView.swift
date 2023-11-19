@@ -6,30 +6,60 @@
 //
 import SwiftUI
 
+import SwiftUI
+
 struct SettingsView: View {
     @ObservedObject private var settingsModel = SettingsModel.shared
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            TextField("OpenAI API Key", text: $settingsModel.apiKey)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
+            // OpenAI API Key
+            LabelledTextField(label: "OpenAI API Key", text: $settingsModel.apiKey)
 
-            TextEditor(text: $settingsModel.initialPrompt)
-                .frame(maxHeight: 150)
-                .border(Color.secondary)
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
+            // First Mode Name and Prompt
+            LabelledTextField(label: "First Mode Name", text: $settingsModel.firstModeName)
+            LabelledTextEditor(label: "First Mode Prompt", text: $settingsModel.firstModePrompt)
 
+            // Second Mode Name and Prompt
+            LabelledTextField(label: "Second Mode Name", text: $settingsModel.secondModeName)
+            LabelledTextEditor(label: "Second Mode Prompt", text: $settingsModel.secondModePrompt)
+
+            // Save Button
             Button("Save Settings") {
-                settingsModel.saveApiKey()
-                settingsModel.saveInitialPrompt()
                 SettingsWindowManager.shared.closeSettingsWindow()
             }
             .padding()
         }
         .padding()
-        .frame(width: 500, height: 300)
+        .frame(width: 500, height: 600)
+    }
+}
+
+struct LabelledTextField: View {
+    let label: String
+    @Binding var text: String
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(label).bold()
+            TextField(label, text: $text)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+        }
+        .padding(.bottom, 5)
+    }
+}
+
+struct LabelledTextEditor: View {
+    let label: String
+    @Binding var text: String
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(label).bold()
+            TextEditor(text: $text)
+                .frame(maxHeight: 100)
+                .border(Color.secondary)
+        }
+        .padding(.bottom, 10)
     }
 }
