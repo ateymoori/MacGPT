@@ -17,11 +17,22 @@ struct ChatView: View {
     var body: some View {
             VStack {
   
-                Text("Mac GPT")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .padding()
+                HStack {
+                            Text("Mac GPT")
+                                .font(.title2) // Smaller font size for the title
+                                .fontWeight(.bold)
 
+                            Spacer()
+
+                            Button(action: showSettings) {
+                                Image(systemName: "gearshape.fill")
+                            }
+                            .padding(.top, 10)
+                            .buttonStyle(BorderlessButtonStyle())
+                        }
+                        .padding([.top, .horizontal])
+                
+                
                 // Input TextEditor
                 TextEditor(text: $sharedTextModel.inputText)
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 150, maxHeight: .infinity)
@@ -51,20 +62,22 @@ struct ChatView: View {
                     .padding()
 
                 // Ask ChatGPT Button with Loading Indicator
-                Button(action: {
-                    self.isLoading = true
-                    askChatGPT()
-                }) {
-                    HStack {
-                        if isLoading {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle())
-                                .scaleEffect(1)
-                        }
+                HStack {
+                    Button(action: {
+                        self.isLoading = true
+                        askChatGPT()
+                    }) {
                         Text("Ask ChatGPT")
                     }
+                    .padding()
+
+                    if isLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .scaleEffect(0.75)
+                            .padding(.leading, 8)
+                    }
                 }
-                .padding()
 
                 // Output TextEditor
                 TextEditor(text: $outputText)
