@@ -11,6 +11,14 @@
 		29DEE7CC2B0829AF00F5492D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7CB2B0829AF00F5492D /* ContentView.swift */; };
 		29DEE7CE2B0829B000F5492D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DEE7CD2B0829B000F5492D /* Assets.xcassets */; };
 		29DEE7D12B0829B000F5492D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DEE7D02B0829B000F5492D /* Preview Assets.xcassets */; };
+		29DEE7D92B0A132700F5492D /* CustomWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7D82B0A132700F5492D /* CustomWindowController.swift */; };
+		29DEE7DB2B0A30D400F5492D /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7DA2B0A30D400F5492D /* ChatView.swift */; };
+		29DEE7DD2B0A33A100F5492D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7DC2B0A33A100F5492D /* SettingsView.swift */; };
+		29DEE7E12B0A389E00F5492D /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E02B0A389E00F5492D /* SettingsModel.swift */; };
+		29DEE7E32B0A399000F5492D /* OpenAIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E22B0A399000F5492D /* OpenAIManager.swift */; };
+		29DEE7E52B0A41C100F5492D /* SettingsWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E42B0A41C100F5492D /* SettingsWindowManager.swift */; };
+		29DEE7E82B0A5C3800F5492D /* SharedTextModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E72B0A5C3800F5492D /* SharedTextModel.swift */; };
+		29DEE7EA2B0A61B100F5492D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E92B0A61B100F5492D /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +28,15 @@
 		29DEE7CD2B0829B000F5492D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		29DEE7D02B0829B000F5492D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		29DEE7D22B0829B000F5492D /* MacGPT.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacGPT.entitlements; sourceTree = "<group>"; };
+		29DEE7D82B0A132700F5492D /* CustomWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWindowController.swift; sourceTree = "<group>"; };
+		29DEE7DA2B0A30D400F5492D /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		29DEE7DC2B0A33A100F5492D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		29DEE7E02B0A389E00F5492D /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
+		29DEE7E22B0A399000F5492D /* OpenAIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIManager.swift; sourceTree = "<group>"; };
+		29DEE7E42B0A41C100F5492D /* SettingsWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowManager.swift; sourceTree = "<group>"; };
+		29DEE7E62B0A55B500F5492D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		29DEE7E72B0A5C3800F5492D /* SharedTextModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTextModel.swift; sourceTree = "<group>"; };
+		29DEE7E92B0A61B100F5492D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,11 +69,20 @@
 		29DEE7C82B0829AF00F5492D /* MacGPT */ = {
 			isa = PBXGroup;
 			children = (
+				29DEE7E62B0A55B500F5492D /* Info.plist */,
 				29DEE7C92B0829AF00F5492D /* MacGPTApp.swift */,
 				29DEE7CB2B0829AF00F5492D /* ContentView.swift */,
 				29DEE7CD2B0829B000F5492D /* Assets.xcassets */,
 				29DEE7D22B0829B000F5492D /* MacGPT.entitlements */,
 				29DEE7CF2B0829B000F5492D /* Preview Content */,
+				29DEE7D82B0A132700F5492D /* CustomWindowController.swift */,
+				29DEE7DA2B0A30D400F5492D /* ChatView.swift */,
+				29DEE7DC2B0A33A100F5492D /* SettingsView.swift */,
+				29DEE7E02B0A389E00F5492D /* SettingsModel.swift */,
+				29DEE7E22B0A399000F5492D /* OpenAIManager.swift */,
+				29DEE7E42B0A41C100F5492D /* SettingsWindowManager.swift */,
+				29DEE7E72B0A5C3800F5492D /* SharedTextModel.swift */,
+				29DEE7E92B0A61B100F5492D /* AppDelegate.swift */,
 			);
 			path = MacGPT;
 			sourceTree = "<group>";
@@ -139,8 +165,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29DEE7E12B0A389E00F5492D /* SettingsModel.swift in Sources */,
+				29DEE7E82B0A5C3800F5492D /* SharedTextModel.swift in Sources */,
+				29DEE7DD2B0A33A100F5492D /* SettingsView.swift in Sources */,
+				29DEE7E52B0A41C100F5492D /* SettingsWindowManager.swift in Sources */,
+				29DEE7E32B0A399000F5492D /* OpenAIManager.swift in Sources */,
+				29DEE7DB2B0A30D400F5492D /* ChatView.swift in Sources */,
 				29DEE7CC2B0829AF00F5492D /* ContentView.swift in Sources */,
 				29DEE7CA2B0829AF00F5492D /* MacGPTApp.swift in Sources */,
+				29DEE7EA2B0A61B100F5492D /* AppDelegate.swift in Sources */,
+				29DEE7D92B0A132700F5492D /* CustomWindowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,6 +313,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MacGPT/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -306,6 +341,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MacGPT/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
