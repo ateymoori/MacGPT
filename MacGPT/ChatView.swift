@@ -17,7 +17,9 @@ struct ChatView: View {
     @State private var selectedMode: String = "Rephrase"
     
     init() {
-        _selectedMode = State(initialValue: settingsModel.firstModeName)
+        // Ensuring the first mode name is not empty and is one of the Picker's tags
+        let defaultModeName = settingsModel.firstModeName.isEmpty ? "Rephrase" : settingsModel.firstModeName
+        _selectedMode = State(initialValue: defaultModeName)
     }
     
     var body: some View {
@@ -41,10 +43,12 @@ struct ChatView: View {
                 
                 
                 // Mode Selection (Rephrase / Question)
-                   Picker("Mode", selection: $selectedMode) {
-                       Text(settingsModel.firstModeName).tag(settingsModel.firstModeName)
-                       Text(settingsModel.secondModeName).tag(settingsModel.secondModeName)
-                   }
+                Picker("Mode", selection: $selectedMode) {
+                    Text(settingsModel.firstModeName.isEmpty ? "Rephrase" : settingsModel.firstModeName)
+                        .tag(settingsModel.firstModeName.isEmpty ? "Rephrase" : settingsModel.firstModeName)
+                    Text(settingsModel.secondModeName.isEmpty ? "Question" : settingsModel.secondModeName)
+                        .tag(settingsModel.secondModeName.isEmpty ? "Question" : settingsModel.secondModeName)
+                }
                    .pickerStyle(SegmentedPickerStyle())
                    .padding()
 

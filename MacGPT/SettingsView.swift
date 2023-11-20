@@ -54,12 +54,13 @@ struct LabelledTextEditor: View {
     @Binding var text: String
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(label).bold()
-            TextEditor(text: $text)
-                .frame(maxHeight: 100)
-                .border(Color.secondary)
+            VStack(alignment: .leading) {
+                Text(label).bold()
+                TextEditor(text: $text)
+                    .frame(maxHeight: 100)
+                    .padding(10) // Added padding inside the TextEditor
+                    .border(Color.secondary)
+            }
+            .padding(.bottom, 10)
         }
-        .padding(.bottom, 10)
-    }
 }
