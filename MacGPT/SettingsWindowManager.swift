@@ -23,6 +23,7 @@ class SettingsWindowManager {
             window.center()
             window.contentView = hostingView
             window.title = "MacGPT Settings"
+            window.isReleasedWhenClosed = false // Ensure the window is not released when closed
             window.makeKeyAndOrderFront(nil)
             settingsWindow = window
         } else {
@@ -32,9 +33,13 @@ class SettingsWindowManager {
     }
 
     func closeSettingsWindow() {
-        DispatchQueue.main.async { 
+        DispatchQueue.main.async {
             self.settingsWindow?.close()
-            self.settingsWindow = nil
+            // Delay the setting to nil to avoid potential access after close
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.settingsWindow = nil
+            }
         }
     }
 }
+

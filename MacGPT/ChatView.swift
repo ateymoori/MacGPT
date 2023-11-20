@@ -64,7 +64,7 @@ struct ChatView: View {
                             HStack {
                                 Spacer()
                                 Button(action: pasteClipboard) {
-                                    Image(systemName: "doc.on.clipboard.fill")
+                                    Image(systemName: "arrow.right.doc.on.clipboard")
                                         .padding(.top, 10)
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
@@ -110,7 +110,7 @@ struct ChatView: View {
                             HStack {
                                 Spacer()
                                 Button(action: copyToClipboard) {
-                                    Image(systemName: "doc.on.doc.fill")
+                                    Image(systemName: "doc.on.doc")
                                         .padding(.top, 10)
                                 }
                                 .buttonStyle(BorderlessButtonStyle())

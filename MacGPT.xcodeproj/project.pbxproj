@@ -11,7 +11,6 @@
 		29DEE7CC2B0829AF00F5492D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7CB2B0829AF00F5492D /* ContentView.swift */; };
 		29DEE7CE2B0829B000F5492D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DEE7CD2B0829B000F5492D /* Assets.xcassets */; };
 		29DEE7D12B0829B000F5492D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DEE7D02B0829B000F5492D /* Preview Assets.xcassets */; };
-		29DEE7D92B0A132700F5492D /* CustomWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7D82B0A132700F5492D /* CustomWindowController.swift */; };
 		29DEE7DB2B0A30D400F5492D /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7DA2B0A30D400F5492D /* ChatView.swift */; };
 		29DEE7DD2B0A33A100F5492D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7DC2B0A33A100F5492D /* SettingsView.swift */; };
 		29DEE7E12B0A389E00F5492D /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E02B0A389E00F5492D /* SettingsModel.swift */; };
@@ -28,7 +27,6 @@
 		29DEE7CD2B0829B000F5492D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		29DEE7D02B0829B000F5492D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		29DEE7D22B0829B000F5492D /* MacGPT.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacGPT.entitlements; sourceTree = "<group>"; };
-		29DEE7D82B0A132700F5492D /* CustomWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWindowController.swift; sourceTree = "<group>"; };
 		29DEE7DA2B0A30D400F5492D /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		29DEE7DC2B0A33A100F5492D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		29DEE7E02B0A389E00F5492D /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
@@ -75,7 +73,6 @@
 				29DEE7CD2B0829B000F5492D /* Assets.xcassets */,
 				29DEE7D22B0829B000F5492D /* MacGPT.entitlements */,
 				29DEE7CF2B0829B000F5492D /* Preview Content */,
-				29DEE7D82B0A132700F5492D /* CustomWindowController.swift */,
 				29DEE7DA2B0A30D400F5492D /* ChatView.swift */,
 				29DEE7DC2B0A33A100F5492D /* SettingsView.swift */,
 				29DEE7E02B0A389E00F5492D /* SettingsModel.swift */,
@@ -174,7 +171,6 @@
 				29DEE7CC2B0829AF00F5492D /* ContentView.swift in Sources */,
 				29DEE7CA2B0829AF00F5492D /* MacGPTApp.swift in Sources */,
 				29DEE7EA2B0A61B100F5492D /* AppDelegate.swift in Sources */,
-				29DEE7D92B0A132700F5492D /* CustomWindowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
