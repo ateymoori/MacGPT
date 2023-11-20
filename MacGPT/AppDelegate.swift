@@ -7,13 +7,15 @@
 
 import Cocoa
 import SwiftUI
+import Carbon.HIToolbox
 
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     var popover: NSPopover!
     var statusBarItem: NSStatusItem!
     var sharedTextModel = SharedTextModel.shared
-
+    var hotKeyRef: EventHotKeyRef?
+    
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Initialize the popover
         popover = NSPopover()
@@ -31,6 +33,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Register the service
         NSApp.servicesProvider = self
         NSUpdateDynamicServices()
+        
+        registerHotkey()
+        requestScreenRecordingPermission()
     }
     
     @objc func togglePopover(_ sender: AnyObject?) {
@@ -68,4 +73,50 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
+    
+    
+    
+//    screenshot
+    func promptForSaveLocation() -> URL? {
+        let savePanel = NSSavePanel()
+        savePanel.allowedFileTypes = ["jpg"]
+        savePanel.canCreateDirectories = true
+        savePanel.nameFieldStringValue = "screenshot.jpg"
+
+        let response = savePanel.runModal()
+        return response == .OK ? savePanel.url : nil
+    }
+
+    func takeScreenshot() {
+        guard let saveURL = promptForSaveLocation() else { return }
+
+        let task = Process()
+        task.launchPath = "/usr/sbin/screencapture"
+        task.arguments = ["-i", saveURL.path]
+        task.launch()
+    }
+    private func requestScreenRecordingPermission() {
+         // Use CGWindowListCreateImage to trigger the permission dialog
+         CGWindowListCreateImage(CGRect.null, .optionAll, kCGNullWindowID, .nominalResolution)
+     }
+    func hotkeyHandler(eventHandlerCallRef: EventHandlerCallRef?, eventRef: EventRef?, userData: UnsafeMutableRawPointer?) -> OSStatus {
+        // Assuming AppDelegate is userData, cast it and call your screenshot function
+        let appDelegate = Unmanaged<AppDelegate>.fromOpaque(userData!).takeUnretainedValue()
+        appDelegate.takeScreenshot()
+        return noErr
+    }
+
+    private func registerHotkey() {
+        let signature = UTGetOSTypeFromString("Cmd5" as CFString)
+        var hotKeyID = EventHotKeyID(signature: signature, id: UInt32(1))
+        
+        let registerResult = RegisterEventHotKey(UInt32(kVK_ANSI_5), UInt32(cmdKey), hotKeyID, GetApplicationEventTarget(), 0, &hotKeyRef)
+        
+        if registerResult != noErr {
+            NSLog("Failed to register hotkey with error: \(registerResult)")
+        }
+    }
+
+
+
 }

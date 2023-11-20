@@ -81,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				29DEE7E62B0A55B500F5492D /* Info.plist */,
+				29DEE7E92B0A61B100F5492D /* AppDelegate.swift */,
 				29DEE7C92B0829AF00F5492D /* MacGPTApp.swift */,
 				29DEE7CB2B0829AF00F5492D /* ContentView.swift */,
 				29DEE7CD2B0829B000F5492D /* Assets.xcassets */,
@@ -92,7 +93,6 @@
 				29DEE7E22B0A399000F5492D /* OpenAIManager.swift */,
 				29DEE7E42B0A41C100F5492D /* SettingsWindowManager.swift */,
 				29DEE7E72B0A5C3800F5492D /* SharedTextModel.swift */,
-				29DEE7E92B0A61B100F5492D /* AppDelegate.swift */,
 			);
 			path = MacGPT;
 			sourceTree = "<group>";
