@@ -8,6 +8,7 @@
 import Cocoa
 import SwiftUI
 
+
 class AppDelegate: NSObject, NSApplicationDelegate {
     var popover: NSPopover!
     var statusBarItem: NSStatusItem!
@@ -31,7 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.servicesProvider = self
         NSUpdateDynamicServices()
     }
-
+    
     @objc func togglePopover(_ sender: AnyObject?) {
         if let button = statusBarItem.button {
             if popover.isShown {

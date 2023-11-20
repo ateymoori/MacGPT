@@ -20,6 +20,19 @@
 		29DEE7EA2B0A61B100F5492D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E92B0A61B100F5492D /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		2913D33E2B0BB7970057780F /* Embed ExtensionKit Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(EXTENSIONS_FOLDER_PATH)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed ExtensionKit Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		29DEE7C62B0829AF00F5492D /* MacGPT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacGPT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29DEE7C92B0829AF00F5492D /* MacGPTApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacGPTApp.swift; sourceTree = "<group>"; };
@@ -102,6 +115,7 @@
 				29DEE7C22B0829AF00F5492D /* Sources */,
 				29DEE7C32B0829AF00F5492D /* Frameworks */,
 				29DEE7C42B0829AF00F5492D /* Resources */,
+				2913D33E2B0BB7970057780F /* Embed ExtensionKit Extensions */,
 			);
 			buildRules = (
 			);
