@@ -22,8 +22,8 @@ class SettingsWindowManager {
                 backing: .buffered, defer: false)
             window.center()
             window.contentView = hostingView
-            window.title = "MacGPT Settings"
-            window.isReleasedWhenClosed = false // Ensure the window is not released when closed
+            window.title = "iChatGPT Settings"
+            window.isReleasedWhenClosed = false
             window.makeKeyAndOrderFront(nil)
             settingsWindow = window
         } else {

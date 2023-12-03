@@ -16,6 +16,13 @@ struct ChatView: View {
     @State private var isLoading: Bool = false
     @State private var selectedMode: String = "Rephrase"
     
+    @State private var selectedModelKey: String = "gpt-3.5-turbo"
+    let modelDisplayNames = ["GPT 3.5 Turbo": "gpt-3.5-turbo", "GPT 4": "gpt-4", "GPT 4 Turbo": "gpt-4-turbo"]
+    
+    
+    @State private var showingModelInfo = false
+    
+    
     init() {
         // Ensuring the first mode name is not empty and is one of the Picker's tags
         let defaultModeName = settingsModel.firstModeName.isEmpty ? "Rephrase" : settingsModel.firstModeName
@@ -26,7 +33,7 @@ struct ChatView: View {
         VStack {
             
             HStack {
-                Text("Mac GPT")
+                Text("iChatGPT")
                     .font(.title2) // Smaller font size for the title
                     .fontWeight(.bold)
                 
@@ -42,6 +49,23 @@ struct ChatView: View {
             
             
             
+            HStack {
+                Picker("Model", selection: $selectedModelKey) {
+                    ForEach(modelDisplayNames.keys.sorted(), id: \.self) { key in
+                        Text(key).tag(modelDisplayNames[key]!)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                
+                Button(action: { showingModelInfo = true }) {
+                    Image(systemName: "info.circle")
+                }
+                .popover(isPresented: $showingModelInfo) {
+                    ModelInfoView()
+                }
+            }
+            .padding()
+            
             // Mode Selection (Rephrase / Question)
             Picker("Mode", selection: $selectedMode) {
                 Text(settingsModel.firstModeName.isEmpty ? "Rephrase" : settingsModel.firstModeName)
@@ -51,8 +75,6 @@ struct ChatView: View {
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding()
-            
-            
             
             // Input TextEditor
             TextEditor(text: $sharedTextModel.inputText)
@@ -133,7 +155,9 @@ struct ChatView: View {
         
         let systemMessage = selectedMode == settingsModel.firstModeName ? settingsModel.firstModePrompt : settingsModel.secondModePrompt
         
-        OpenAIManager.shared.askQuestion(prompt: sharedTextModel.inputText, systemMessage: systemMessage) { result in
+        let modelKey = modelDisplayNames[selectedModelKey] ?? "gpt-3.5-turbo" // Default to "gpt-3.5-turbo" if key not found
+
+        OpenAIManager.shared.askQuestion(model: modelKey, prompt: sharedTextModel.inputText, systemMessage: systemMessage) { result in
             DispatchQueue.main.async {
                 isLoading = false
                 switch result {
@@ -160,4 +184,5 @@ struct ChatView: View {
     func showSettings() {
         SettingsWindowManager.shared.showSettingsWindow()
     }
+    
 }
