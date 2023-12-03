@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		292821832B17D80B008D46CD /* ScreenshotManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292821822B17D80B008D46CD /* ScreenshotManager.swift */; };
+		292821862B17D852008D46CD /* OCRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292821852B17D852008D46CD /* OCRManager.swift */; };
+		292821882B17D86F008D46CD /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292821872B17D86F008D46CD /* PermissionsManager.swift */; };
+		2928218A2B17D940008D46CD /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292821892B17D940008D46CD /* HotkeyManager.swift */; };
 		29DEE7CA2B0829AF00F5492D /* MacGPTApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7C92B0829AF00F5492D /* MacGPTApp.swift */; };
 		29DEE7CC2B0829AF00F5492D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7CB2B0829AF00F5492D /* ContentView.swift */; };
 		29DEE7CE2B0829B000F5492D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DEE7CD2B0829B000F5492D /* Assets.xcassets */; };
@@ -34,6 +38,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		292821822B17D80B008D46CD /* ScreenshotManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotManager.swift; sourceTree = "<group>"; };
+		292821852B17D852008D46CD /* OCRManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRManager.swift; sourceTree = "<group>"; };
+		292821872B17D86F008D46CD /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
+		292821892B17D940008D46CD /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
 		29DEE7C62B0829AF00F5492D /* MacGPT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacGPT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29DEE7C92B0829AF00F5492D /* MacGPTApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacGPTApp.swift; sourceTree = "<group>"; };
 		29DEE7CB2B0829AF00F5492D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -61,6 +69,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		292821812B17D7C2008D46CD /* managers */ = {
+			isa = PBXGroup;
+			children = (
+				292821822B17D80B008D46CD /* ScreenshotManager.swift */,
+				292821852B17D852008D46CD /* OCRManager.swift */,
+				292821872B17D86F008D46CD /* PermissionsManager.swift */,
+				292821892B17D940008D46CD /* HotkeyManager.swift */,
+			);
+			path = managers;
+			sourceTree = "<group>";
+		};
 		29DEE7BD2B0829AF00F5492D = {
 			isa = PBXGroup;
 			children = (
@@ -80,6 +99,7 @@
 		29DEE7C82B0829AF00F5492D /* MacGPT */ = {
 			isa = PBXGroup;
 			children = (
+				292821812B17D7C2008D46CD /* managers */,
 				29DEE7E62B0A55B500F5492D /* Info.plist */,
 				29DEE7E92B0A61B100F5492D /* AppDelegate.swift */,
 				29DEE7C92B0829AF00F5492D /* MacGPTApp.swift */,
@@ -177,10 +197,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				29DEE7E12B0A389E00F5492D /* SettingsModel.swift in Sources */,
+				2928218A2B17D940008D46CD /* HotkeyManager.swift in Sources */,
+				292821832B17D80B008D46CD /* ScreenshotManager.swift in Sources */,
+				292821882B17D86F008D46CD /* PermissionsManager.swift in Sources */,
 				29DEE7E82B0A5C3800F5492D /* SharedTextModel.swift in Sources */,
 				29DEE7DD2B0A33A100F5492D /* SettingsView.swift in Sources */,
 				29DEE7E52B0A41C100F5492D /* SettingsWindowManager.swift in Sources */,
 				29DEE7E32B0A399000F5492D /* OpenAIManager.swift in Sources */,
+				292821862B17D852008D46CD /* OCRManager.swift in Sources */,
 				29DEE7DB2B0A30D400F5492D /* ChatView.swift in Sources */,
 				29DEE7CC2B0829AF00F5492D /* ContentView.swift in Sources */,
 				29DEE7CA2B0829AF00F5492D /* MacGPTApp.swift in Sources */,

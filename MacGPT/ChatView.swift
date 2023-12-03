@@ -23,114 +23,116 @@ struct ChatView: View {
     }
     
     var body: some View {
-            VStack {
-  
-                HStack {
-                            Text("Mac GPT")
-                                .font(.title2) // Smaller font size for the title
-                                .fontWeight(.bold)
-
-                            Spacer()
-
-                            Button(action: showSettings) {
-                                Image(systemName: "gearshape.fill")
-                            }
-                            .padding(.top, 10)
-                            .buttonStyle(BorderlessButtonStyle())
-                        }
-                        .padding([.top, .horizontal])
+        VStack {
+            
+            HStack {
+                Text("Mac GPT")
+                    .font(.title2) // Smaller font size for the title
+                    .fontWeight(.bold)
                 
-                
-                
-                // Mode Selection (Rephrase / Question)
-                Picker("Mode", selection: $selectedMode) {
-                    Text(settingsModel.firstModeName.isEmpty ? "Rephrase" : settingsModel.firstModeName)
-                        .tag(settingsModel.firstModeName.isEmpty ? "Rephrase" : settingsModel.firstModeName)
-                    Text(settingsModel.secondModeName.isEmpty ? "Question" : settingsModel.secondModeName)
-                        .tag(settingsModel.secondModeName.isEmpty ? "Question" : settingsModel.secondModeName)
-                }
-                   .pickerStyle(SegmentedPickerStyle())
-                   .padding()
-
-                
-                
-                // Input TextEditor
-                TextEditor(text: $sharedTextModel.inputText)
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 150, maxHeight: .infinity)
-                    .padding(4)
-                    .lineSpacing(4)
-                    .overlay(
-                        VStack {
-                            HStack {
-                                Spacer()
-                                Button(action: pasteClipboard) {
-                                    Image(systemName: "arrow.right.doc.on.clipboard")
-                                        .padding(.top, 10)
-                                }
-                                .buttonStyle(BorderlessButtonStyle())
-                                .padding(.trailing, 8)
-                            }
-                            Spacer()
-                            HStack {
-                                Spacer()
-                                Text("\(sharedTextModel.inputText.count)/\(characterLimit)")
-                                    .padding(.trailing, 8)
-                                    .padding(.bottom, 8)
-                            }
-                        }, alignment: .topTrailing
-                    )
-                    .border(Color.secondary)
-                    .padding()
-
-                // Ask ChatGPT Button with Loading Indicator
-                HStack {
-                    Button(action: {
-                        self.isLoading = true
-                        askChatGPT()
-                    }) {
-                        Text("Ask ChatGPT")
-                    }
-                    .padding()
-
-                    if isLoading {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
-                            .scaleEffect(0.75)
-                            .padding(.leading, 8)
-                    }
-                }
-
-                // Output TextEditor
-                TextEditor(text: $outputText)
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 150, maxHeight: .infinity)
-                    .padding(4)
-                    .lineSpacing(4)
-                    .overlay(
-                        VStack {
-                            HStack {
-                                Spacer()
-                                Button(action: copyToClipboard) {
-                                    Image(systemName: "doc.on.doc")
-                                        .padding(.top, 10)
-                                }
-                                .buttonStyle(BorderlessButtonStyle())
-                                .padding(.trailing, 8)
-                            }
-                            Spacer()
-                        }, alignment: .topTrailing
-                    )
-                    .border(Color.secondary)
-                    .padding()
-
                 Spacer()
+                
+                Button(action: showSettings) {
+                    Image(systemName: "gearshape.fill")
+                }
+                .padding(.top, 10)
+                .buttonStyle(BorderlessButtonStyle())
             }
+            .padding([.top, .horizontal])
+            
+            
+            
+            // Mode Selection (Rephrase / Question)
+            Picker("Mode", selection: $selectedMode) {
+                Text(settingsModel.firstModeName.isEmpty ? "Rephrase" : settingsModel.firstModeName)
+                    .tag(settingsModel.firstModeName.isEmpty ? "Rephrase" : settingsModel.firstModeName)
+                Text(settingsModel.secondModeName.isEmpty ? "Question" : settingsModel.secondModeName)
+                    .tag(settingsModel.secondModeName.isEmpty ? "Question" : settingsModel.secondModeName)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+            
+            
+            
+            // Input TextEditor
+            TextEditor(text: $sharedTextModel.inputText)
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 170, maxHeight: .infinity)
+                .font(.body)
+                .padding(8)
+                .lineSpacing(8)
+                .overlay(
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Button(action: pasteClipboard) {
+                                Image(systemName: "arrow.right.doc.on.clipboard")
+                                    .padding(.top, 10)
+                            }
+                            .buttonStyle(BorderlessButtonStyle())
+                            .padding(.trailing, 8)
+                        }
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            Text("\(sharedTextModel.inputText.count)/\(characterLimit)")
+                                .padding(.trailing, 8)
+                                .padding(.bottom, 8)
+                        }
+                    }, alignment: .topTrailing
+                )
+                .border(Color.secondary)
+                .padding()
+            
+            // Ask ChatGPT Button with Loading Indicator
+            HStack {
+                Button(action: {
+                    self.isLoading = true
+                    askChatGPT()
+                }) {
+                    Text("Ask ChatGPT")
+                }
+                .padding()
+                
+                if isLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .scaleEffect(0.75)
+                        .padding(.leading, 8)
+                }
+            }
+            
+            // Output TextEditor
+            TextEditor(text: $outputText)
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 170, maxHeight: .infinity)
+                .font(.body)
+                .padding(8)
+                .lineSpacing(8)
+                .overlay(
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Button(action: copyToClipboard) {
+                                Image(systemName: "doc.on.doc")
+                                    .padding(.top, 10)
+                            }
+                            .buttonStyle(BorderlessButtonStyle())
+                            .padding(.trailing, 8)
+                        }
+                        Spacer()
+                    }, alignment: .topTrailing
+                )
+                .border(Color.secondary)
+                .padding()
+            
+            Spacer()
         }
- 
+    }
+    
     func askChatGPT() {
         isLoading = true
-
+        
         let systemMessage = selectedMode == settingsModel.firstModeName ? settingsModel.firstModePrompt : settingsModel.secondModePrompt
-
+        
         OpenAIManager.shared.askQuestion(prompt: sharedTextModel.inputText, systemMessage: systemMessage) { result in
             DispatchQueue.main.async {
                 isLoading = false
@@ -149,12 +151,12 @@ struct ChatView: View {
             sharedTextModel.inputText = clipboardContents
         }
     }
-
+    
     func copyToClipboard() {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(outputText, forType: .string)
     }
-
+    
     func showSettings() {
         SettingsWindowManager.shared.showSettingsWindow()
     }

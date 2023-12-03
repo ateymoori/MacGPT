@@ -17,12 +17,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var hotKeyRef: EventHotKeyRef?
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // Initialize the popover
         popover = NSPopover()
         popover.contentSize = NSSize(width: 360, height: 360)
         popover.behavior = .transient
         popover.contentViewController = NSHostingController(rootView: ChatView().environmentObject(sharedTextModel))
-
+        
         // Create the status bar item
         statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusBarItem.button {
@@ -34,8 +33,34 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.servicesProvider = self
         NSUpdateDynamicServices()
         
-        registerHotkey()
-        requestScreenRecordingPermission()
+        PermissionsManager.shared.requestScreenRecordingPermission()
+        
+        print("Registering Hotkey")
+        HotkeyManager.shared.registerHotkey(with: (key: UInt32(kVK_ANSI_6), modifiers: UInt32(shiftKey | cmdKey)), id: 1) {
+            print("Hotkey Cmd+Shift+6")
+            
+            ScreenshotManager.shared.takeScreenshot { url in
+                guard let screenshotURL = url else { return }
+                OCRManager.shared.performOCR(on: screenshotURL) { text in
+                    guard let recognizedText = text else { return }
+                    print(recognizedText)
+                    // Do something with the recognized text, e.g., copy to clipboard
+                    
+                    // Copying to clipboard
+                    let pasteboard = NSPasteboard.general
+                    pasteboard.clearContents()
+                    pasteboard.setString(recognizedText, forType: .string)
+                    DispatchQueue.main.async {
+                        self.sharedTextModel.inputText = recognizedText
+                        self.showPopover()
+                    }
+                }
+            }
+            
+            
+        }
+        
+        
     }
     
     @objc func togglePopover(_ sender: AnyObject?) {
@@ -48,7 +73,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
-
+    
     @objc func processTextService(_ pboard: NSPasteboard, userData: String?, error: UnsafeMutablePointer<NSString>) {
         print("Service 'Check with GPT' invoked")
         guard let selectedText = pboard.string(forType: .string) else {
@@ -56,15 +81,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             error.pointee = "No text was found." as NSString
             return
         }
-
+        
         print("Selected Text: \(selectedText)")
-
+        
         DispatchQueue.main.async {
             self.sharedTextModel.inputText = selectedText
             self.showPopover()
         }
     }
-
+    
     private func showPopover() {
         if let button = statusBarItem.button {
             NSApp.activate(ignoringOtherApps: true)
@@ -76,47 +101,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     
-//    screenshot
-    func promptForSaveLocation() -> URL? {
-        let savePanel = NSSavePanel()
-        savePanel.allowedFileTypes = ["jpg"]
-        savePanel.canCreateDirectories = true
-        savePanel.nameFieldStringValue = "screenshot.jpg"
-
-        let response = savePanel.runModal()
-        return response == .OK ? savePanel.url : nil
-    }
-
-    func takeScreenshot() {
-        guard let saveURL = promptForSaveLocation() else { return }
-
-        let task = Process()
-        task.launchPath = "/usr/sbin/screencapture"
-        task.arguments = ["-i", saveURL.path]
-        task.launch()
-    }
-    private func requestScreenRecordingPermission() {
-         // Use CGWindowListCreateImage to trigger the permission dialog
-         CGWindowListCreateImage(CGRect.null, .optionAll, kCGNullWindowID, .nominalResolution)
-     }
-    func hotkeyHandler(eventHandlerCallRef: EventHandlerCallRef?, eventRef: EventRef?, userData: UnsafeMutableRawPointer?) -> OSStatus {
-        // Assuming AppDelegate is userData, cast it and call your screenshot function
-        let appDelegate = Unmanaged<AppDelegate>.fromOpaque(userData!).takeUnretainedValue()
-        appDelegate.takeScreenshot()
-        return noErr
-    }
-
-    private func registerHotkey() {
-        let signature = UTGetOSTypeFromString("Cmd5" as CFString)
-        var hotKeyID = EventHotKeyID(signature: signature, id: UInt32(1))
-        
-        let registerResult = RegisterEventHotKey(UInt32(kVK_ANSI_5), UInt32(cmdKey), hotKeyID, GetApplicationEventTarget(), 0, &hotKeyRef)
-        
-        if registerResult != noErr {
-            NSLog("Failed to register hotkey with error: \(registerResult)")
-        }
-    }
-
-
-
+    
+    
 }
