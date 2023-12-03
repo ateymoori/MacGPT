@@ -6,32 +6,24 @@
 //
 import SwiftUI
 
-import SwiftUI
-
 struct SettingsView: View {
     @ObservedObject private var settingsModel = SettingsModel.shared
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            // OpenAI API Key
-            LabelledTextField(label: "OpenAI API Key", text: $settingsModel.apiKey)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 10) {
+                LabelledTextField(label: "OpenAI API Key", text: $settingsModel.apiKey)
+                LabelledTextField(label: "First Mode Name", text: $settingsModel.firstModeName)
+                LabelledTextEditor(label: "First Mode Prompt", text: $settingsModel.firstModePrompt)
 
-            // First Mode Name and Prompt
-            LabelledTextField(label: "First Mode Name", text: $settingsModel.firstModeName)
-            LabelledTextEditor(label: "First Mode Prompt", text: $settingsModel.firstModePrompt)
+                Divider()
 
-            // Second Mode Name and Prompt
-            LabelledTextField(label: "Second Mode Name", text: $settingsModel.secondModeName)
-            LabelledTextEditor(label: "Second Mode Prompt", text: $settingsModel.secondModePrompt)
-
-            // Save Button
-            Button("Save Settings") {
-                SettingsWindowManager.shared.closeSettingsWindow()
+                LabelledTextField(label: "Second Mode Name", text: $settingsModel.secondModeName)
+                LabelledTextEditor(label: "Second Mode Prompt", text: $settingsModel.secondModePrompt)
             }
             .padding()
         }
-        .padding()
-        .frame(width: 500, height: 600)
+        .frame(minWidth: 500, minHeight: 735)
     }
 }
 
@@ -42,8 +34,13 @@ struct LabelledTextField: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(label).bold()
-            TextField(label, text: $text)
+            TextField("", text: $text)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding(EdgeInsets(top: 4, leading: 1, bottom: 1, trailing: 1))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 4)
+                        .stroke(Color.secondary, lineWidth: 1)
+                )
         }
         .padding(.bottom, 5)
     }
@@ -54,13 +51,18 @@ struct LabelledTextEditor: View {
     @Binding var text: String
 
     var body: some View {
-            VStack(alignment: .leading) {
-                Text(label).bold()
-                TextEditor(text: $text)
-                    .frame(maxHeight: 100)
-                    .padding(10) // Added padding inside the TextEditor
-                    .border(Color.secondary)
-            }
-            .padding(.bottom, 10)
+        VStack(alignment: .leading) {
+            Text(label).bold()
+            TextEditor(text: $text)
+                .frame(minHeight: 200)
+                .padding(EdgeInsets(top: 2, leading: 1, bottom: 1, trailing: 1))
+                .lineSpacing(4)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 4)
+                        .stroke(Color.secondary, lineWidth: 1)
+                )
         }
+        .padding(.bottom, 10)
+    }
 }
+
