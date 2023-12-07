@@ -39,11 +39,24 @@ struct ChatView: View {
                 
                 Spacer()
                 
-                Button(action: showSettings) {
-                    Image(systemName: "gearshape.fill")
+                HStack {
+                    // ... [Existing elements]
+                    
+                    // New Button for Floating Window
+                    Button(action: showReminder) {
+                        Image(systemName: "plus") // Example icon, replace with your choice
+                    }
+                    .padding(.top, 10)
+                    .buttonStyle(BorderlessButtonStyle())
+                    
+                    // Existing Settings Button
+                    Button(action: showSettings) {
+                        Image(systemName: "gearshape.fill")
+                    }
+                    .padding(.top, 10)
+                    .buttonStyle(BorderlessButtonStyle())
                 }
-                .padding(.top, 10)
-                .buttonStyle(BorderlessButtonStyle())
+                .padding([.top, .horizontal])
             }
             .padding([.top, .horizontal])
             
@@ -156,7 +169,7 @@ struct ChatView: View {
         let systemMessage = selectedMode == settingsModel.firstModeName ? settingsModel.firstModePrompt : settingsModel.secondModePrompt
         
         let modelKey = modelDisplayNames[selectedModelKey] ?? "gpt-3.5-turbo" // Default to "gpt-3.5-turbo" if key not found
-
+        
         OpenAIManager.shared.askQuestion(model: modelKey, prompt: sharedTextModel.inputText, systemMessage: systemMessage) { result in
             DispatchQueue.main.async {
                 isLoading = false
@@ -183,6 +196,9 @@ struct ChatView: View {
     
     func showSettings() {
         SettingsWindowManager.shared.showSettingsWindow()
+    }
+    func showReminder() {
+        ReminderWindowManager.shared.showReminderWindow()
     }
     
 }

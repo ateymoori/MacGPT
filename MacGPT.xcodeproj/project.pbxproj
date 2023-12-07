@@ -23,6 +23,9 @@
 		29DEE7E52B0A41C100F5492D /* SettingsWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E42B0A41C100F5492D /* SettingsWindowManager.swift */; };
 		29DEE7E82B0A5C3800F5492D /* SharedTextModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E72B0A5C3800F5492D /* SharedTextModel.swift */; };
 		29DEE7EA2B0A61B100F5492D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E92B0A61B100F5492D /* AppDelegate.swift */; };
+		7EDEF6F32B21CC6500635E20 /* ReminderWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEF6F22B21CC6500635E20 /* ReminderWindowManager.swift */; };
+		7EDEF6F52B21CC8100635E20 /* ReminderView.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEF6F42B21CC8100635E20 /* ReminderView.swift .swift */; };
+		7EDEF6F72B21CFAD00635E20 /* DraggableWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEF6F62B21CFAD00635E20 /* DraggableWindow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -58,6 +61,9 @@
 		29DEE7E62B0A55B500F5492D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		29DEE7E72B0A5C3800F5492D /* SharedTextModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTextModel.swift; sourceTree = "<group>"; };
 		29DEE7E92B0A61B100F5492D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7EDEF6F22B21CC6500635E20 /* ReminderWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderWindowManager.swift; sourceTree = "<group>"; };
+		7EDEF6F42B21CC8100635E20 /* ReminderView.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReminderView.swift .swift"; sourceTree = "<group>"; };
+		7EDEF6F62B21CFAD00635E20 /* DraggableWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableWindow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +84,7 @@
 				292821852B17D852008D46CD /* OCRManager.swift */,
 				292821872B17D86F008D46CD /* PermissionsManager.swift */,
 				292821892B17D940008D46CD /* HotkeyManager.swift */,
+				7EDEF6F22B21CC6500635E20 /* ReminderWindowManager.swift */,
 			);
 			path = managers;
 			sourceTree = "<group>";
@@ -86,6 +93,8 @@
 			isa = PBXGroup;
 			children = (
 				2928218D2B1CC81D008D46CD /* ModelInfoView.swift */,
+				7EDEF6F42B21CC8100635E20 /* ReminderView.swift .swift */,
+				7EDEF6F62B21CFAD00635E20 /* DraggableWindow.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -207,7 +216,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EDEF6F52B21CC8100635E20 /* ReminderView.swift .swift in Sources */,
 				29DEE7E12B0A389E00F5492D /* SettingsModel.swift in Sources */,
+				7EDEF6F32B21CC6500635E20 /* ReminderWindowManager.swift in Sources */,
+				7EDEF6F72B21CFAD00635E20 /* DraggableWindow.swift in Sources */,
 				2928218A2B17D940008D46CD /* HotkeyManager.swift in Sources */,
 				292821832B17D80B008D46CD /* ScreenshotManager.swift in Sources */,
 				292821882B17D86F008D46CD /* PermissionsManager.swift in Sources */,

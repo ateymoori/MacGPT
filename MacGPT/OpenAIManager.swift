@@ -7,7 +7,6 @@
 
 import Foundation
 
-import Foundation
 
 class OpenAIManager {
     static let shared = OpenAIManager()
