@@ -17,6 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var hotKeyRef: EventHotKeyRef?
     
     func applicationDidFinishLaunching(_ notification: Notification) {
+        // Initialize and configure the popover
         popover = NSPopover()
         popover.contentSize = NSSize(width: 360, height: 360)
         popover.behavior = .transient
@@ -26,9 +27,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusBarItem.button {
             button.image = NSImage(named: "icon") // Ensure this icon exists in your assets
-            button.action = #selector(togglePopover(_:))
+            button.action = #selector(toggleChatPopover(_:))
         }
         
+        // Register services, permissions, and hotkeys
+        registerServices()
+    }
+
+    @objc func toggleChatPopover(_ sender: AnyObject?) {
+        if popover.isShown {
+            popover.performClose(sender)
+        } else {
+            if let button = statusBarItem.button {
+                NSApp.activate(ignoringOtherApps: true)
+                popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+            }
+        }
+    }
+    
+    private func registerServices() {
         // Register the service
         NSApp.servicesProvider = self
         NSUpdateDynamicServices()
@@ -38,42 +55,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         print("Registering Hotkey")
         HotkeyManager.shared.registerHotkey(with: (key: UInt32(kVK_ANSI_6), modifiers: UInt32(shiftKey | cmdKey)), id: 1) {
             print("Hotkey Cmd+Shift+6")
-            
-            ScreenshotManager.shared.takeScreenshot { url in
-                guard let screenshotURL = url else { return }
-                OCRManager.shared.performOCR(on: screenshotURL) { text in
-                    guard let recognizedText = text else { return }
-                    print(recognizedText)
-                    // Do something with the recognized text, e.g., copy to clipboard
-                    
-                    // Copying to clipboard
-                    let pasteboard = NSPasteboard.general
-                    pasteboard.clearContents()
-                    pasteboard.setString(recognizedText, forType: .string)
-                    DispatchQueue.main.async {
-                        self.sharedTextModel.inputText = recognizedText
-                        self.showPopover()
-                    }
-                }
-            }
-            
-            
+            // Hotkey functionality
+            self.handleHotkeyPress()
         }
-        
-        
     }
-    
-    @objc func togglePopover(_ sender: AnyObject?) {
-        if let button = statusBarItem.button {
-            if popover.isShown {
-                popover.performClose(sender)
-            } else {
-                NSApp.activate(ignoringOtherApps: true)
-                popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+
+    private func handleHotkeyPress() {
+        ScreenshotManager.shared.takeScreenshot { url in
+            guard let screenshotURL = url else { return }
+            OCRManager.shared.performOCR(on: screenshotURL) { text in
+                guard let recognizedText = text else { return }
+                print(recognizedText)
+                // Do something with the recognized text, e.g., copy to clipboard
+                self.copyTextToClipboard(text: recognizedText)
             }
         }
     }
-    
+
+    private func copyTextToClipboard(text: String) {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(text, forType: .string)
+        DispatchQueue.main.async {
+            self.sharedTextModel.inputText = text
+            self.showPopover()
+        }
+    }
+
     @objc func processTextService(_ pboard: NSPasteboard, userData: String?, error: UnsafeMutablePointer<NSString>) {
         print("Service 'Check with GPT' invoked")
         guard let selectedText = pboard.string(forType: .string) else {
@@ -89,7 +97,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.showPopover()
         }
     }
-    
+
     private func showPopover() {
         if let button = statusBarItem.button {
             NSApp.activate(ignoringOtherApps: true)
@@ -98,9 +106,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
-    
-    
-    
-    
-    
 }

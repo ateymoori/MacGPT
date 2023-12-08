@@ -195,10 +195,11 @@ struct ChatView: View {
     }
     
     func showSettings() {
-        SettingsWindowManager.shared.showSettingsWindow()
+        AppWindowManager.shared.showSettingsWindow()
+       // SettingsWindowManager.shared.showSettingsWindow()
     }
     func showReminder() {
-        ReminderWindowManager.shared.showReminderWindow()
+         AppWindowManager.shared.showReminderWindow()
     }
     
 }

@@ -11,22 +11,28 @@ import AVFoundation
 struct ReminderView: View {
     @State private var userInput: String = ""
     @State private var phrases: [(String, String)] = []
-
+    
     init() {
-         printAvailableVoices()
-        self.speak(text : "Amir Amir")
-         // Other initialization code if necessary
-     }
+        printAvailableVoices()
+        // Other initialization code if necessary
+    }
     private func printAvailableVoices() {
-           let availableVoices = AVSpeechSynthesisVoice.speechVoices().filter { $0.language == "sv-SE" }
-           print("Available Swedish Voices: \(availableVoices)")
-       }
+        let availableVoices = AVSpeechSynthesisVoice.speechVoices().filter { $0.language == "sv-SE" }
+        print("Available Swedish Voices: \(availableVoices)")
+    }
     var body: some View {
         VStack {
+            HStack {
+                Button(action: closeView) {
+                    Image(systemName: "xmark.circle")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.white)
+                }
+                .padding()
+                Spacer()
+            }
             
-            Rectangle()
-                .fill(Color.clear)
-                .frame(height: 24)
             
             // TextEditor for user input with styled background
             ZStack(alignment: .topLeading) {
@@ -78,7 +84,7 @@ struct ReminderView: View {
             ...
         ]
         """
-
+        
         OpenAIManager.shared.askQuestion(model: "gpt-3.5-turbo", prompt: userQuery, systemMessage: systemMessage) { result in
             switch result {
             case .success(let response):
@@ -97,7 +103,7 @@ struct ReminderView: View {
             print("Error: Can't convert string to Data")
             return []
         }
-
+        
         do {
             let phrasePairs = try JSONDecoder().decode([PhrasePair].self, from: data)
             return phrasePairs.map { ($0.Swedish, $0.English) }
@@ -106,43 +112,47 @@ struct ReminderView: View {
             return []
         }
     }
-
+    
     
     // Row view for each phrase
     @ViewBuilder
-     private func phraseRow(swedish: String, english: String) -> some View {
-         HStack {
-             Button(action: {
-                 self.speak(text: swedish)
-             }) {
-                 Image(systemName: "speaker.wave.2.fill")
-                     .foregroundColor(.white)
-                     .accessibility(label: Text("Speak Swedish"))
-             }
-             Text(swedish)
-                 .font(.system(size: 18))
-                 .foregroundColor(.white)
-             Spacer()
-             Text(english)
-                 .font(.system(size: 18))
-                 .foregroundColor(.white)
-         }
-     }
+    private func phraseRow(swedish: String, english: String) -> some View {
+        HStack {
+            Button(action: {
+                self.speak(text: swedish)
+            }) {
+                Image(systemName: "speaker.wave.2.fill")
+                    .foregroundColor(.white)
+                    .accessibility(label: Text("Speak Swedish"))
+            }
+            Text(swedish)
+                .font(.system(size: 18))
+                .foregroundColor(.white)
+            Spacer()
+            Text(english)
+                .font(.system(size: 18))
+                .foregroundColor(.white)
+        }
+    }
     
     // Speech synthesizer code
     private let speechSynthesizer = AVSpeechSynthesizer()
     func speak(text: String) {
         let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: "sv-SE") // Swedish language
+        utterance.voice = AVSpeechSynthesisVoice(language: "sv-SE")
         
         // Stop previous speech before starting the new one
         speechSynthesizer.stopSpeaking(at: .immediate)
         speechSynthesizer.speak(utterance)
     }
-
+    
     struct PhrasePair: Codable {
         let Swedish: String
         let English: String
     }
-    
+    private func closeView() {
+        if let window = NSApplication.shared.windows.first(where: { $0.contentView is NSHostingView<ReminderView> }) {
+            window.close()
+        }
+    }
 }
