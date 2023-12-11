@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import AVFoundation
+
 
 struct ChatView: View {
     @ObservedObject private var sharedTextModel = SharedTextModel.shared
@@ -105,6 +107,16 @@ struct ChatView: View {
                             }
                             .buttonStyle(BorderlessButtonStyle())
                             .padding(.trailing, 8)
+                            
+                            // Speaker button to read the text
+                            Button(action: {
+                                self.speak(text: sharedTextModel.inputText) // Use the content of TextEditor
+                            }) {
+                                Image(systemName: "speaker.3.fill") // Speaker icon
+                            }
+                            .buttonStyle(BorderlessButtonStyle())
+                            .padding(.trailing, 8)
+                            
                         }
                         Spacer()
                         HStack {
@@ -201,5 +213,16 @@ struct ChatView: View {
     func showReminder() {
          AppWindowManager.shared.showReminderWindow()
     }
+    
+    private let speechSynthesizer = AVSpeechSynthesizer()
+    func speak(text: String) {
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: "sv-SE")
+        
+        // Stop previous speech before starting the new one
+        speechSynthesizer.stopSpeaking(at: .immediate)
+        speechSynthesizer.speak(utterance)
+    }
+    
     
 }
