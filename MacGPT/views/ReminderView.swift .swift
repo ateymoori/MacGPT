@@ -7,59 +7,70 @@
 
 import SwiftUI
 import AVFoundation
-
 struct ReminderView: View {
-    @State private var userInput: String = ""
+    @State private var selectedCategory: String = "Professional Greetings"
+    @State private var selectedType: String = "Word"
+    
     @State private var phrases: [(String, String)] = []
+    @State private var isLoading = false
+    
+    private let categories = ["Professional Greetings", "Office Vocabulary", "Business Meetings", "Workplace Communication", "Everyday Conversations", "Cultural Expressions", "Emergency and Directions", "Shopping and Transactions", "Expressing Emotions", "Humor and Fun", "Casual Greetings and Farewells"]
+
+    private let types = ["Word", "Phrase"]
     
     init() {
         printAvailableVoices()
-        // Other initialization code if necessary
-    }
+     }
+    
     private func printAvailableVoices() {
         let availableVoices = AVSpeechSynthesisVoice.speechVoices().filter { $0.language == "sv-SE" }
         print("Available Swedish Voices: \(availableVoices)")
     }
+    
     var body: some View {
         VStack {
             HStack {
                 Button(action: closeView) {
                     Image(systemName: "xmark.circle")
                         .resizable()
-                        .frame(width: 20, height: 20)
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
                         .foregroundColor(.white)
                 }
-                .padding()
-                Spacer()
-            }
-            
-            
-            // TextEditor for user input with styled background
-            ZStack(alignment: .topLeading) {
-                TextEditor(text: $userInput)
-                    .opacity(userInput.isEmpty ? 0.5 : 1)
-                    .padding(4)
-                    .background(Color.gray.opacity(0.2)) // Grey background
-                    .cornerRadius(8)
-                    .border(Color.gray, width: 1)
+                .buttonStyle(PlainButtonStyle())
+                .padding(8)
                 
-                if userInput.isEmpty {
-                    Text("Enter your question here")
-                        .foregroundColor(.white)
-                        .padding(.all, 8)
-                        .background(Color.clear)
+                Spacer()
+                
+                // Picker for selecting type (Words or Phrases)
+                Picker("", selection: $selectedType) {
+                    ForEach(types, id: \.self) { type in
+                        Text(type)
+                    }
                 }
-            }
-            .frame(height: 100)
-            .foregroundColor(.white) // Set text color to white
-            
-            // Button to send the question
-            Button("Ask ChatGPT") {
-                fetchPhrasesFromOpenAI(with: userInput)
+                .pickerStyle(MenuPickerStyle())
+                .frame(width: 100)
+                .onChange(of: selectedType) {
+                    fetchPhrasesFromOpenAI()
+                }
+                // Picker for selecting a category
+                Picker("", selection: $selectedCategory) {
+                    ForEach(categories, id: \.self) { category in
+                        Text(category)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                .frame(width: 200)
+                .onChange(of: selectedCategory) {
+                    fetchPhrasesFromOpenAI()
+                }
             }
             .padding()
             
-            // Display the phrases
+            if isLoading {
+                ProgressView()
+            }
+            
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     ForEach(phrases, id: \.0) { (swedish, english) in
@@ -69,33 +80,45 @@ struct ReminderView: View {
             }
             .padding()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black.opacity(0.75)) // 70% transparency
-        .cornerRadius(10) // Rounded corners
-        .padding(.horizontal) // Padding on the sides if needed
+        .background(Color.black.opacity(0.75))
+        .cornerRadius(10)
+        .frame(height: 380)
+        .onAppear {
+                    fetchPhrasesFromOpenAI() // Fetch phrases when the view appears
+                }
     }
     
-    func fetchPhrasesFromOpenAI(with userQuery: String) {
-        let systemMessage = """
-        Return a JSON array with 15 common Swedish words related to food along with their English translations. Format the response as follows:
-        [
-            {"Swedish": "SwedishWord1", "English": "EnglishTranslation1"},
-            {"Swedish": "SwedishWord2", "English": "EnglishTranslation2"},
-            ...
-        ]
-        """
+    func fetchPhrasesFromOpenAI() {
+        isLoading = true
         
-        OpenAIManager.shared.askQuestion(model: "gpt-3.5-turbo", prompt: userQuery, systemMessage: systemMessage) { result in
-            switch result {
-            case .success(let response):
-                print("Response: \(response)")
-                DispatchQueue.main.async {
-                    self.phrases = parseResponse(response)
+        let systemMessage = """
+            As a language tutor, please assist me in learning Swedish, keeping in mind that I am a beginner and work with Swedes in an office environment. I need to learn practical and commonly used Swedish \(selectedType.lowercased()) that will be helpful in my daily interactions in a Swedish office setting. Provide a JSON array of 10 relevant Swedish \(selectedType.lowercased()) in the category of '\(selectedCategory)', each with its English translation. The format should be as follows:
+            [
+                {"Swedish": "Swedish-\(selectedType.lowercased())1", "English": "EnglishTranslation1"},
+                {"Swedish": "Swedish-\(selectedType.lowercased())2", "English": "EnglishTranslation2"},
+                ...
+            ]
+            """
+        
+        print(systemMessage)
+        
+        OpenAIManager.shared.askQuestion(model: "gpt-3.5-turbo", prompt: selectedCategory, systemMessage: systemMessage) { result in
+            DispatchQueue.main.async {
+                isLoading = false
+                switch result {
+                case .success(let response):
+                    print("API Response: \(response)")
+                    self.phrases = self.parseResponse(response)
+                case .failure(let error):
+                    print("Error calling API: \(error.localizedDescription)")
                 }
-            case .failure(let error):
-                print("Error: \(error.localizedDescription)")
             }
         }
+    }
+    
+    struct MyPhrasePair: Codable {
+        let Swedish: String
+        let English: String
     }
     
     private func parseResponse(_ response: String) -> [(String, String)] {
@@ -105,13 +128,14 @@ struct ReminderView: View {
         }
         
         do {
-            let phrasePairs = try JSONDecoder().decode([PhrasePair].self, from: data)
+            let phrasePairs: [MyPhrasePair] = try JSONDecoder().decode([MyPhrasePair].self, from: data)
             return phrasePairs.map { ($0.Swedish, $0.English) }
         } catch {
             print("Error parsing JSON: \(error)")
             return []
         }
     }
+    
     
     
     // Row view for each phrase
@@ -151,8 +175,6 @@ struct ReminderView: View {
         let English: String
     }
     private func closeView() {
-        if let window = NSApplication.shared.windows.first(where: { $0.contentView is NSHostingView<ReminderView> }) {
-            window.close()
-        }
-    }
+          AppWindowManager.shared.closeReminderWindow()
+      }
 }

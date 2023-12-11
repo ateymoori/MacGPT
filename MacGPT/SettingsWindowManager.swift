@@ -42,7 +42,7 @@ class AppWindowManager {
             if self.reminderWindow == nil {
                 let contentView = ReminderView()
                 self.reminderWindow = DraggableWindow(
-                    contentRect: NSRect(x: 0, y: 0, width: 380, height: 400),
+                    contentRect: NSRect(x: 0, y: 0, width: 420, height: 400),
                     styleMask: [.resizable, .fullSizeContentView],
                     backing: .buffered, defer: false)
                 
@@ -75,9 +75,10 @@ class AppWindowManager {
         reminderWindow?.center()
         reminderWindow?.setFrameAutosaveName("ReminderWindow")
         reminderWindow?.isOpaque = false
-        reminderWindow?.backgroundColor = NSColor.black.withAlphaComponent(0.7)
+        reminderWindow?.backgroundColor = NSColor.black.withAlphaComponent(0.0)
         reminderWindow?.level = .floating
-        reminderWindow?.contentView = NSHostingController(rootView: view).view
+        reminderWindow?.contentView = NSHostingController(rootView: view.frame(maxWidth: .infinity, maxHeight: .infinity)).view
+
         reminderWindow?.isMovableByWindowBackground = true
         reminderWindow?.contentView?.wantsLayer = true
         reminderWindow?.contentView?.layer?.cornerRadius = 20
@@ -122,5 +123,10 @@ class AppWindowManager {
         chatWindow?.close()
     }
     
+    func closeReminderWindow() {
+        DispatchQueue.main.async {
+            self.reminderWindow?.close()
+        }
+    }
     
 }
