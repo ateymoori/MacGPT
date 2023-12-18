@@ -102,18 +102,18 @@ struct ReminderView: View {
         
         print(systemMessage)
         
-        OpenAIManager.shared.askQuestion(model: "gpt-3.5-turbo", prompt: selectedCategory, systemMessage: systemMessage) { result in
-            DispatchQueue.main.async {
-                isLoading = false
-                switch result {
-                case .success(let response):
-                    print("API Response: \(response)")
-                    self.phrases = self.parseResponse(response)
-                case .failure(let error):
-                    print("Error calling API: \(error.localizedDescription)")
-                }
-            }
-        }
+//        OpenAIManager.shared.askQuestion(model: "gpt-3.5-turbo", prompt: selectedCategory, systemMessage: systemMessage) { result in
+//            DispatchQueue.main.async {
+//                isLoading = false
+//                switch result {
+//                case .success(let response):
+//                    print("API Response: \(response)")
+//                    self.phrases = self.parseResponse(response)
+//                case .failure(let error):
+//                    print("Error calling API: \(error.localizedDescription)")
+//                }
+//            }
+//        }
     }
     
     struct MyPhrasePair: Codable {

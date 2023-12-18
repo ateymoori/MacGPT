@@ -12,6 +12,7 @@
 		292821882B17D86F008D46CD /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292821872B17D86F008D46CD /* PermissionsManager.swift */; };
 		2928218A2B17D940008D46CD /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292821892B17D940008D46CD /* HotkeyManager.swift */; };
 		2928218E2B1CC81D008D46CD /* ModelInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2928218D2B1CC81D008D46CD /* ModelInfoView.swift */; };
+		2983EC442B30D8DD00198174 /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2983EC432B30D8DD00198174 /* KeyChainService.swift */; };
 		29DEE7CA2B0829AF00F5492D /* MacGPTApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7C92B0829AF00F5492D /* MacGPTApp.swift */; };
 		29DEE7CC2B0829AF00F5492D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7CB2B0829AF00F5492D /* ContentView.swift */; };
 		29DEE7CE2B0829B000F5492D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DEE7CD2B0829B000F5492D /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		292821872B17D86F008D46CD /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
 		292821892B17D940008D46CD /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
 		2928218D2B1CC81D008D46CD /* ModelInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelInfoView.swift; sourceTree = "<group>"; };
+		2983EC432B30D8DD00198174 /* KeyChainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
 		29DEE7C62B0829AF00F5492D /* MacGPT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacGPT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29DEE7C92B0829AF00F5492D /* MacGPTApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacGPTApp.swift; sourceTree = "<group>"; };
 		29DEE7CB2B0829AF00F5492D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				29DEE7E22B0A399000F5492D /* OpenAIManager.swift */,
 				292821872B17D86F008D46CD /* PermissionsManager.swift */,
 				292821892B17D940008D46CD /* HotkeyManager.swift */,
+				2983EC432B30D8DD00198174 /* KeyChainService.swift */,
 			);
 			path = managers;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				29DEE7E12B0A389E00F5492D /* SettingsModel.swift in Sources */,
 				7EDEF6F72B21CFAD00635E20 /* DraggableWindow.swift in Sources */,
 				2928218A2B17D940008D46CD /* HotkeyManager.swift in Sources */,
+				2983EC442B30D8DD00198174 /* KeyChainService.swift in Sources */,
 				292821832B17D80B008D46CD /* ScreenshotManager.swift in Sources */,
 				292821882B17D86F008D46CD /* PermissionsManager.swift in Sources */,
 				2928218E2B1CC81D008D46CD /* ModelInfoView.swift in Sources */,
