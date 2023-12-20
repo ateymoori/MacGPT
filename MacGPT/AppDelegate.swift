@@ -15,13 +15,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var statusBarItem: NSStatusItem!
     var sharedTextModel = SharedTextModel.shared
     var hotKeyRef: EventHotKeyRef?
-    let pinStatus = PinStatus()
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Initialize and configure the popover
         popover = NSPopover()
         popover.contentSize = NSSize(width: 500, height: 400)
         popover.behavior = .transient
-        popover.contentViewController = NSHostingController(rootView: ChatView().environmentObject(sharedTextModel).environmentObject(pinStatus)) // Modify this line
+        popover.contentViewController = NSHostingController(rootView: ChatView().environmentObject(sharedTextModel)) // Modify this line
 
         // Create the status bar item
         statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -98,8 +97,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func toggleChatPopover(_ sender: AnyObject?) {
-        if popover.isShown && !pinStatus.isPinned {
-           // popover.performClose(sender)
+        if popover.isShown {
+           popover.performClose(sender)
         } else {
             if let button = statusBarItem.button {
                 NSApp.activate(ignoringOtherApps: true)

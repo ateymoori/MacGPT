@@ -8,7 +8,6 @@
 import SwiftUI
 import AVFoundation
 
-
 struct ChatView: View {
     @ObservedObject private var sharedTextModel = SharedTextModel.shared
     @ObservedObject private var settingsModel = SettingsModel.shared
@@ -16,13 +15,6 @@ struct ChatView: View {
     @State private var outputText: String = ""
     let characterLimit = 1500
     @State private var isLoading: Bool = false
-    @State private var selectedMode: String = "Rephrase"
-    
-    @State private var selectedModelKey: String = "gpt-3.5-turbo"
-    let modelDisplayNames = ["GPT 3.5 Turbo": "gpt-3.5-turbo", "GPT 4": "gpt-4", "GPT 4 Turbo": "gpt-4-turbo"]
-
-    
-    
     
     @State private var correctDictation: Bool = false
     @State private var correctGrammar: Bool = false
@@ -30,15 +22,8 @@ struct ChatView: View {
     @State private var showingModelInfo = false
     
     @State private var translateTo: Bool = false
-    @State private var selectedLanguage = "English English" // Default selection set to English
+    @State private var selectedLanguage = "English English"
 
-    @EnvironmentObject var pinStatus: PinStatus  // Add this line
-    @State private var isPinned: Bool = false
-    
-    init() {
-        let defaultModeName = settingsModel.firstModeName.isEmpty ? "Rephrase" : settingsModel.firstModeName
-        _selectedMode = State(initialValue: defaultModeName)
-    }
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
@@ -47,13 +32,6 @@ struct ChatView: View {
                     .fontWeight(.bold)
                 
                 Spacer()
-                
-                Button(action: togglePin) {
-                    Image(systemName: isPinned ? "pin.fill" : "pin.slash.fill")
-                }
-                .buttonStyle(BorderlessButtonStyle())
-                
-                
                 
                 HStack {
                     Button(action: showReminder) {
@@ -69,7 +47,6 @@ struct ChatView: View {
             }
             .padding(.horizontal)
             
-            // "Translate to" checkbox and language picker
             HStack {
                 Toggle("To Language", isOn: $translateTo)
                 Picker("", selection: $selectedLanguage) {
@@ -81,13 +58,11 @@ struct ChatView: View {
             }
             .padding(.top, 20)
             
-            // Checkboxes for dictation and grammar correction
             HStack {
                 Toggle("Correct Dictation", isOn: $correctDictation)
                 Toggle("Correct Grammar", isOn: $correctGrammar)
             }
             
-            // Radio buttons for tune selection
             Picker("Tune", selection: $selectedTune) {
                 Text("Don't Change").tag("dontChange")
                 Text("Friendly").tag("friendly")
@@ -111,14 +86,6 @@ struct ChatView: View {
                             }
                             .buttonStyle(BorderlessButtonStyle())
                             .padding(.trailing, 8)
-                            
-                            Button(action: {
-                                self.speak(text: sharedTextModel.inputText)
-                            }) {
-                                Image(systemName: "speaker.3.fill")
-                            }
-                            .buttonStyle(BorderlessButtonStyle())
-                            .padding(.trailing, 8)
                         }
                         Spacer()
                         HStack {
@@ -130,7 +97,7 @@ struct ChatView: View {
                     }, alignment: .topTrailing
                 )
                 .border(Color.secondary)
-                
+            
             
             HStack {
                 Button(action: {
@@ -168,7 +135,6 @@ struct ChatView: View {
                     }, alignment: .topTrailing
                 )
                 .border(Color.secondary)
-               
             
             Spacer()
         }
@@ -180,54 +146,44 @@ struct ChatView: View {
     
     func askChatGPT() {
         isLoading = true
+                
+        var finalPrompt = sharedTextModel.inputText
+        var actions = [String]()
+        
+        if translateTo {
+            let languageName = selectedLanguage.components(separatedBy: " ").first ?? "English"
+            actions.append("Translate this text to \(languageName)")
+        }
+        
+        if correctGrammar {
+            actions.append("Correct the grammar")
+        }
+        
+        if correctDictation {
+            actions.append("Correct the dictation")
+        }
+        
+        if selectedTune != "dontChange" {
+            actions.append("Change the tone to \(selectedTune)")
+        }
+        
+        if !actions.isEmpty {
+            finalPrompt = "\(actions.joined(separator: " and ")): {{ \(finalPrompt) }}"
+        }
 
-
-         let modelKey = modelDisplayNames[selectedModelKey] ?? "gpt-3.5-turbo"
-
-         var finalPrompt = sharedTextModel.inputText
-         var actions = [String]()
-
-         // Add translation directive if necessary
-         if translateTo {
-             let languageName = selectedLanguage.components(separatedBy: " ").first ?? "English"
-             actions.append("Translate this text to \(languageName)")
-         }
-
-         // Add grammar correction if necessary
-         if correctGrammar {
-             actions.append("Correct the grammar")
-         }
-
-         // Add dictation correction if necessary
-         if correctDictation {
-             actions.append("Correct the dictation")
-         }
-
-         // Add tone adjustment if necessary
-         if selectedTune != "dontChange" {
-             actions.append("Change the tone to \(selectedTune)")
-         }
-
-         if !actions.isEmpty {
-             finalPrompt = "\(actions.joined(separator: " and ")): {{ \(finalPrompt) }}"
-         }
-
-         // Log the final message and prompt
-         print("Final Message: \(sharedTextModel.inputText)")
-         print("Final Prompt: \(finalPrompt)")
-        OpenAIManager.shared.askQuestion(model: modelKey, prompt: finalPrompt) { result in
+        OpenAIManager.shared.askQuestion( prompt: finalPrompt) { result in
             DispatchQueue.main.async {
                 isLoading = false
                 switch result {
                 case .success(let response):
-                    self.outputText = response
+                    self.outputText = response.answer
                 case .failure(let error):
                     self.outputText = "Error: \(error.localizedDescription)"
                 }
             }
         }
     }
-
+    
     func pasteClipboard() {
         if let clipboardContents = NSPasteboard.general.string(forType: .string) {
             sharedTextModel.inputText = clipboardContents
@@ -241,22 +197,11 @@ struct ChatView: View {
     
     func showSettings() {
         AppWindowManager.shared.showSettingsWindow()
-        // SettingsWindowManager.shared.showSettingsWindow()
     }
     func showReminder() {
         AppWindowManager.shared.showReminderWindow()
     }
     
-    private let speechSynthesizer = AVSpeechSynthesizer()
-    func speak(text: String) {
-        let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: "sv-SE")
-        
-        // Stop previous speech before starting the new one
-        speechSynthesizer.stopSpeaking(at: .immediate)
-        speechSynthesizer.speak(utterance)
-    }
- 
     func getLanguages() -> [String] {
         return [
             "Afrikaans Afrikaans",
@@ -367,15 +312,8 @@ struct ChatView: View {
             "Yiddish ייִדיש",
             "Yoruba Yorùbá",
             "Zulu isiZulu"
- 
+            
         ].sorted()
     }
-    private func togglePin() {
-        isPinned.toggle()
-        pinStatus.isPinned = isPinned
-    }
-}
 
-class PinStatus: ObservableObject {
-    @Published var isPinned: Bool = false
 }
