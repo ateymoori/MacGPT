@@ -19,7 +19,7 @@ extension View {
                 VStack {
                     HStack {
                         Spacer()
-                        Button(action: {} /* placeholder for action */) {
+                        Button(action: {}) {
                             Image(systemName: "icon_name")
                         }
                         .buttonStyle(BorderlessButtonStyle())
@@ -59,7 +59,7 @@ struct ChatView: View {
     @State private var outputText: String = ""
     let characterLimit = 1500
     @State private var isLoading: Bool = false
-    
+    @ObservedObject private var pinStatus = PinStatus.shared
     
     // UserDefaults keys
     private let userDefaults = UserDefaults.standard
@@ -85,7 +85,13 @@ struct ChatView: View {
                     .font(.title2)
                     .fontWeight(.bold)
                 Spacer()
+                
                 HStack {
+                    Button(action: togglePin) {
+                        Image(systemName: pinStatus.isPinned ? "pin.fill" : "pin.slash.fill")
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
+                    
                     Button(action: showReminder) {
                         Image(systemName: "plus")
                     }
@@ -368,7 +374,6 @@ struct ChatView: View {
         ].sorted()
     }
     
-    // Functions to save configurations
     private func saveTranslateTo(_ value: Bool) {
         userDefaults.set(value, forKey: translateToKey)
     }
@@ -389,4 +394,13 @@ struct ChatView: View {
         userDefaults.set(tune, forKey: selectedTuneKey)
     }
     
+    private func togglePin() {
+        pinStatus.isPinned.toggle()
+    }
+    
+}
+
+class PinStatus: ObservableObject {
+    static let shared = PinStatus()
+    @Published var isPinned: Bool = false
 }

@@ -8,7 +8,7 @@
 import Cocoa
 import SwiftUI
 import Carbon.HIToolbox
-
+import Combine
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     private enum Constants {
@@ -18,76 +18,78 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         static let hotkeyKey = UInt32(kVK_ANSI_6)
         static let hotkeyModifiers = UInt32(shiftKey | cmdKey)
     }
-
+    
     var popover: NSPopover!
     var statusBarItem: NSStatusItem!
     var sharedTextModel = SharedTextModel.shared
-
+    private var pinStatusObserver: AnyCancellable?
+    
     func applicationDidFinishLaunching(_ notification: Notification) {
         configurePopover()
         configureStatusBarItem()
         registerServicesAndHotkeys()
+        observePinStatus()
     }
-
+    
     private func configurePopover() {
         popover = NSPopover()
         popover.contentSize = Constants.popoverSize
-        popover.behavior = .transient
+        popover.behavior = .applicationDefined // Change to make the popover non-transient
         popover.contentViewController = NSHostingController(rootView: ChatView().environmentObject(sharedTextModel))
     }
-
+    
     private func configureStatusBarItem() {
         statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         configureStatusBarButton(statusBarItem.button)
     }
-
+    
     private func configureStatusBarButton(_ button: NSStatusBarButton?) {
         guard let button = button else { return }
         button.image = NSImage(named: Constants.statusBarIconName)
         button.action = #selector(toggleChatPopover(_:))
     }
-
+    
     private func registerServicesAndHotkeys() {
         NSApp.servicesProvider = self
         NSUpdateDynamicServices()
         PermissionsManager.shared.requestScreenRecordingPermission()
         registerHotkey()
     }
-
+    
     private func registerHotkey() {
         HotkeyManager.shared.registerHotkey(with: (key: UInt32(Constants.hotkeyKey), modifiers: UInt32(Constants.hotkeyModifiers)), id: 1) {
             self.handleHotkeyPress()
         }
     }
-
+    
     private func handleHotkeyPress() {
         ScreenshotManager.shared.takeScreenshot { [weak self] url in
             guard let self = self, let screenshotURL = url else { return }
             self.performOCR(on: screenshotURL)
         }
     }
-
+    
     private func performOCR(on url: URL) {
         OCRManager.shared.performOCR(on: url) { [weak self] text in
             guard let self = self, let recognizedText = text else { return }
             self.copyTextToClipboard(text: recognizedText)
         }
     }
-
+    
     private func copyTextToClipboard(text: String) {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         pasteboard.setString(text, forType: .string)
         updateSharedTextModel(with: text)
     }
-
+    
     private func updateSharedTextModel(with text: String) {
         DispatchQueue.main.async {
             self.sharedTextModel.inputText = text
             self.showPopoverIfNeeded()
         }
     }
-
+    
     @objc func processTextService(_ pboard: NSPasteboard, userData: String?, error: UnsafeMutablePointer<NSString>) {
         guard let selectedText = pboard.string(forType: .string) else {
             error.pointee = "No text was found." as NSString
@@ -95,18 +97,43 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         updateSharedTextModel(with: selectedText)
     }
-
+    
     private func showPopoverIfNeeded() {
         guard let button = statusBarItem.button, !popover.isShown else { return }
         NSApp.activate(ignoringOtherApps: true)
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
     }
-
+    
+    private func closePopover(_ sender: AnyObject?) {
+        if PinStatus.shared.isPinned {
+            popover.performClose(nil)
+        }else{
+            popover.performClose(sender)
+        }
+        
+    }
+    
+    private func observePinStatus() {
+        pinStatusObserver = PinStatus.shared.$isPinned.sink { [weak self] isPinned in
+            self?.updatePopoverBehavior(isPinned: isPinned)
+        }
+    }
+    
+    private func updatePopoverBehavior(isPinned: Bool) {
+        popover.behavior = isPinned ? .applicationDefined : .transient
+    }
+    
     @objc func toggleChatPopover(_ sender: AnyObject?) {
         if popover.isShown {
-            popover.performClose(sender)
+            closePopover()
         } else {
             showPopoverIfNeeded()
+        }
+    }
+    
+    private func closePopover() {
+        if !PinStatus.shared.isPinned {
+            popover.performClose(nil)
         }
     }
 }
