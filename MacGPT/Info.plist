@@ -20,8 +20,8 @@
             </array>
         </dict>
     </array>
+    <!-- Add LSUIElement to make the app a background app -->
+    <key>LSUIElement</key>
+    <true/>
 </dict>
 </plist>
-
-
-

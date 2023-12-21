@@ -8,6 +8,50 @@
 import SwiftUI
 import AVFoundation
 
+extension View {
+    func configureTextEditor() -> some View {
+        self
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 170, maxHeight: .infinity)
+            .font(.body)
+            .padding(4)
+            .lineSpacing(5)
+            .overlay(
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button(action: {} /* placeholder for action */) {
+                            Image(systemName: "icon_name")
+                        }
+                        .buttonStyle(BorderlessButtonStyle())
+                        .padding(.trailing, 8)
+                    }
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Text("Characters count / Limit")
+                    }
+                    .padding(.trailing, 8)
+                    .padding(.bottom, 8)
+                }, alignment: .topTrailing
+            )
+            .border(Color.secondary)
+    }
+}
+
+// Extension to detect changes in state
+extension Binding {
+    func onChange(_ handler: @escaping (Value) -> Void) -> Binding<Value> {
+        Binding(
+            get: { self.wrappedValue },
+            set: { newValue in
+                self.wrappedValue = newValue
+                handler(newValue)
+            }
+        )
+    }
+}
+
+
 struct ChatView: View {
     @ObservedObject private var sharedTextModel = SharedTextModel.shared
     @ObservedObject private var settingsModel = SettingsModel.shared
@@ -16,29 +60,36 @@ struct ChatView: View {
     let characterLimit = 1500
     @State private var isLoading: Bool = false
     
-    @State private var correctDictation: Bool = false
-    @State private var correctGrammar: Bool = false
-    @State private var selectedTune: String = "dontChange"
-    @State private var showingModelInfo = false
     
-    @State private var translateTo: Bool = false
-    @State private var selectedLanguage = "English English"
-
+    // UserDefaults keys
+    private let userDefaults = UserDefaults.standard
+    private let correctDictationKey = "correctDictation"
+    private let correctGrammarKey = "correctGrammar"
+    private let selectedTuneKey = "selectedTune"
+    private let translateToKey = "translateTo"
+    private let selectedLanguageKey = "selectedLanguage"
+    
+    // User configurations with UserDefaults
+    @State private var correctDictation: Bool = UserDefaults.standard.bool(forKey: "correctDictation")
+    @State private var correctGrammar: Bool = UserDefaults.standard.bool(forKey: "correctGrammar")
+    @State private var selectedTune: String = UserDefaults.standard.string(forKey: "selectedTune") ?? "dontChange"
+    @State private var translateTo: Bool = UserDefaults.standard.bool(forKey: "translateTo")
+    @State private var selectedLanguage: String = UserDefaults.standard.string(forKey: "selectedLanguage") ?? "English English"
+    
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
+            // Header with app title and buttons for reminder and settings
             HStack {
                 Text("iChatGPT")
                     .font(.title2)
                     .fontWeight(.bold)
-                
                 Spacer()
-                
                 HStack {
                     Button(action: showReminder) {
                         Image(systemName: "plus")
                     }
                     .buttonStyle(BorderlessButtonStyle())
-                    
                     Button(action: showSettings) {
                         Image(systemName: "gearshape.fill")
                     }
@@ -47,9 +98,10 @@ struct ChatView: View {
             }
             .padding(.horizontal)
             
+            // Translation, Dictation, and Grammar toggles
             HStack {
-                Toggle("To Language", isOn: $translateTo)
-                Picker("", selection: $selectedLanguage) {
+                Toggle("To Language", isOn: $translateTo.onChange(saveTranslateTo))
+                Picker("Select Language", selection: $selectedLanguage.onChange(saveSelectedLanguage)) {
                     ForEach(getLanguages(), id: \.self) { language in
                         Text(language).tag(language)
                     }
@@ -59,11 +111,11 @@ struct ChatView: View {
             .padding(.top, 20)
             
             HStack {
-                Toggle("Correct Dictation", isOn: $correctDictation)
-                Toggle("Correct Grammar", isOn: $correctGrammar)
+                Toggle("Correct Dictation", isOn: $correctDictation.onChange(saveCorrectDictation))
+                Toggle("Correct Grammar", isOn: $correctGrammar.onChange(saveCorrectGrammar))
             }
             
-            Picker("Tune", selection: $selectedTune) {
+            Picker("Tune", selection: $selectedTune.onChange(saveSelectedTune)) {
                 Text("Don't Change").tag("dontChange")
                 Text("Friendly").tag("friendly")
                 Text("Formal").tag("formal")
@@ -146,7 +198,7 @@ struct ChatView: View {
     
     func askChatGPT() {
         isLoading = true
-                
+        
         var finalPrompt = sharedTextModel.inputText
         var actions = [String]()
         
@@ -170,7 +222,7 @@ struct ChatView: View {
         if !actions.isEmpty {
             finalPrompt = "\(actions.joined(separator: " and ")): {{ \(finalPrompt) }}"
         }
-
+        
         OpenAIManager.shared.askQuestion( prompt: finalPrompt) { result in
             DispatchQueue.main.async {
                 isLoading = false
@@ -315,5 +367,26 @@ struct ChatView: View {
             
         ].sorted()
     }
-
+    
+    // Functions to save configurations
+    private func saveTranslateTo(_ value: Bool) {
+        userDefaults.set(value, forKey: translateToKey)
+    }
+    
+    private func saveSelectedLanguage(_ language: String) {
+        userDefaults.set(language, forKey: selectedLanguageKey)
+    }
+    
+    private func saveCorrectDictation(_ value: Bool) {
+        userDefaults.set(value, forKey: correctDictationKey)
+    }
+    
+    private func saveCorrectGrammar(_ value: Bool) {
+        userDefaults.set(value, forKey: correctGrammarKey)
+    }
+    
+    private func saveSelectedTune(_ tune: String) {
+        userDefaults.set(tune, forKey: selectedTuneKey)
+    }
+    
 }
