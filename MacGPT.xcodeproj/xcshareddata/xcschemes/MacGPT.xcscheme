@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "29DEE7C52B0829AF00F5492D"
-               BuildableName = "MacGPT.app"
-               BlueprintName = "MacGPT"
+               BuildableName = "iLexicon.app"
+               BlueprintName = "iLexicon"
                ReferencedContainer = "container:MacGPT.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,8 +44,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "29DEE7C52B0829AF00F5492D"
-            BuildableName = "MacGPT.app"
-            BlueprintName = "MacGPT"
+            BuildableName = "iLexicon.app"
+            BlueprintName = "iLexicon"
             ReferencedContainer = "container:MacGPT.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -61,8 +61,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "29DEE7C52B0829AF00F5492D"
-            BuildableName = "MacGPT.app"
-            BlueprintName = "MacGPT"
+            BuildableName = "iLexicon.app"
+            BlueprintName = "iLexicon"
             ReferencedContainer = "container:MacGPT.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

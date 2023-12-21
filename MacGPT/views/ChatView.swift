@@ -54,7 +54,6 @@ extension Binding {
 
 struct ChatView: View {
     @ObservedObject private var sharedTextModel = SharedTextModel.shared
-    @ObservedObject private var settingsModel = SettingsModel.shared
     
     @State private var outputText: String = ""
     let characterLimit = 1500
@@ -107,7 +106,7 @@ struct ChatView: View {
             // Translation, Dictation, and Grammar toggles
             HStack {
                 Toggle("To Language", isOn: $translateTo.onChange(saveTranslateTo))
-                Picker("Select Language", selection: $selectedLanguage.onChange(saveSelectedLanguage)) {
+                Picker("", selection: $selectedLanguage.onChange(saveSelectedLanguage)) {
                     ForEach(getLanguages(), id: \.self) { language in
                         Text(language).tag(language)
                     }
