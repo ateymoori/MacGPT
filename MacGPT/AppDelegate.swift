@@ -43,12 +43,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         configureStatusBarButton(statusBarItem.button)
     }
     
-    private func configureStatusBarButton(_ button: NSStatusBarButton?) {
-        guard let button = button else { return }
-        button.image = NSImage(named: Constants.statusBarIconName)
-        button.action = #selector(toggleChatPopover(_:))
-    }
-    
     private func registerServicesAndHotkeys() {
         NSApp.servicesProvider = self
         NSUpdateDynamicServices()
@@ -135,6 +129,56 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if !PinStatus.shared.isPinned {
             popover.performClose(nil)
         }
+    }
+    
+    private func configureStatusBarButton(_ button: NSStatusBarButton?) {
+        guard let button = button else { return }
+        button.image = NSImage(named: Constants.statusBarIconName)
+        button.target = self
+        button.action = #selector(statusBarButtonClicked(_:))
+        button.sendAction(on: [.leftMouseUp, .rightMouseUp])
+    }
+    
+    
+    @objc func statusBarButtonClicked(_ sender: NSStatusBarButton) {
+        let event = NSApp.currentEvent!
+        
+        if event.type == .rightMouseUp {
+            // Right-click: Show context menu
+            showContextMenu(for: sender)
+        } else {
+            // Left-click: Toggle popover
+            toggleChatPopover(sender)
+        }
+    }
+    
+    private func showContextMenu(for button: NSStatusBarButton) {
+        let menu = NSMenu()
+        menu.addItem(withTitle: "Menu Item 1", action: #selector(menuItemAction(_:)), keyEquivalent: "").tag = MenuItemAction.menuItem1.rawValue
+        menu.addItem(withTitle: "Menu Item 2", action: #selector(menuItemAction(_:)), keyEquivalent: "").tag = MenuItemAction.menuItem2.rawValue
+        menu.addItem(.separator())
+        menu.addItem(withTitle: "Quit", action: #selector(menuItemAction(_:)), keyEquivalent: "q").tag = MenuItemAction.quit.rawValue
+        statusBarItem.menu = menu
+        statusBarItem.button?.performClick(nil)
+        statusBarItem.menu = nil
+    }
+
+    @objc func menuItemAction(_ sender: NSMenuItem) {
+        guard let action = MenuItemAction(rawValue: sender.tag) else { return }
+
+        switch action {
+        case .menuItem1:
+            break
+        case .menuItem2:
+            break
+        case .quit:
+            NSApp.terminate(self)
+        }
+    }
+    enum MenuItemAction: Int {
+        case menuItem1 = 1
+        case menuItem2 = 2
+        case quit = 99
     }
 }
 

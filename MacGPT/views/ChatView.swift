@@ -62,6 +62,7 @@ struct ChatView: View {
     
     // UserDefaults keys
     private let userDefaults = UserDefaults.standard
+    private let summarizeTextKey = "summarizeText"
     private let correctDictationKey = "correctDictation"
     private let correctGrammarKey = "correctGrammar"
     private let selectedTuneKey = "selectedTune"
@@ -74,13 +75,14 @@ struct ChatView: View {
     @State private var selectedTune: String = UserDefaults.standard.string(forKey: "selectedTune") ?? "dontChange"
     @State private var translateTo: Bool = UserDefaults.standard.bool(forKey: "translateTo")
     @State private var selectedLanguage: String = UserDefaults.standard.string(forKey: "selectedLanguage") ?? "English English"
-    
+    @State private var summarizeText: Bool = UserDefaults.standard.bool(forKey: "summarizeText")
+
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             // Header with app title and buttons for reminder and settings
             HStack {
-                Text("iChatGPT")
+                Text("i Lexicon Pro")
                     .font(.title2)
                     .fontWeight(.bold)
                 Spacer()
@@ -118,6 +120,7 @@ struct ChatView: View {
             HStack {
                 Toggle("Correct Dictation", isOn: $correctDictation.onChange(saveCorrectDictation))
                 Toggle("Correct Grammar", isOn: $correctGrammar.onChange(saveCorrectGrammar))
+                Toggle("Summarize", isOn: $summarizeText.onChange(saveSummarizeText))
             }
             
             Picker("Tune", selection: $selectedTune.onChange(saveSelectedTune)) {
@@ -161,7 +164,7 @@ struct ChatView: View {
                     self.isLoading = true
                     askChatGPT()
                 }) {
-                    Text("Ask ChatGPT")
+                    Text("Proceed")
                 }
                 .padding()
                 
@@ -219,7 +222,9 @@ struct ChatView: View {
         if correctDictation {
             actions.append("Correct the dictation")
         }
-        
+        if summarizeText {
+               finalPrompt = "Summarize the following text: \(finalPrompt)"
+           }
         if selectedTune != "dontChange" {
             actions.append("Change the tone to \(selectedTune)")
         }
@@ -396,7 +401,9 @@ struct ChatView: View {
     private func togglePin() {
         pinStatus.isPinned.toggle()
     }
-    
+    private func saveSummarizeText(_ value: Bool) {
+        userDefaults.set(value, forKey: summarizeTextKey)
+    }
 }
 
 class PinStatus: ObservableObject {

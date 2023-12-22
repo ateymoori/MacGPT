@@ -29,5 +29,9 @@
 			</array>
 		</dict>
 	</array>
+	<key>LSBackgroundOnly</key> 
+	<string>YES</string>
+	<key>CFBundleIconFile</key>
+	<string>icon</string>
 </dict>
 </plist>

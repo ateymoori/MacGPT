@@ -12,6 +12,8 @@
 		292821882B17D86F008D46CD /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292821872B17D86F008D46CD /* PermissionsManager.swift */; };
 		2928218A2B17D940008D46CD /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292821892B17D940008D46CD /* HotkeyManager.swift */; };
 		2928218E2B1CC81D008D46CD /* ModelInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2928218D2B1CC81D008D46CD /* ModelInfoView.swift */; };
+		297B6B812B36092F009B707C /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 297B6B802B36092F009B707C /* icon.icns */; };
+		297B6B842B362670009B707C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B832B362670009B707C /* SettingsView.swift */; };
 		297CA6572B348A2200706628 /* JWTDecode in Frameworks */ = {isa = PBXBuildFile; productRef = 297CA6562B348A2200706628 /* JWTDecode */; };
 		297CA65A2B34A2B000706628 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 297CA6592B34A2B000706628 /* StoreKit.framework */; };
 		2983EC442B30D8DD00198174 /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2983EC432B30D8DD00198174 /* KeyChainService.swift */; };
@@ -20,7 +22,6 @@
 		29DEE7CE2B0829B000F5492D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DEE7CD2B0829B000F5492D /* Assets.xcassets */; };
 		29DEE7D12B0829B000F5492D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DEE7D02B0829B000F5492D /* Preview Assets.xcassets */; };
 		29DEE7DB2B0A30D400F5492D /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7DA2B0A30D400F5492D /* ChatView.swift */; };
-		29DEE7DD2B0A33A100F5492D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7DC2B0A33A100F5492D /* SettingsView.swift */; };
 		29DEE7E32B0A399000F5492D /* OpenAIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E22B0A399000F5492D /* OpenAIManager.swift */; };
 		29DEE7E52B0A41C100F5492D /* SettingsWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E42B0A41C100F5492D /* SettingsWindowManager.swift */; };
 		29DEE7E82B0A5C3800F5492D /* SharedTextModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E72B0A5C3800F5492D /* SharedTextModel.swift */; };
@@ -48,6 +49,8 @@
 		292821872B17D86F008D46CD /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
 		292821892B17D940008D46CD /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
 		2928218D2B1CC81D008D46CD /* ModelInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelInfoView.swift; sourceTree = "<group>"; };
+		297B6B802B36092F009B707C /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
+		297B6B832B362670009B707C /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		297CA6542B34853D00706628 /* MacGPTDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacGPTDebug.entitlements; sourceTree = "<group>"; };
 		297CA6592B34A2B000706628 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		2983EC432B30D8DD00198174 /* KeyChainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
@@ -58,7 +61,6 @@
 		29DEE7D02B0829B000F5492D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		29DEE7D22B0829B000F5492D /* MacGPT.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacGPT.entitlements; sourceTree = "<group>"; };
 		29DEE7DA2B0A30D400F5492D /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
-		29DEE7DC2B0A33A100F5492D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		29DEE7E22B0A399000F5492D /* OpenAIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIManager.swift; sourceTree = "<group>"; };
 		29DEE7E42B0A41C100F5492D /* SettingsWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowManager.swift; sourceTree = "<group>"; };
 		29DEE7E62B0A55B500F5492D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -97,13 +99,20 @@
 		2928218C2B1CC80B008D46CD /* views */ = {
 			isa = PBXGroup;
 			children = (
+				297B6B832B362670009B707C /* SettingsView.swift */,
 				29DEE7DA2B0A30D400F5492D /* ChatView.swift */,
-				29DEE7DC2B0A33A100F5492D /* SettingsView.swift */,
 				2928218D2B1CC81D008D46CD /* ModelInfoView.swift */,
 				7EDEF6F42B21CC8100635E20 /* ReminderView.swift .swift */,
 				7EDEF6F62B21CFAD00635E20 /* DraggableWindow.swift */,
 			);
 			path = views;
+			sourceTree = "<group>";
+		};
+		297B6B822B36257D009B707C /* ssetting */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ssetting;
 			sourceTree = "<group>";
 		};
 		297CA6582B34A2B000706628 /* Frameworks */ = {
@@ -117,6 +126,7 @@
 		29DEE7BD2B0829AF00F5492D = {
 			isa = PBXGroup;
 			children = (
+				297B6B802B36092F009B707C /* icon.icns */,
 				29DEE7C82B0829AF00F5492D /* MacGPT */,
 				29DEE7C72B0829AF00F5492D /* Products */,
 				297CA6582B34A2B000706628 /* Frameworks */,
@@ -134,6 +144,7 @@
 		29DEE7C82B0829AF00F5492D /* MacGPT */ = {
 			isa = PBXGroup;
 			children = (
+				297B6B822B36257D009B707C /* ssetting */,
 				297CA6542B34853D00706628 /* MacGPTDebug.entitlements */,
 				2928218C2B1CC80B008D46CD /* views */,
 				292821812B17D7C2008D46CD /* managers */,
@@ -190,7 +201,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					29DEE7C52B0829AF00F5492D = {
 						CreatedOnToolsVersion = 15.0.1;
@@ -225,6 +236,7 @@
 			files = (
 				29DEE7D12B0829B000F5492D /* Preview Assets.xcassets in Resources */,
 				29DEE7CE2B0829B000F5492D /* Assets.xcassets in Resources */,
+				297B6B812B36092F009B707C /* icon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,10 +252,10 @@
 				2928218A2B17D940008D46CD /* HotkeyManager.swift in Sources */,
 				2983EC442B30D8DD00198174 /* KeyChainService.swift in Sources */,
 				292821832B17D80B008D46CD /* ScreenshotManager.swift in Sources */,
+				297B6B842B362670009B707C /* SettingsView.swift in Sources */,
 				292821882B17D86F008D46CD /* PermissionsManager.swift in Sources */,
 				2928218E2B1CC81D008D46CD /* ModelInfoView.swift in Sources */,
 				29DEE7E82B0A5C3800F5492D /* SharedTextModel.swift in Sources */,
-				29DEE7DD2B0A33A100F5492D /* SettingsView.swift in Sources */,
 				29DEE7E52B0A41C100F5492D /* SettingsWindowManager.swift in Sources */,
 				29DEE7E32B0A399000F5492D /* OpenAIManager.swift in Sources */,
 				292821862B17D852008D46CD /* OCRManager.swift in Sources */,
@@ -291,6 +303,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -354,6 +367,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -378,14 +392,16 @@
 		29DEE7D62B0829B000F5492D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = MacGPT/MacGPTDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 103;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MacGPT/Preview Content\"";
 				DEVELOPMENT_TEAM = 7ZUQ6YTZ2N;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -401,7 +417,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = amir.teymoori.lexicon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -413,14 +429,16 @@
 		29DEE7D72B0829B000F5492D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = MacGPT/MacGPT.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 103;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MacGPT/Preview Content\"";
 				DEVELOPMENT_TEAM = 7ZUQ6YTZ2N;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -436,7 +454,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.amir.lexicon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
