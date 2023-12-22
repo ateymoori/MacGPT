@@ -8,8 +8,8 @@
 import Foundation
 import Vision
 
-class OCRManager {
-    static let shared = OCRManager()
+class OCRService {
+    static let shared = OCRService()
 
     func performOCR(on imageURL: URL, completion: @escaping (String?) -> Void) {
         let requestHandler = VNImageRequestHandler(url: imageURL, options: [:])

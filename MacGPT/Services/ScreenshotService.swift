@@ -8,8 +8,8 @@
 import Foundation
 import Cocoa
 
-class ScreenshotManager {
-    static let shared = ScreenshotManager()
+class ScreenshotService {
+    static let shared = ScreenshotService()
 
     func takeScreenshot(completion: @escaping (URL?) -> Void) {
         let tempDirectory = NSTemporaryDirectory()

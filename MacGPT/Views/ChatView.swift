@@ -233,7 +233,7 @@ struct ChatView: View {
             finalPrompt = "\(actions.joined(separator: " and ")): {{ \(finalPrompt) }}"
         }
         
-        OpenAIManager.shared.askQuestion( prompt: finalPrompt) { result in
+        ApiService.shared.askQuestion( prompt: finalPrompt) { result in
             DispatchQueue.main.async {
                 isLoading = false
                 switch result {

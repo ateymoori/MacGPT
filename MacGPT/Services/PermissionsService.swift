@@ -8,8 +8,8 @@
 import Foundation
 import Cocoa
 
-class PermissionsManager {
-    static let shared = PermissionsManager()
+class PermissionsService {
+    static let shared = PermissionsService()
 
     func requestScreenRecordingPermission() {
         // Use CGWindowListCreateImage to trigger the permission dialog

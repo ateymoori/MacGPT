@@ -46,25 +46,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func registerServicesAndHotkeys() {
         NSApp.servicesProvider = self
         NSUpdateDynamicServices()
-        PermissionsManager.shared.requestScreenRecordingPermission()
+        PermissionsService.shared.requestScreenRecordingPermission()
         registerHotkey()
     }
     
     private func registerHotkey() {
-        HotkeyManager.shared.registerHotkey(with: (key: UInt32(Constants.hotkeyKey), modifiers: UInt32(Constants.hotkeyModifiers)), id: 1) {
+        HotkeysService.shared.registerHotkey(with: (key: UInt32(Constants.hotkeyKey), modifiers: UInt32(Constants.hotkeyModifiers)), id: 1) {
             self.handleHotkeyPress()
         }
     }
     
     private func handleHotkeyPress() {
-        ScreenshotManager.shared.takeScreenshot { [weak self] url in
+        ScreenshotService.shared.takeScreenshot { [weak self] url in
             guard let self = self, let screenshotURL = url else { return }
             self.performOCR(on: screenshotURL)
         }
     }
     
     private func performOCR(on url: URL) {
-        OCRManager.shared.performOCR(on: url) { [weak self] text in
+        OCRService.shared.performOCR(on: url) { [weak self] text in
             guard let self = self, let recognizedText = text else { return }
             self.copyTextToClipboard(text: recognizedText)
         }

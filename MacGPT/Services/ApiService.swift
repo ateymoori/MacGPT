@@ -4,8 +4,8 @@ import Security
 import Foundation
 import os.log
 
-class OpenAIManager {
-    static let shared = OpenAIManager()
+class ApiService {
+    static let shared = ApiService()
 
     private let baseURL = "https://amirteymoori.com/translator/public/api/translate"
     private let logger = Logger(subsystem: "com.yourapp.OpenAIManager", category: "Networking")

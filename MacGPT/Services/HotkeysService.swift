@@ -9,8 +9,8 @@ import Foundation
 import Carbon
 import Cocoa
 
-class HotkeyManager {
-    static let shared = HotkeyManager()
+class HotkeysService {
+    static let shared = HotkeysService()
     private var hotKeyRefs = [UInt32: EventHotKeyRef]()
     private var hotkeyActions = [UInt32: () -> Void]()
 
@@ -20,7 +20,7 @@ class HotkeyManager {
             var eventID = EventHotKeyID()
             GetEventParameter(theEvent, UInt32(kEventParamDirectObject), UInt32(typeEventHotKeyID), nil, MemoryLayout.size(ofValue: eventID), nil, &eventID)
 
-            if let action = HotkeyManager.shared.hotkeyActions[eventID.id] {
+            if let action = HotkeysService.shared.hotkeyActions[eventID.id] {
                 NSLog("Hotkey \(eventID.id) pressed") // Logging hotkey press
                 action()
                 return noErr
