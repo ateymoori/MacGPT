@@ -14,6 +14,7 @@
 		2928218E2B1CC81D008D46CD /* ModelInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2928218D2B1CC81D008D46CD /* ModelInfoView.swift */; };
 		297B6B812B36092F009B707C /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 297B6B802B36092F009B707C /* icon.icns */; };
 		297B6B842B362670009B707C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B832B362670009B707C /* SettingsView.swift */; };
+		297B6B882B3645C6009B707C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B872B3645C6009B707C /* SettingsViewModel.swift */; };
 		297CA6572B348A2200706628 /* JWTDecode in Frameworks */ = {isa = PBXBuildFile; productRef = 297CA6562B348A2200706628 /* JWTDecode */; };
 		297CA65A2B34A2B000706628 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 297CA6592B34A2B000706628 /* StoreKit.framework */; };
 		2983EC442B30D8DD00198174 /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2983EC432B30D8DD00198174 /* KeyChainService.swift */; };
@@ -51,6 +52,7 @@
 		2928218D2B1CC81D008D46CD /* ModelInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelInfoView.swift; sourceTree = "<group>"; };
 		297B6B802B36092F009B707C /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		297B6B832B362670009B707C /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		297B6B872B3645C6009B707C /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		297CA6542B34853D00706628 /* MacGPTDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacGPTDebug.entitlements; sourceTree = "<group>"; };
 		297CA6592B34A2B000706628 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		2983EC432B30D8DD00198174 /* KeyChainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
@@ -96,23 +98,67 @@
 			path = managers;
 			sourceTree = "<group>";
 		};
-		2928218C2B1CC80B008D46CD /* views */ = {
+		2928218C2B1CC80B008D46CD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				297B6B832B362670009B707C /* SettingsView.swift */,
 				29DEE7DA2B0A30D400F5492D /* ChatView.swift */,
 				2928218D2B1CC81D008D46CD /* ModelInfoView.swift */,
 				7EDEF6F42B21CC8100635E20 /* ReminderView.swift .swift */,
 				7EDEF6F62B21CFAD00635E20 /* DraggableWindow.swift */,
 			);
-			path = views;
+			path = Views;
 			sourceTree = "<group>";
 		};
-		297B6B822B36257D009B707C /* ssetting */ = {
+		297B6B852B36450C009B707C /* settings */ = {
+			isa = PBXGroup;
+			children = (
+				297B6B832B362670009B707C /* SettingsView.swift */,
+				297B6B872B3645C6009B707C /* SettingsViewModel.swift */,
+			);
+			path = settings;
+			sourceTree = "<group>";
+		};
+		297B6B862B364523009B707C /* features */ = {
+			isa = PBXGroup;
+			children = (
+				297B6B852B36450C009B707C /* settings */,
+			);
+			path = features;
+			sourceTree = "<group>";
+		};
+		297B6B892B3648FE009B707C /* Models */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = ssetting;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		297B6B8A2B36490D009B707C /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		297B6B8B2B364928009B707C /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		297B6B8C2B364930009B707C /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		297B6B8D2B36493D009B707C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		297CA6582B34A2B000706628 /* Frameworks */ = {
@@ -144,9 +190,14 @@
 		29DEE7C82B0829AF00F5492D /* MacGPT */ = {
 			isa = PBXGroup;
 			children = (
-				297B6B822B36257D009B707C /* ssetting */,
 				297CA6542B34853D00706628 /* MacGPTDebug.entitlements */,
-				2928218C2B1CC80B008D46CD /* views */,
+				297B6B8D2B36493D009B707C /* Services */,
+				297B6B8C2B364930009B707C /* Utilities */,
+				297B6B8B2B364928009B707C /* Networking */,
+				297B6B8A2B36490D009B707C /* ViewModels */,
+				297B6B892B3648FE009B707C /* Models */,
+				297B6B862B364523009B707C /* features */,
+				2928218C2B1CC80B008D46CD /* Views */,
 				292821812B17D7C2008D46CD /* managers */,
 				29DEE7E62B0A55B500F5492D /* Info.plist */,
 				29DEE7E92B0A61B100F5492D /* AppDelegate.swift */,
@@ -255,6 +306,7 @@
 				297B6B842B362670009B707C /* SettingsView.swift in Sources */,
 				292821882B17D86F008D46CD /* PermissionsManager.swift in Sources */,
 				2928218E2B1CC81D008D46CD /* ModelInfoView.swift in Sources */,
+				297B6B882B3645C6009B707C /* SettingsViewModel.swift in Sources */,
 				29DEE7E82B0A5C3800F5492D /* SharedTextModel.swift in Sources */,
 				29DEE7E52B0A41C100F5492D /* SettingsWindowManager.swift in Sources */,
 				29DEE7E32B0A399000F5492D /* OpenAIManager.swift in Sources */,
