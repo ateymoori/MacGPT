@@ -76,7 +76,10 @@ struct ChatView: View {
     @State private var translateTo: Bool = UserDefaults.standard.bool(forKey: "translateTo")
     @State private var selectedLanguage: String = UserDefaults.standard.string(forKey: "selectedLanguage") ?? "English English"
     @State private var summarizeText: Bool = UserDefaults.standard.bool(forKey: "summarizeText")
-
+    
+    @StateObject private var viewModel = ChatViewModel()
+    
+    
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -132,7 +135,8 @@ struct ChatView: View {
             }
             .pickerStyle(SegmentedPickerStyle())
             
-            TextEditor(text: $sharedTextModel.inputText)
+            
+            TextEditor(text: $viewModel.inputText)
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 170, maxHeight: .infinity)
                 .font(.body)
                 .padding(4)
@@ -161,14 +165,14 @@ struct ChatView: View {
             
             HStack {
                 Button(action: {
-                    self.isLoading = true
-                    askChatGPT()
+                    
+                    viewModel.translateText()
                 }) {
                     Text("Proceed")
                 }
                 .padding()
                 
-                if isLoading {
+                if viewModel.isLoading {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
                         .scaleEffect(0.75)
@@ -176,7 +180,7 @@ struct ChatView: View {
                 }
             }
             
-            TextEditor(text: $outputText)
+            TextEditor(text: $viewModel.outputText)
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 170, maxHeight: .infinity)
                 .font(.body)
                 .padding(4)
@@ -223,8 +227,8 @@ struct ChatView: View {
             actions.append("Correct the dictation")
         }
         if summarizeText {
-               finalPrompt = "Summarize the following text: \(finalPrompt)"
-           }
+            finalPrompt = "Summarize the following text: \(finalPrompt)"
+        }
         if selectedTune != "dontChange" {
             actions.append("Change the tone to \(selectedTune)")
         }
