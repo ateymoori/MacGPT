@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+ 
 class APIClient: NetworkServiceProtocol {
     private let baseURL = URL(string: "https://amirteymoori.com/translator/public/api/")!
 
@@ -82,6 +82,7 @@ class APIClient: NetworkServiceProtocol {
     private func logRequest(_ request: URLRequest) {
         print("Request URL: \(request.url?.absoluteString ?? "Unknown URL")")
         print("Method: \(request.httpMethod ?? "Unknown Method")")
+        logHeaders(request.allHTTPHeaderFields)
         if let body = request.httpBody,
            let bodyString = String(data: body, encoding: .utf8) {
             print("Body: \(bodyString)")
@@ -102,23 +103,35 @@ class APIClient: NetworkServiceProtocol {
     }
     
     
+    private func logHeaders(_ headers: [String: String]?) {
+        print("Headers: ")
+        headers?.forEach { key, value in
+            print("\t\(key): \(value)")
+        }
+    }
+    
     private func getRequestHeaders() -> [String: String] {
         [
             "Content-Type": "application/json",
             "OS-Version": ProcessInfo.processInfo.operatingSystemVersionString,
-            "Device-Info": getDeviceModel(),
+            "Device-Info": getChipType(),
             "App-Version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "Unknown",
             "Install-ID": KeychainService.shared.getOrCreateCustomerId()
         ]
     }
     
-    private func getDeviceModel() -> String {
-        var size = 0
-        sysctlbyname("hw.model", nil, &size, nil, 0)
-        var machine = [CChar](repeating: 0, count: size)
-        sysctlbyname("hw.model", &machine, &size, nil, 0)
-        return String(cString: machine)
-    }
+    private func getChipType() -> String {
+        var sysInfo = utsname()
+        uname(&sysInfo)
+
+        let modelCode: String = withUnsafePointer(to: &sysInfo.machine) {
+           $0.withMemoryRebound(to: CChar.self, capacity: 32) {
+               ptr in String(cString: ptr)
+           }
+        }
+        return modelCode
+ 
+      }
 }
 
 
