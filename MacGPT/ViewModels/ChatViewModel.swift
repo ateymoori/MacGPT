@@ -20,7 +20,7 @@ class ChatViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     private let apiClient = APIClient()
-
+    
     init() {
         if let data = userDefaults.data(forKey: configKey),
            let savedConfig = try? JSONDecoder().decode(ChatViewConfigurationmodel.self, from: data) {
@@ -29,56 +29,52 @@ class ChatViewModel: ObservableObject {
             config = ChatViewConfigurationmodel()
         }
         
-        // Observe changes to config and save them
         $config
-              .debounce(for: 0.5, scheduler: RunLoop.main)
-              .sink { [weak self] _ in self?.saveConfiguration() }
-              .store(in: &cancellables)
+            .debounce(for: 0.5, scheduler: RunLoop.main)
+            .sink { [weak self] _ in self?.saveConfiguration() }
+            .store(in: &cancellables)
     }
-
+    
     func translateText() {
-            guard !inputText.isEmpty else { return }
-            isLoading = true
-            
-            let request = QuestionRequest(prompt: inputText)
-            
-            guard let requestData = try? JSONEncoder().encode(request) else {
-                isLoading = false
-                outputText = "Failed to encode the request"
-                return
-            }
-
-            apiClient.postData(to: "translate", body: requestData) { [weak self] result in
-                DispatchQueue.main.async {
-                    self?.isLoading = false
-                    switch result {
-                    case .success(let data):
-                        if let response = try? JSONDecoder().decode(QuestionResponse.self, from: data) {
-                            self?.outputText = response.answer
-                        } else {
-                            self?.outputText = "Failed to decode the response"
-                        }
-                    case .failure(let error):
-                        self?.outputText = "Error: \(error.localizedDescription)"
+        guard !inputText.isEmpty else { return }
+        isLoading = true
+        
+        let request = QuestionRequest(
+                   question: inputText,
+                   toLanguage: config.translateTo ? config.selectedLanguage : nil,
+                   translate: config.translateTo,
+                   correctGrammar: config.correctGrammar,
+                   correctDictation: config.correctDictation,
+                   summarize: config.summarizeText,
+                   tone: config.selectedTone.rawValue
+               )
+        
+        guard let requestData = try? JSONEncoder().encode(request) else {
+            isLoading = false
+            outputText = "Failed to encode the request"
+            return
+        }
+        
+        apiClient.postData(to: "translate", body: requestData) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let data):
+                    if let response = try? JSONDecoder().decode(QuestionResponse.self, from: data) {
+                        self?.outputText = response.answer
+                    } else {
+                        self?.outputText = "Failed to decode the response"
                     }
+                case .failure(let error):
+                    self?.outputText = "Error: \(error.localizedDescription)"
                 }
             }
         }
+    }
     func saveConfiguration() {
         if let data = try? JSONEncoder().encode(config) {
             userDefaults.set(data, forKey: configKey)
         }
-    }
-
-    func pasteClipboard() {
-        if let clipboardContents = NSPasteboard.general.string(forType: .string) {
-            inputText = clipboardContents
-        }
-    }
-
-    func copyToClipboard() {
-        NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(outputText, forType: .string)
     }
     
     func getLanguages() -> [String] {
@@ -103,7 +99,10 @@ class ChatViewModel: ObservableObject {
             "Czech Čeština",
             "Danish Dansk",
             "Dutch Nederlands",
-            "English English",
+            "English (UK) British",
+            "English (US) American",
+            "English (Australian)",
+            "English (Canadian)",
             "Esperanto Esperanto",
             "Estonian Eesti",
             "Filipino Filipino",
@@ -194,9 +193,4 @@ class ChatViewModel: ObservableObject {
             
         ].sorted()
     }
-}
-
-struct ChatRequest: Codable {
-    let text: String
-    let summarize: Bool
 }

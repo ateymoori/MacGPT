@@ -114,7 +114,6 @@
 		2928218C2B1CC80B008D46CD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				297B6B8C2B364930009B707C /* Utilities */,
 				297B6B832B362670009B707C /* SettingsView.swift */,
 				29DEE7DA2B0A30D400F5492D /* ChatView.swift */,
 				2928218D2B1CC81D008D46CD /* ModelInfoView.swift */,
@@ -191,6 +190,7 @@
 		29DEE7C82B0829AF00F5492D /* MacGPT */ = {
 			isa = PBXGroup;
 			children = (
+				297B6B8C2B364930009B707C /* Utilities */,
 				29DEE7C72B0829AF00F5492D /* Products */,
 				29DEE7CD2B0829B000F5492D /* Assets.xcassets */,
 				29DEE7E62B0A55B500F5492D /* Info.plist */,

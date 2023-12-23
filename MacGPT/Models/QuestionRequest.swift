@@ -8,5 +8,21 @@
 import Foundation
  
 struct QuestionRequest: Codable {
-    let prompt: String
+    let question: String
+    let toLanguage: String?
+    let translate: Bool?
+    let correctGrammar: Bool?
+    let correctDictation: Bool?
+    let summarize: Bool?
+    let tone: String?
+
+    enum CodingKeys: String, CodingKey {
+        case question
+        case toLanguage = "to_language"
+        case translate
+        case correctGrammar = "correct_grammar"
+        case correctDictation = "correct_dictation"
+        case summarize
+        case tone
+    }
 }
