@@ -15,7 +15,7 @@
 		297B6B812B36092F009B707C /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 297B6B802B36092F009B707C /* icon.icns */; };
 		297B6B842B362670009B707C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B832B362670009B707C /* SettingsView.swift */; };
 		297B6B882B3645C6009B707C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B872B3645C6009B707C /* SettingsViewModel.swift */; };
-		297B6B8F2B364AE5009B707C /* MacGPTApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B8E2B364AE5009B707C /* MacGPTApp.swift */; };
+		297B6B8F2B364AE5009B707C /* ILexiconApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B8E2B364AE5009B707C /* ILexiconApp.swift */; };
 		297B6B912B364E2A009B707C /* NetworkServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B902B364E2A009B707C /* NetworkServiceProtocol.swift */; };
 		297B6B932B364E7C009B707C /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B922B364E7C009B707C /* APIClient.swift */; };
 		297B6B952B364E97009B707C /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B942B364E97009B707C /* NetworkError.swift */; };
@@ -30,7 +30,7 @@
 		29DEE7CE2B0829B000F5492D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DEE7CD2B0829B000F5492D /* Assets.xcassets */; };
 		29DEE7DB2B0A30D400F5492D /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7DA2B0A30D400F5492D /* ChatView.swift */; };
 		29DEE7E32B0A399000F5492D /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E22B0A399000F5492D /* ApiService.swift */; };
-		29DEE7E52B0A41C100F5492D /* AppWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E42B0A41C100F5492D /* AppWindowManager.swift */; };
+		29DEE7E52B0A41C100F5492D /* AppWindowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E42B0A41C100F5492D /* AppWindowService.swift */; };
 		29DEE7E82B0A5C3800F5492D /* SharedTextModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E72B0A5C3800F5492D /* SharedTextModel.swift */; };
 		29DEE7EA2B0A61B100F5492D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E92B0A61B100F5492D /* AppDelegate.swift */; };
 		7EDEF6F52B21CC8100635E20 /* ReminderView.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEF6F42B21CC8100635E20 /* ReminderView.swift .swift */; };
@@ -59,7 +59,7 @@
 		297B6B802B36092F009B707C /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		297B6B832B362670009B707C /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		297B6B872B3645C6009B707C /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
-		297B6B8E2B364AE5009B707C /* MacGPTApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacGPTApp.swift; sourceTree = "<group>"; };
+		297B6B8E2B364AE5009B707C /* ILexiconApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ILexiconApp.swift; sourceTree = "<group>"; };
 		297B6B902B364E2A009B707C /* NetworkServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceProtocol.swift; sourceTree = "<group>"; };
 		297B6B922B364E7C009B707C /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		297B6B942B364E97009B707C /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
@@ -76,7 +76,7 @@
 		29DEE7D22B0829B000F5492D /* MacGPT.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacGPT.entitlements; sourceTree = "<group>"; };
 		29DEE7DA2B0A30D400F5492D /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		29DEE7E22B0A399000F5492D /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
-		29DEE7E42B0A41C100F5492D /* AppWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppWindowManager.swift; sourceTree = "<group>"; };
+		29DEE7E42B0A41C100F5492D /* AppWindowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppWindowService.swift; sourceTree = "<group>"; };
 		29DEE7E62B0A55B500F5492D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		29DEE7E72B0A5C3800F5492D /* SharedTextModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTextModel.swift; sourceTree = "<group>"; };
 		29DEE7E92B0A61B100F5492D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +100,7 @@
 		292821812B17D7C2008D46CD /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				29DEE7E42B0A41C100F5492D /* AppWindowService.swift */,
 				292821822B17D80B008D46CD /* ScreenshotService.swift */,
 				292821852B17D852008D46CD /* OCRService.swift */,
 				29DEE7E22B0A399000F5492D /* ApiService.swift */,
@@ -113,6 +114,7 @@
 		2928218C2B1CC80B008D46CD /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				297B6B8C2B364930009B707C /* Utilities */,
 				297B6B832B362670009B707C /* SettingsView.swift */,
 				29DEE7DA2B0A30D400F5492D /* ChatView.swift */,
 				2928218D2B1CC81D008D46CD /* ModelInfoView.swift */,
@@ -195,15 +197,13 @@
 				297CA6542B34853D00706628 /* MacGPTDebug.entitlements */,
 				29DEE7D22B0829B000F5492D /* MacGPT.entitlements */,
 				297CA6582B34A2B000706628 /* Frameworks */,
-				297B6B8C2B364930009B707C /* Utilities */,
-				297B6B8B2B364928009B707C /* Networking */,
-				297B6B8A2B36490D009B707C /* ViewModels */,
 				297B6B892B3648FE009B707C /* Models */,
+				297B6B8B2B364928009B707C /* Networking */,
 				2928218C2B1CC80B008D46CD /* Views */,
+				297B6B8A2B36490D009B707C /* ViewModels */,
 				292821812B17D7C2008D46CD /* Services */,
-				297B6B8E2B364AE5009B707C /* MacGPTApp.swift */,
+				297B6B8E2B364AE5009B707C /* ILexiconApp.swift */,
 				29DEE7E92B0A61B100F5492D /* AppDelegate.swift */,
-				29DEE7E42B0A41C100F5492D /* AppWindowManager.swift */,
 			);
 			path = MacGPT;
 			sourceTree = "<group>";
@@ -295,11 +295,11 @@
 				292821832B17D80B008D46CD /* ScreenshotService.swift in Sources */,
 				297B6B842B362670009B707C /* SettingsView.swift in Sources */,
 				292821882B17D86F008D46CD /* PermissionsService.swift in Sources */,
-				297B6B8F2B364AE5009B707C /* MacGPTApp.swift in Sources */,
+				297B6B8F2B364AE5009B707C /* ILexiconApp.swift in Sources */,
 				2928218E2B1CC81D008D46CD /* ModelInfoView.swift in Sources */,
 				297B6B882B3645C6009B707C /* SettingsViewModel.swift in Sources */,
 				29DEE7E82B0A5C3800F5492D /* SharedTextModel.swift in Sources */,
-				29DEE7E52B0A41C100F5492D /* AppWindowManager.swift in Sources */,
+				29DEE7E52B0A41C100F5492D /* AppWindowService.swift in Sources */,
 				297B6B992B36540F009B707C /* ChatViewConfigurationModel.swift in Sources */,
 				29DEE7E32B0A399000F5492D /* ApiService.swift in Sources */,
 				297B6B9D2B365684009B707C /* QuestionRequest.swift in Sources */,

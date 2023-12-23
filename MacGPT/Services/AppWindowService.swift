@@ -7,8 +7,8 @@
 import SwiftUI
 import AppKit
 
-class AppWindowManager {
-    static let shared = AppWindowManager()
+class AppWindowService {
+    static let shared = AppWindowService()
     
     private var settingsWindow: NSWindow?
     private var chatWindow: NSWindow?

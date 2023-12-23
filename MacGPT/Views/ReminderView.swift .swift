@@ -175,6 +175,6 @@ struct ReminderView: View {
         let English: String
     }
     private func closeView() {
-          AppWindowManager.shared.closeReminderWindow()
+          AppWindowService.shared.closeReminderWindow()
       }
 }

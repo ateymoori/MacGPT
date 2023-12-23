@@ -60,14 +60,13 @@ struct ChatView: View {
     @State private var isLoading: Bool = false
     @ObservedObject private var pinStatus = PinStatus.shared
     
-
+    
     @StateObject private var viewModel = ChatViewModel()
     
     
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            // Header with app title and buttons for reminder and settings
             HStack {
                 Text("i Lexicon Pro")
                     .font(.title2)
@@ -92,35 +91,8 @@ struct ChatView: View {
             }
             .padding(.horizontal)
             
-            // Translation, Dictation, and Grammar toggles
             ToggleSettingsView(viewModel: viewModel)
-//            HStack {
-//                Toggle("To Language", isOn: $translateTo.onChange(saveTranslateTo))
-//                Picker("", selection: $selectedLanguage.onChange(saveSelectedLanguage)) {
-//                    ForEach(getLanguages(), id: \.self) { language in
-//                        Text(language).tag(language)
-//                    }
-//                }
-//                .disabled(!translateTo)
-//            }
-//            .padding(.top, 20)
-//            
-//            HStack {
-//                Toggle("Correct Dictation", isOn: $correctDictation.onChange(saveCorrectDictation))
-//                Toggle("Correct Grammar", isOn: $correctGrammar.onChange(saveCorrectGrammar))
-//                Toggle("Summarize", isOn: $summarizeText.onChange(saveSummarizeText))
-//            }
-//            
-//            Picker("Tune", selection: $selectedTune.onChange(saveSelectedTune)) {
-//                Text("Don't Change").tag("dontChange")
-//                Text("Friendly").tag("friendly")
-//                Text("Formal").tag("formal")
-//                Text("Negative").tag("negative")
-//                Text("Positive").tag("positive")
-//            }
-//            .pickerStyle(SegmentedPickerStyle())
-            
-            
+ 
             TextEditor(text: $viewModel.inputText)
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 170, maxHeight: .infinity)
                 .font(.body)
@@ -146,7 +118,6 @@ struct ChatView: View {
                     }, alignment: .topTrailing
                 )
                 .border(Color.secondary)
-            
             
             HStack {
                 Button(action: {
@@ -207,12 +178,12 @@ struct ChatView: View {
     }
     
     func showSettings() {
-        AppWindowManager.shared.showSettingsWindow()
+        AppWindowService.shared.showSettingsWindow()
     }
     func showReminder() {
-        AppWindowManager.shared.showReminderWindow()
+        AppWindowService.shared.showReminderWindow()
     }
-     
+    
 }
 
 class PinStatus: ObservableObject {
@@ -223,37 +194,31 @@ class PinStatus: ObservableObject {
 
 struct ToggleSettingsView: View {
     @ObservedObject var viewModel: ChatViewModel
-
+    
     var body: some View {
         VStack {
             HStack {
+                Toggle("Translate", isOn: $viewModel.config.translateTo
+                    .onChange { viewModel.config.translateTo = $0; viewModel.saveConfiguration() })
+                Picker("Language", selection: $viewModel.config.selectedLanguage) {
+                    ForEach(viewModel.getLanguages(), id: \.self) { language in
+                        Text(language).tag(language)
+                    }
+                }
+                .disabled(!viewModel.config.translateTo)
+            }
+            
+            HStack {
+                Toggle("Correct Dictation", isOn: $viewModel.config.correctDictation
+                    .onChange { viewModel.config.correctDictation = $0; viewModel.saveConfiguration() })
+                Toggle("Correct Grammar", isOn: $viewModel.config.correctGrammar
+                    .onChange { viewModel.config.correctGrammar = $0; viewModel.saveConfiguration() })
                 
-//                Toggle("Translate", isOn: $viewModel.config.translateTo)
-//                    .onChange { viewModel.config.translateTo = $0; viewModel.saveConfiguration() }
-
-           
-//                Toggle("To Language", isOn: $viewModel.config.translateTo)
-//                  .onChange(of: Bool) { newValue in
-//                    viewModel.config.translateTo = newValue
-//                    viewModel.saveConfiguration()
-//                  }
-//                
-//                     Picker("Language", selection: $viewModel.config.selectedLanguage) {
-//                         ForEach(viewModel.getLanguages(), id: \.self) { language in
-//                             Text(language).tag(language)
-//                         }
-//                     }
-//                     .disabled(!viewModel.config.translateTo)
-//                 }
-//
-//                 HStack {
-//                     Toggle("Correct Dictation", isOn: $viewModel.config.correctDictation)
-//                         .onChange { viewModel.config.correctDictation = $0; viewModel.saveConfiguration() }
-//
-//                     Toggle("Correct Grammar", isOn: $viewModel.config.correctGrammar)
-//                         .onChange { viewModel.config.correctGrammar = $0; viewModel.saveConfiguration() }
-                 }
-
+                Toggle("Summarize", isOn: $viewModel.config.summarizeText
+                    .onChange { viewModel.config.summarizeText = $0; viewModel.saveConfiguration() })
+                Spacer()
+             }
+            
             Picker("Tune", selection: $viewModel.config.selectedTone) {
                 ForEach(Tone.allCases, id: \.self) { tone in
                     Text(tone.displayName).tag(tone.rawValue)
