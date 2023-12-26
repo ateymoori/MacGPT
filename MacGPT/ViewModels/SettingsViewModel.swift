@@ -13,7 +13,7 @@ import Combine
 
 
 class SettingsViewModel: ObservableObject {
-    @Published var customHotkey: String = UserDefaults.standard.string(forKey: "CustomHotkey") ?? "Cmd+Shift+6"
+
     @Published var isHotkeyInputFocused: Bool = false
  
     
@@ -148,18 +148,7 @@ class SettingsViewModel: ObservableObject {
         }
     }
     
-    
-    
-    func saveCustomHotkey() {
-        UserDefaults.standard.set(customHotkey, forKey: "CustomHotkey")
-    }
-    
-    // Function to load the custom hotkey when the view appears
-    func loadCustomHotkey() {
-        if let savedCustomHotkey = UserDefaults.standard.string(forKey: "CustomHotkey") {
-            customHotkey = savedCustomHotkey
-        }
-    }
+
 }
 
 extension Notification.Name {

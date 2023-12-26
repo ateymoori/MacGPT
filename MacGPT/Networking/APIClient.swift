@@ -6,110 +6,88 @@
 //
 
 import Foundation
- 
+import Alamofire
+
 class APIClient: NetworkServiceProtocol {
     
     private let baseURL = URL(string: "https://amirteymoori.com/translator/public/api/")!
+    private let googleCloudAPIKey = "AIzaSyBGdaPQF-TRZ_yRS_3sac_cILepQihKZKU"
 
-    
     func fetchData(from endpoint: String, completion: @escaping (Result<Data, NetworkError>) -> Void) {
         let url = baseURL.appendingPathComponent(endpoint)
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        getRequestHeaders().forEach { request.addValue($1, forHTTPHeaderField: $0) }
-        
-        logRequest(request)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                self.logError(error)
+        AF.request(url, method: .get, headers: HTTPHeaders(getRequestHeaders())).response { response in
+            self.logResponse(response, url: url.absoluteString, method: "GET")
+            switch response.result {
+            case .success(let data):
+                if let httpResponse = response.response, httpResponse.statusCode == 200 {
+                    completion(.success(data ?? Data()))
+                } else {
+                    completion(.failure(.invalidResponse))
+                }
+            case .failure(let error):
                 completion(.failure(.failedRequest(description: error.localizedDescription)))
-                return
             }
-            
-            self.logResponse(data, response: response as? HTTPURLResponse)
-            
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                completion(.failure(.invalidResponse))
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(.noData))
-                return
-            }
-            
-            completion(.success(data))
         }
-        task.resume()
     }
-    
+
     func postData(to endpoint: String, body: Data?, completion: @escaping (Result<Data, NetworkError>) -> Void) {
         let url = baseURL.appendingPathComponent(endpoint)
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = body
-        
-        getRequestHeaders().forEach { request.addValue($1, forHTTPHeaderField: $0) }
-        
-        logRequest(request)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                self.logError(error)
+        var parameters: Parameters = [:]
+        if let data = body {
+            parameters = (try? JSONSerialization.jsonObject(with: data, options: [])) as? Parameters ?? [:]
+        }
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: HTTPHeaders(getRequestHeaders())).response { response in
+            self.logResponse(response, url: url.absoluteString, method: "POST", parameters: parameters)
+            switch response.result {
+            case .success(let data):
+                if let httpResponse = response.response, httpResponse.statusCode == 200 {
+                    completion(.success(data ?? Data()))
+                } else {
+                    completion(.failure(.invalidResponse))
+                }
+            case .failure(let error):
                 completion(.failure(.failedRequest(description: error.localizedDescription)))
-                return
             }
+        }
+    }
+
+    func performOCR(withBase64Image base64Image: String, completion: @escaping (Result<(text: String, locale: String), NetworkError>) -> Void) {
+            let url = baseURL.appendingPathComponent("ocr") // Endpoint in your Laravel API
+
+            let parameters: [String: Any] = [
+                "image": base64Image
+            ]
             
-            self.logResponse(data, response: response as? HTTPURLResponse)
-            
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                completion(.failure(.invalidResponse))
-                return
+            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: HTTPHeaders(getRequestHeaders())).responseDecodable(of: OCRResponse.self) { response in
+                switch response.result {
+                case .success(let laravelResponse):
+                    let text = laravelResponse.text
+                    let locale = laravelResponse.locale
+                    completion(.success((text: text, locale: locale)))
+                case .failure(let error):
+                    completion(.failure(.failedRequest(description: error.localizedDescription)))
+                }
             }
-            
-            guard let data = data else {
-                completion(.failure(.noData))
-                return
-            }
-            
-            completion(.success(data))
         }
-        task.resume()
-    }
     
-    // Logging methods
-    private func logRequest(_ request: URLRequest) {
-        print("Request URL: \(request.url?.absoluteString ?? "Unknown URL")")
-        print("Method: \(request.httpMethod ?? "Unknown Method")")
-        logHeaders(request.allHTTPHeaderFields)
-        if let body = request.httpBody,
-           let bodyString = String(data: body, encoding: .utf8) {
-            print("Body: \(bodyString)")
+    private func logResponse(_ response: AFDataResponse<Data?>, url: String, method: String, parameters: Parameters? = nil) {
+        print("Request URL: \(url)")
+        print("Method: \(method)")
+        print("Headers: \(getRequestHeaders())")
+        if let parameters = parameters {
+            print("Parameters: \(parameters)")
+        }
+        if let statusCode = response.response?.statusCode {
+            print("Status Code: \(statusCode)")
+        }
+        if let data = response.data, let responseString = String(data: data, encoding: .utf8) {
+            print("Response: \(responseString)")
+        }
+        if let error = response.error {
+            print("Error: \(error.localizedDescription)")
         }
     }
-    
-    private func logResponse(_ data: Data?, response: HTTPURLResponse?) {
-        print("Response URL: \(response?.url?.absoluteString ?? "Unknown URL")")
-        print("Status Code: \(response?.statusCode ?? 0)")
-        if let data = data,
-           let responseString = String(data: data, encoding: .utf8) {
-            print("Response Body: \(responseString)")
-        }
-    }
-    
-    private func logError(_ error: Error) {
-        print("Error: \(error.localizedDescription)")
-    }
-    
-    
-    private func logHeaders(_ headers: [String: String]?) {
-        print("Headers: ")
-        headers?.forEach { key, value in
-            print("\t\(key): \(value)")
-        }
-    }
+ 
     
     private func getRequestHeaders() -> [String: String] {
         [
@@ -148,3 +126,7 @@ extension APIClient {
     }
 }
 
+struct OCRResponse: Decodable {
+    var text: String
+    var locale: String
+}

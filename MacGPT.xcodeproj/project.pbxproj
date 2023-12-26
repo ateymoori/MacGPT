@@ -30,6 +30,7 @@
 		297E95FD2B3B242C00640FE5 /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297E95FC2B3B242C00640FE5 /* UserResponse.swift */; };
 		297E96002B3B501400640FE5 /* ShortcutRecorder in Frameworks */ = {isa = PBXBuildFile; productRef = 297E95FF2B3B501400640FE5 /* ShortcutRecorder */; };
 		297E96032B3B562700640FE5 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 297E96022B3B562700640FE5 /* KeyboardShortcuts */; };
+		297E96062B3B77EC00640FE5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 297E96052B3B77EC00640FE5 /* Alamofire */; };
 		2983EC442B30D8DD00198174 /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2983EC432B30D8DD00198174 /* KeyChainService.swift */; };
 		29DEE7CE2B0829B000F5492D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DEE7CD2B0829B000F5492D /* Assets.xcassets */; };
 		29DEE7DB2B0A30D400F5492D /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7DA2B0A30D400F5492D /* ChatView.swift */; };
@@ -93,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				297E96062B3B77EC00640FE5 /* Alamofire in Frameworks */,
 				297CA6572B348A2200706628 /* JWTDecode in Frameworks */,
 				297E96032B3B562700640FE5 /* KeyboardShortcuts in Frameworks */,
 				297E96002B3B501400640FE5 /* ShortcutRecorder in Frameworks */,
@@ -236,6 +238,7 @@
 				297CA6562B348A2200706628 /* JWTDecode */,
 				297E95FF2B3B501400640FE5 /* ShortcutRecorder */,
 				297E96022B3B562700640FE5 /* KeyboardShortcuts */,
+				297E96052B3B77EC00640FE5 /* Alamofire */,
 			);
 			productName = MacGPT;
 			productReference = 29DEE7C62B0829AF00F5492D /* iLexicon.app */;
@@ -269,6 +272,7 @@
 				297CA6552B348A2200706628 /* XCRemoteSwiftPackageReference "JWTDecode" */,
 				297E95FE2B3B501400640FE5 /* XCRemoteSwiftPackageReference "ShortcutRecorder" */,
 				297E96012B3B562700640FE5 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				297E96042B3B77EC00640FE5 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 29DEE7C72B0829AF00F5492D /* Products */;
 			projectDirPath = "";
@@ -458,7 +462,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 103;
+				CURRENT_PROJECT_VERSION = 104;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7ZUQ6YTZ2N;
@@ -475,7 +479,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = amir.teymoori.lexicon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -495,7 +499,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 103;
+				CURRENT_PROJECT_VERSION = 104;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7ZUQ6YTZ2N;
@@ -512,7 +516,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.amir.lexicon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -569,6 +573,14 @@
 				minimumVersion = 1.16.1;
 			};
 		};
+		297E96042B3B77EC00640FE5 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.8.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -586,6 +598,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 297E96012B3B562700640FE5 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
 			productName = KeyboardShortcuts;
+		};
+		297E96052B3B77EC00640FE5 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 297E96042B3B77EC00640FE5 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

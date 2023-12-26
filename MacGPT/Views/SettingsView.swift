@@ -41,14 +41,14 @@ struct SettingsView: View {
             
             Spacer()
             
-            Text(viewModel.appVersion)
+            Text("Version: \(viewModel.appVersion)")
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding()
         }
         .onAppear {
             viewModel.sync()
         }
-        .frame(minWidth: 500, minHeight: 735)
+        .frame(minWidth: 500, minHeight: 400)
     }
     
     private var userDetailsView: some View {

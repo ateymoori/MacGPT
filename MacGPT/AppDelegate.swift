@@ -21,7 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     
- 
+    private let apiClient = APIClient()
     
     var popover: NSPopover!
     var statusBarItem: NSStatusItem!
@@ -57,15 +57,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.servicesProvider = self
         NSUpdateDynamicServices()
         PermissionsService.shared.requestScreenRecordingPermission()
-      //  registerHotkey()
     }
     
-//    private func registerHotkey() {
-//        HotkeysService.shared.registerHotkey(with: (key: UInt32(Constants.hotkeyKey), modifiers: UInt32(Constants.hotkeyModifiers)), id: 1) {
-//            self.handleHotkeyPress()
-//        }
-//    }
-//    
     private func handleHotkeyPress() {
         ScreenshotService.shared.takeScreenshot { [weak self] url in
             guard let self = self, let screenshotURL = url else { return }
@@ -74,11 +67,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     private func performOCR(on url: URL) {
-        OCRService.shared.performOCR(on: url) { [weak self] text in
-            guard let self = self, let recognizedText = text else { return }
-            self.copyTextToClipboard(text: recognizedText)
+        guard let screenshot = NSImage(contentsOf: url),
+              let base64Image = convertImageToBase64(image: screenshot) else { return }
+
+        apiClient.performOCR(withBase64Image: base64Image) { [weak self] result in
+            switch result {
+            case .success(let ocrResult):
+                let recognizedText = ocrResult.text
+                let locale = ocrResult.locale  // Locale of the recognized text
+                print("Recognized text: \(recognizedText) in locale: \(locale)")
+                self?.copyTextToClipboard(text: recognizedText)
+            case .failure(let error):
+                print("OCR Error: \(error.localizedDescription)")
+            }
         }
     }
+
+    
+    
+//    private func performOCR(on url: URL) {
+//        OCRService.shared.performOCR(on: url) { [weak self] text in
+//            guard let self = self, let recognizedText = text else { return }
+//            self.copyTextToClipboard(text: recognizedText)
+//        }
+//    }
     
     private func copyTextToClipboard(text: String) {
         let pasteboard = NSPasteboard.general
@@ -189,6 +201,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         case menuItem1 = 1
         case menuItem2 = 2
         case quit = 99
+    }
+    
+    func convertImageToBase64(image: NSImage) -> String? {
+        guard let imageData = image.tiffRepresentation,
+              let bitmap = NSBitmapImageRep(data: imageData),
+              let jpegData = bitmap.representation(using: .jpeg, properties: [:]) else { return nil }
+
+        return jpegData.base64EncodedString()
     }
 }
 

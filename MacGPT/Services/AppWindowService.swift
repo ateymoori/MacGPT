@@ -18,15 +18,7 @@ class AppWindowService {
     private let chatTitle = "iChatGPT Chat"
     private let reminderTitle = "iChatGPT Reminder"
     
-    // Function to show Settings Window
-//    func showSettingsWindow() {
-//        if settingsWindow == nil {
-//            settingsWindow = createWindow(with: SettingsView(), title: settingsTitle, width: 500, height: 300)
-//        }
-//        settingsWindow?.makeKeyAndOrderFront(nil)
-//        closeOtherWindows(except: settingsWindow)
-//    }
-    
+
     func showSettingsWindow() {
         if settingsWindow == nil {
             settingsWindow = createWindow(with: SettingsView(), title: settingsTitle, width: 500, height: 300)

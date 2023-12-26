@@ -12,7 +12,7 @@ struct ChatViewConfigurationmodel: Codable {
     var correctGrammar: Bool = false
     var selectedTone: Tone = .nuetral
     var translateTo: Bool = false
-    var selectedLanguage: String = "English"
+    var selectedLanguage: String = "English (US) American"
     var summarizeText: Bool = false
 }
 
