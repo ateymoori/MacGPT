@@ -64,13 +64,24 @@ struct ChatView: View {
     @StateObject private var viewModel = ChatViewModel()
     
     
+    init() {
+          viewModel.getUser()
+      }
+    
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("i Lexicon Pro")
-                    .font(.title2)
-                    .fontWeight(.bold)
+                VStack(alignment: .leading) {
+                    Text("i Lexicon Pro")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                    Text(viewModel.isPremiumUser ? "Premium" : "Free")
+                        .font(.subheadline)
+                        .foregroundColor(viewModel.isPremiumUser ? Color.green : Color.orange)
+                }
+                
+                
                 Spacer()
                 
                 HStack {
@@ -92,7 +103,7 @@ struct ChatView: View {
             .padding(.horizontal)
             
             ToggleSettingsView(viewModel: viewModel)
- 
+            
             TextEditor(text: $viewModel.inputText)
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 170, maxHeight: .infinity)
                 .font(.body)
@@ -159,7 +170,11 @@ struct ChatView: View {
             Spacer()
         }
         .padding(.horizontal)
-        .padding(.top, 10)
+        .padding(.top, 30)
+        .onReceive(sharedTextModel.$inputText) { newText in
+            viewModel.inputText = newText
+        }
+
     }
     
     private func togglePin() {
@@ -217,7 +232,7 @@ struct ToggleSettingsView: View {
                 Toggle("Summarize", isOn: $viewModel.config.summarizeText
                     .onChange { viewModel.config.summarizeText = $0; viewModel.saveConfiguration() })
                 Spacer()
-             }
+            }
             
             Picker("Tune", selection: $viewModel.config.selectedTone) {
                 ForEach(Tone.allCases, id: \.self) { tone in

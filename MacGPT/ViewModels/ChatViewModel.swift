@@ -14,7 +14,8 @@ class ChatViewModel: ObservableObject {
     @Published var outputText: String = ""
     @Published var isLoading: Bool = false
     @Published var config: ChatViewConfigurationmodel
-    
+    @Published var isPremiumUser: Bool = false
+
     private let userDefaults = UserDefaults.standard
     private let configKey = "chatViewConfiguration"
     private var cancellables = Set<AnyCancellable>()
@@ -74,6 +75,35 @@ class ChatViewModel: ObservableObject {
     func saveConfiguration() {
         if let data = try? JSONEncoder().encode(config) {
             userDefaults.set(data, forKey: configKey)
+        }
+    }
+    
+    func getUser() {
+        apiClient.postData(to: "user", body: nil) { [weak self] result in
+            switch result {
+            case .success(let data):
+                do {
+                    // Attempt to decode the JSON data into UserResponse
+                    let userResponse = try JSONDecoder().decode(UserResponse.self, from: data)
+                    
+                    // Now you can access the properties of userResponse
+                    print("Premium: \(userResponse.premium)")
+                    print("Total Used Tokens: \(userResponse.totalUsedTokens)")
+                    print("API Calls: \(userResponse.apiCalls)")
+                    print("Total Cost: \(userResponse.totalCost)")
+                    self?.isPremiumUser = userResponse.premium
+
+                    
+                    // You can store the userResponse in your view model or perform any other actions here.
+                    
+                } catch {
+                    print("Error decoding JSON: \(error)")
+                    // Handle decoding error here
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+                // Handle the network request error here
+            }
         }
     }
     

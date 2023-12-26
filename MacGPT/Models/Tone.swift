@@ -8,7 +8,7 @@
 import Foundation
  
 enum Tone: String, Codable, CaseIterable {
-    case dontChange = "dontChange"
+    case nuetral = "nuetral"
     case friendly = "friendly"
     case formal = "formal"
     case negative = "negative"
@@ -16,8 +16,8 @@ enum Tone: String, Codable, CaseIterable {
 
     var displayName: String {
         switch self {
-        case .dontChange:
-            return "Don't Change"
+        case .nuetral:
+            return "Nuetral"
         case .friendly:
             return "Friendly"
         case .formal:

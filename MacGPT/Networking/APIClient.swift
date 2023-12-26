@@ -8,6 +8,7 @@
 import Foundation
  
 class APIClient: NetworkServiceProtocol {
+    
     private let baseURL = URL(string: "https://amirteymoori.com/translator/public/api/")!
 
     
@@ -44,7 +45,7 @@ class APIClient: NetworkServiceProtocol {
         task.resume()
     }
     
-    func postData(to endpoint: String, body: Data, completion: @escaping (Result<Data, NetworkError>) -> Void) {
+    func postData(to endpoint: String, body: Data?, completion: @escaping (Result<Data, NetworkError>) -> Void) {
         let url = baseURL.appendingPathComponent(endpoint)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

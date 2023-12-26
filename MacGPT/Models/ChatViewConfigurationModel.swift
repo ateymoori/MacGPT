@@ -10,7 +10,7 @@ import Foundation
 struct ChatViewConfigurationmodel: Codable {
     var correctDictation: Bool = false
     var correctGrammar: Bool = false
-    var selectedTone: Tone = .dontChange
+    var selectedTone: Tone = .nuetral
     var translateTo: Bool = false
     var selectedLanguage: String = "English"
     var summarizeText: Bool = false

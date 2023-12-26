@@ -10,7 +10,6 @@
 		292821832B17D80B008D46CD /* ScreenshotService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292821822B17D80B008D46CD /* ScreenshotService.swift */; };
 		292821862B17D852008D46CD /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292821852B17D852008D46CD /* OCRService.swift */; };
 		292821882B17D86F008D46CD /* PermissionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292821872B17D86F008D46CD /* PermissionsService.swift */; };
-		2928218A2B17D940008D46CD /* HotkeysService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292821892B17D940008D46CD /* HotkeysService.swift */; };
 		2928218E2B1CC81D008D46CD /* ModelInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2928218D2B1CC81D008D46CD /* ModelInfoView.swift */; };
 		297B6B812B36092F009B707C /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 297B6B802B36092F009B707C /* icon.icns */; };
 		297B6B842B362670009B707C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B832B362670009B707C /* SettingsView.swift */; };
@@ -24,12 +23,16 @@
 		297B6B9B2B365465009B707C /* Tone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B9A2B365465009B707C /* Tone.swift */; };
 		297B6B9D2B365684009B707C /* QuestionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B9C2B365684009B707C /* QuestionRequest.swift */; };
 		297B6B9F2B3656A2009B707C /* QuestionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B9E2B3656A2009B707C /* QuestionResponse.swift */; };
+		297B6BA12B3742E5009B707C /* SubscriptionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6BA02B3742E5009B707C /* SubscriptionsService.swift */; };
 		297CA6572B348A2200706628 /* JWTDecode in Frameworks */ = {isa = PBXBuildFile; productRef = 297CA6562B348A2200706628 /* JWTDecode */; };
 		297CA65A2B34A2B000706628 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 297CA6592B34A2B000706628 /* StoreKit.framework */; };
+		297E95F72B3B0B4A00640FE5 /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297E95F62B3B0B4A00640FE5 /* UserRequest.swift */; };
+		297E95FD2B3B242C00640FE5 /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297E95FC2B3B242C00640FE5 /* UserResponse.swift */; };
+		297E96002B3B501400640FE5 /* ShortcutRecorder in Frameworks */ = {isa = PBXBuildFile; productRef = 297E95FF2B3B501400640FE5 /* ShortcutRecorder */; };
+		297E96032B3B562700640FE5 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 297E96022B3B562700640FE5 /* KeyboardShortcuts */; };
 		2983EC442B30D8DD00198174 /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2983EC432B30D8DD00198174 /* KeyChainService.swift */; };
 		29DEE7CE2B0829B000F5492D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DEE7CD2B0829B000F5492D /* Assets.xcassets */; };
 		29DEE7DB2B0A30D400F5492D /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7DA2B0A30D400F5492D /* ChatView.swift */; };
-		29DEE7E32B0A399000F5492D /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E22B0A399000F5492D /* ApiService.swift */; };
 		29DEE7E52B0A41C100F5492D /* AppWindowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E42B0A41C100F5492D /* AppWindowService.swift */; };
 		29DEE7E82B0A5C3800F5492D /* SharedTextModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E72B0A5C3800F5492D /* SharedTextModel.swift */; };
 		29DEE7EA2B0A61B100F5492D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E92B0A61B100F5492D /* AppDelegate.swift */; };
@@ -54,7 +57,6 @@
 		292821822B17D80B008D46CD /* ScreenshotService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotService.swift; sourceTree = "<group>"; };
 		292821852B17D852008D46CD /* OCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRService.swift; sourceTree = "<group>"; };
 		292821872B17D86F008D46CD /* PermissionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsService.swift; sourceTree = "<group>"; };
-		292821892B17D940008D46CD /* HotkeysService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeysService.swift; sourceTree = "<group>"; };
 		2928218D2B1CC81D008D46CD /* ModelInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelInfoView.swift; sourceTree = "<group>"; };
 		297B6B802B36092F009B707C /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		297B6B832B362670009B707C /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -68,14 +70,16 @@
 		297B6B9A2B365465009B707C /* Tone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tone.swift; sourceTree = "<group>"; };
 		297B6B9C2B365684009B707C /* QuestionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionRequest.swift; sourceTree = "<group>"; };
 		297B6B9E2B3656A2009B707C /* QuestionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionResponse.swift; sourceTree = "<group>"; };
+		297B6BA02B3742E5009B707C /* SubscriptionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsService.swift; sourceTree = "<group>"; };
 		297CA6542B34853D00706628 /* MacGPTDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacGPTDebug.entitlements; sourceTree = "<group>"; };
 		297CA6592B34A2B000706628 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		297E95F62B3B0B4A00640FE5 /* UserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRequest.swift; sourceTree = "<group>"; };
+		297E95FC2B3B242C00640FE5 /* UserResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResponse.swift; sourceTree = "<group>"; };
 		2983EC432B30D8DD00198174 /* KeyChainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
 		29DEE7C62B0829AF00F5492D /* iLexicon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iLexicon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29DEE7CD2B0829B000F5492D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		29DEE7D22B0829B000F5492D /* MacGPT.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacGPT.entitlements; sourceTree = "<group>"; };
 		29DEE7DA2B0A30D400F5492D /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
-		29DEE7E22B0A399000F5492D /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		29DEE7E42B0A41C100F5492D /* AppWindowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppWindowService.swift; sourceTree = "<group>"; };
 		29DEE7E62B0A55B500F5492D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		29DEE7E72B0A5C3800F5492D /* SharedTextModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTextModel.swift; sourceTree = "<group>"; };
@@ -90,6 +94,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				297CA6572B348A2200706628 /* JWTDecode in Frameworks */,
+				297E96032B3B562700640FE5 /* KeyboardShortcuts in Frameworks */,
+				297E96002B3B501400640FE5 /* ShortcutRecorder in Frameworks */,
 				297CA65A2B34A2B000706628 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -100,12 +106,11 @@
 		292821812B17D7C2008D46CD /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				297B6BA02B3742E5009B707C /* SubscriptionsService.swift */,
 				29DEE7E42B0A41C100F5492D /* AppWindowService.swift */,
 				292821822B17D80B008D46CD /* ScreenshotService.swift */,
 				292821852B17D852008D46CD /* OCRService.swift */,
-				29DEE7E22B0A399000F5492D /* ApiService.swift */,
 				292821872B17D86F008D46CD /* PermissionsService.swift */,
-				292821892B17D940008D46CD /* HotkeysService.swift */,
 				2983EC432B30D8DD00198174 /* KeyChainService.swift */,
 			);
 			path = Services;
@@ -131,6 +136,8 @@
 				297B6B9A2B365465009B707C /* Tone.swift */,
 				297B6B9C2B365684009B707C /* QuestionRequest.swift */,
 				297B6B9E2B3656A2009B707C /* QuestionResponse.swift */,
+				297E95F62B3B0B4A00640FE5 /* UserRequest.swift */,
+				297E95FC2B3B242C00640FE5 /* UserResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -227,6 +234,8 @@
 			name = iLexicon;
 			packageProductDependencies = (
 				297CA6562B348A2200706628 /* JWTDecode */,
+				297E95FF2B3B501400640FE5 /* ShortcutRecorder */,
+				297E96022B3B562700640FE5 /* KeyboardShortcuts */,
 			);
 			productName = MacGPT;
 			productReference = 29DEE7C62B0829AF00F5492D /* iLexicon.app */;
@@ -258,6 +267,8 @@
 			mainGroup = 29DEE7BD2B0829AF00F5492D;
 			packageReferences = (
 				297CA6552B348A2200706628 /* XCRemoteSwiftPackageReference "JWTDecode" */,
+				297E95FE2B3B501400640FE5 /* XCRemoteSwiftPackageReference "ShortcutRecorder" */,
+				297E96012B3B562700640FE5 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 			);
 			productRefGroup = 29DEE7C72B0829AF00F5492D /* Products */;
 			projectDirPath = "";
@@ -286,9 +297,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				297B6B9F2B3656A2009B707C /* QuestionResponse.swift in Sources */,
+				297E95FD2B3B242C00640FE5 /* UserResponse.swift in Sources */,
 				7EDEF6F52B21CC8100635E20 /* ReminderView.swift .swift in Sources */,
 				7EDEF6F72B21CFAD00635E20 /* DraggableWindow.swift in Sources */,
-				2928218A2B17D940008D46CD /* HotkeysService.swift in Sources */,
 				297B6B9B2B365465009B707C /* Tone.swift in Sources */,
 				2983EC442B30D8DD00198174 /* KeyChainService.swift in Sources */,
 				297B6B912B364E2A009B707C /* NetworkServiceProtocol.swift in Sources */,
@@ -298,10 +309,11 @@
 				297B6B8F2B364AE5009B707C /* ILexiconApp.swift in Sources */,
 				2928218E2B1CC81D008D46CD /* ModelInfoView.swift in Sources */,
 				297B6B882B3645C6009B707C /* SettingsViewModel.swift in Sources */,
+				297E95F72B3B0B4A00640FE5 /* UserRequest.swift in Sources */,
 				29DEE7E82B0A5C3800F5492D /* SharedTextModel.swift in Sources */,
+				297B6BA12B3742E5009B707C /* SubscriptionsService.swift in Sources */,
 				29DEE7E52B0A41C100F5492D /* AppWindowService.swift in Sources */,
 				297B6B992B36540F009B707C /* ChatViewConfigurationModel.swift in Sources */,
-				29DEE7E32B0A399000F5492D /* ApiService.swift in Sources */,
 				297B6B9D2B365684009B707C /* QuestionRequest.swift in Sources */,
 				292821862B17D852008D46CD /* OCRService.swift in Sources */,
 				29DEE7DB2B0A30D400F5492D /* ChatView.swift in Sources */,
@@ -541,6 +553,22 @@
 				minimumVersion = 3.1.0;
 			};
 		};
+		297E95FE2B3B501400640FE5 /* XCRemoteSwiftPackageReference "ShortcutRecorder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Kentzo/ShortcutRecorder";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.4.0;
+			};
+		};
+		297E96012B3B562700640FE5 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.16.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -548,6 +576,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 297CA6552B348A2200706628 /* XCRemoteSwiftPackageReference "JWTDecode" */;
 			productName = JWTDecode;
+		};
+		297E95FF2B3B501400640FE5 /* ShortcutRecorder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 297E95FE2B3B501400640FE5 /* XCRemoteSwiftPackageReference "ShortcutRecorder" */;
+			productName = ShortcutRecorder;
+		};
+		297E96022B3B562700640FE5 /* KeyboardShortcuts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 297E96012B3B562700640FE5 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

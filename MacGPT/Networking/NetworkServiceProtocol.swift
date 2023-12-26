@@ -10,5 +10,5 @@ import Foundation
 
 protocol NetworkServiceProtocol {
     func fetchData(from endpoint: String, completion: @escaping (Result<Data, NetworkError>) -> Void)
-    func postData(to endpoint: String, body: Data, completion: @escaping (Result<Data, NetworkError>) -> Void)
+    func postData(to endpoint: String, body: Data?, completion: @escaping (Result<Data, NetworkError>) -> Void)
 }

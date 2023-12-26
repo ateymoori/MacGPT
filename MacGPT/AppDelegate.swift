@@ -9,26 +9,36 @@ import Cocoa
 import SwiftUI
 import Carbon.HIToolbox
 import Combine
+import KeyboardShortcuts
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     private enum Constants {
         static let popoverSize = NSSize(width: 500, height: 400)
         static let statusBarIconName = "icon"
         static let hotkeyId = 1
-        static let hotkeyKey = UInt32(kVK_ANSI_6)
+        static let hotkeyKey = UInt32(kVK_ANSI_2)
         static let hotkeyModifiers = UInt32(shiftKey | cmdKey)
     }
+    
+    
+ 
     
     var popover: NSPopover!
     var statusBarItem: NSStatusItem!
     var sharedTextModel = SharedTextModel.shared
     private var pinStatusObserver: AnyCancellable?
-    
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         configurePopover()
         configureStatusBarItem()
         registerServicesAndHotkeys()
         observePinStatus()
+        
+        KeyboardShortcuts.onKeyUp(for: .toggleUnicornMode) {
+            // This block is called when the shortcut is pressed.
+            print("Shortcut for Toggle Unicorn Mode was pressed.")
+            self.handleHotkeyPress()
+        }
     }
     
     private func configurePopover() {
@@ -47,15 +57,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.servicesProvider = self
         NSUpdateDynamicServices()
         PermissionsService.shared.requestScreenRecordingPermission()
-        registerHotkey()
+      //  registerHotkey()
     }
     
-    private func registerHotkey() {
-        HotkeysService.shared.registerHotkey(with: (key: UInt32(Constants.hotkeyKey), modifiers: UInt32(Constants.hotkeyModifiers)), id: 1) {
-            self.handleHotkeyPress()
-        }
-    }
-    
+//    private func registerHotkey() {
+//        HotkeysService.shared.registerHotkey(with: (key: UInt32(Constants.hotkeyKey), modifiers: UInt32(Constants.hotkeyModifiers)), id: 1) {
+//            self.handleHotkeyPress()
+//        }
+//    }
+//    
     private func handleHotkeyPress() {
         ScreenshotService.shared.takeScreenshot { [weak self] url in
             guard let self = self, let screenshotURL = url else { return }
@@ -85,13 +95,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func processTextService(_ pboard: NSPasteboard, userData: String?, error: UnsafeMutablePointer<NSString>) {
-        guard let selectedText = pboard.string(forType: .string) else {
+        guard let selectedText = pboard.string(forType: NSPasteboard.PasteboardType.string) else {
             error.pointee = "No text was found." as NSString
             return
         }
         updateSharedTextModel(with: selectedText)
     }
-    
+
     private func showPopoverIfNeeded() {
         guard let button = statusBarItem.button, !popover.isShown else { return }
         NSApp.activate(ignoringOtherApps: true)
