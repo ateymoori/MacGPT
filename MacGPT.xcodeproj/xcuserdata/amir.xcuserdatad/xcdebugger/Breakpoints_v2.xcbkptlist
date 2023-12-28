@@ -14,9 +14,9 @@
             filePath = "MacGPT/ViewModels/ChatViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
-            landmarkName = "getLanguages()"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "limitText(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

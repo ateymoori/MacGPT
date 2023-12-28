@@ -37,7 +37,7 @@
 		29DEE7E52B0A41C100F5492D /* AppWindowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E42B0A41C100F5492D /* AppWindowService.swift */; };
 		29DEE7E82B0A5C3800F5492D /* SharedTextModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E72B0A5C3800F5492D /* SharedTextModel.swift */; };
 		29DEE7EA2B0A61B100F5492D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DEE7E92B0A61B100F5492D /* AppDelegate.swift */; };
-		7EDEF6F52B21CC8100635E20 /* ReminderView.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEF6F42B21CC8100635E20 /* ReminderView.swift .swift */; };
+		7EDEF6F52B21CC8100635E20 /* ReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEF6F42B21CC8100635E20 /* ReminderView.swift */; };
 		7EDEF6F72B21CFAD00635E20 /* DraggableWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEF6F62B21CFAD00635E20 /* DraggableWindow.swift */; };
 /* End PBXBuildFile section */
 
@@ -85,7 +85,7 @@
 		29DEE7E62B0A55B500F5492D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		29DEE7E72B0A5C3800F5492D /* SharedTextModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTextModel.swift; sourceTree = "<group>"; };
 		29DEE7E92B0A61B100F5492D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7EDEF6F42B21CC8100635E20 /* ReminderView.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReminderView.swift .swift"; sourceTree = "<group>"; };
+		7EDEF6F42B21CC8100635E20 /* ReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderView.swift; sourceTree = "<group>"; };
 		7EDEF6F62B21CFAD00635E20 /* DraggableWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableWindow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -124,7 +124,7 @@
 				297B6B832B362670009B707C /* SettingsView.swift */,
 				29DEE7DA2B0A30D400F5492D /* ChatView.swift */,
 				2928218D2B1CC81D008D46CD /* ModelInfoView.swift */,
-				7EDEF6F42B21CC8100635E20 /* ReminderView.swift .swift */,
+				7EDEF6F42B21CC8100635E20 /* ReminderView.swift */,
 				7EDEF6F62B21CFAD00635E20 /* DraggableWindow.swift */,
 			);
 			path = Views;
@@ -302,7 +302,7 @@
 			files = (
 				297B6B9F2B3656A2009B707C /* QuestionResponse.swift in Sources */,
 				297E95FD2B3B242C00640FE5 /* UserResponse.swift in Sources */,
-				7EDEF6F52B21CC8100635E20 /* ReminderView.swift .swift in Sources */,
+				7EDEF6F52B21CC8100635E20 /* ReminderView.swift in Sources */,
 				7EDEF6F72B21CFAD00635E20 /* DraggableWindow.swift in Sources */,
 				297B6B9B2B365465009B707C /* Tone.swift in Sources */,
 				2983EC442B30D8DD00198174 /* KeyChainService.swift in Sources */,
@@ -462,7 +462,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 104;
+				CURRENT_PROJECT_VERSION = 106;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7ZUQ6YTZ2N;
@@ -472,6 +472,7 @@
 				INFOPLIST_FILE = MacGPT/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "I Lexicon";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSBackgroundOnly = YES;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This app uses Apple Sign in to securely authenticate your identity.";
@@ -479,8 +480,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
-				PRODUCT_BUNDLE_IDENTIFIER = amir.teymoori.lexicon;
+				MARKETING_VERSION = 1.0.6;
+				PRODUCT_BUNDLE_IDENTIFIER = com.amir.lexicon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -499,7 +500,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 104;
+				CURRENT_PROJECT_VERSION = 106;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7ZUQ6YTZ2N;
@@ -509,6 +510,7 @@
 				INFOPLIST_FILE = MacGPT/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "I Lexicon";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSBackgroundOnly = YES;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This app uses Apple Sign in to securely authenticate your identity.";
@@ -516,7 +518,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.amir.lexicon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

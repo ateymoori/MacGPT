@@ -11,9 +11,9 @@ import Cocoa
 import KeyboardShortcuts
 
 
-extension KeyboardShortcuts.Name {
-    static let toggleUnicornMode = Self("toggleUnicornMode", default: Shortcut(.two, modifiers: [.command, .shift]))
-}
+//extension KeyboardShortcuts.Name {
+//    static let toggleUnicornMode = Self("toggleUnicornMode", default: Shortcut(.two, modifiers: [.command, .shift]))
+//}
 
 struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()
@@ -79,10 +79,18 @@ struct SettingsView: View {
 
 }
 
-struct settingsScreen: View {
-    var body: some View {
-        Form {
-            KeyboardShortcuts.Recorder("Capture Screen (OCR) :", name: .toggleUnicornMode)
-        }
-    }
-}
+//struct settingsScreen: View {
+//    @State private var startAtLogin = UserDefaults.standard.bool(forKey: "StartAtLogin")
+//
+//    var body: some View {
+//        Form {
+//            KeyboardShortcuts.Recorder("Capture Screen (OCR) :", name: .toggleUnicornMode)
+//            
+//            Toggle("Start at Login", isOn: $startAtLogin)
+//                           .onChange(of: startAtLogin) { value in
+//                               UserDefaults.standard.set(value, forKey: "StartAtLogin")
+//                              // SMLoginItemSetEnabled("com.yourapp.helper" as CFString, value)
+//                           }
+//        }
+//    }
+//}

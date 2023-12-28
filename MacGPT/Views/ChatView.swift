@@ -31,7 +31,6 @@ extension View {
                         Text("Characters count / Limit")
                     }
                     .padding(.trailing, 8)
-                    .padding(.bottom, 8)
                 }, alignment: .topTrailing
             )
             .border(Color.secondary)
@@ -56,17 +55,16 @@ struct ChatView: View {
     @ObservedObject private var sharedTextModel = SharedTextModel.shared
     
     @State private var outputText: String = ""
-    let characterLimit = 1500
+    let characterLimit = 2000
     @State private var isLoading: Bool = false
     @ObservedObject private var pinStatus = PinStatus.shared
     
+    @State private var isInputTextSpeaking: Bool = false
+    @State private var isOutputTextSpeaking: Bool = false
+    
     
     @StateObject private var viewModel = ChatViewModel()
-    
-    
-    init() {
-          viewModel.getUser()
-      }
+    let speechSynthesizer = AVSpeechSynthesizer()
     
     
     var body: some View {
@@ -91,44 +89,51 @@ struct ChatView: View {
                     .buttonStyle(BorderlessButtonStyle())
                     
                     Button(action: showReminder) {
-                        Image(systemName: "plus")
+                        Image(systemName: "questionmark.circle")
                     }
                     .buttonStyle(BorderlessButtonStyle())
-                    Button(action: showSettings) {
-                        Image(systemName: "gearshape.fill")
-                    }
-                    .buttonStyle(BorderlessButtonStyle())
+                    //                    Button(action: showSettings) {
+                    //                        Image(systemName: "gearshape.fill")
+                    //                    }
+                    //                    .buttonStyle(BorderlessButtonStyle())
                 }
             }
             .padding(.horizontal)
             
             ToggleSettingsView(viewModel: viewModel)
             
-            TextEditor(text: $viewModel.inputText)
+            
+            TextEditor(text: $viewModel.inputText.onChange(limitText))
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 170, maxHeight: .infinity)
                 .font(.body)
                 .padding(4)
                 .lineSpacing(5)
-                .overlay(
-                    VStack {
-                        HStack {
-                            Spacer()
-                            Button(action: pasteClipboard) {
-                                Image(systemName: "arrow.right.doc.on.clipboard")
-                            }
-                            .buttonStyle(BorderlessButtonStyle())
-                            .padding(.trailing, 8)
-                        }
-                        Spacer()
-                        HStack {
-                            Spacer()
-                            Text("\(sharedTextModel.inputText.count)/\(characterLimit)")
-                        }
-                        .padding(.trailing, 8)
-                        .padding(.bottom, 8)
-                    }, alignment: .topTrailing
-                )
                 .border(Color.secondary)
+            
+            HStack {
+                Spacer()
+                Text("\(viewModel.inputText.count)/\(characterLimit)")
+                    .padding(.trailing, 8)
+                
+                Button(action: pasteClipboard) {
+                    Image(systemName: "arrow.right.doc.on.clipboard")
+                }
+                .buttonStyle(BorderlessButtonStyle())
+                
+                Button(action: {
+                    if self.isInputTextSpeaking {
+                        self.stopSpeaking(inputText: true)
+                    } else {
+                        self.speakText(text: viewModel.inputText, inputText: true)
+                    }
+                }) {
+                    Image(systemName: self.isInputTextSpeaking ? "stop.fill" : "speaker.wave.2.fill")
+                }
+                .buttonStyle(BorderlessButtonStyle())
+                .foregroundColor(isLanguageSupported(text: viewModel.inputText) ? .green : .red)
+            }
+            .padding([.bottom, .trailing], 0)
+            
             
             HStack {
                 Button(action: {
@@ -137,7 +142,7 @@ struct ChatView: View {
                 }) {
                     Text("Proceed")
                 }
-                .padding()
+                
                 
                 if viewModel.isLoading {
                     ProgressView()
@@ -152,20 +157,30 @@ struct ChatView: View {
                 .font(.body)
                 .padding(4)
                 .lineSpacing(5)
-                .overlay(
-                    VStack {
-                        HStack {
-                            Spacer()
-                            Button(action: copyToClipboard) {
-                                Image(systemName: "doc.on.doc")
-                            }
-                            .buttonStyle(BorderlessButtonStyle())
-                            .padding(.trailing, 8)
-                        }
-                        Spacer()
-                    }, alignment: .topTrailing
-                )
                 .border(Color.secondary)
+            
+            // New HStack for character counter and buttons
+            HStack {
+                Spacer() // Pushes content to the right
+                
+                
+                Button(action: {copyToClipboard(text: viewModel.outputText)}) {
+                    Image(systemName: "doc.on.clipboard.fill")
+                }.buttonStyle(BorderlessButtonStyle())
+                
+                Button(action: {
+                    if self.isOutputTextSpeaking {
+                        self.stopSpeaking(inputText: false)
+                    } else {
+                        self.speakText(text: viewModel.outputText, inputText: false)
+                    }
+                }) {
+                    Image(systemName: self.isOutputTextSpeaking ? "stop.fill" : "speaker.wave.2.fill")
+                }
+                .buttonStyle(BorderlessButtonStyle())
+                .foregroundColor(isLanguageSupported(text: viewModel.outputText) ? .green : .red)
+            }
+            .padding([.bottom, .trailing], 0)
             
             Spacer()
         }
@@ -174,7 +189,16 @@ struct ChatView: View {
         .onReceive(sharedTextModel.$inputText) { newText in
             viewModel.inputText = newText
         }
-
+        .onAppear {
+            NotificationCenter.default.addObserver(
+                forName: .chatViewIsVisible,
+                object: nil,
+                queue: .main) { [weak viewModel] _ in
+                    viewModel?.getUser()
+                }
+        }.onDisappear {
+            NotificationCenter.default.removeObserver(self, name: .chatViewIsVisible, object: nil)
+        }
     }
     
     private func togglePin() {
@@ -187,9 +211,9 @@ struct ChatView: View {
         }
     }
     
-    func copyToClipboard() {
+    func copyToClipboard(text: String) {
         NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(outputText, forType: .string)
+        NSPasteboard.general.setString(text, forType: .string)
     }
     
     func showSettings() {
@@ -199,6 +223,55 @@ struct ChatView: View {
         AppWindowService.shared.showReminderWindow()
     }
     
+    
+    func speakText(text: String, inputText: Bool) {
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: detectLanguage(text: text))
+        speechSynthesizer.speak(utterance)
+        if inputText {
+            isInputTextSpeaking = true
+        } else {
+            isOutputTextSpeaking = true
+        }
+    }
+    
+    func stopSpeaking(inputText: Bool) {
+        speechSynthesizer.stopSpeaking(at: .immediate)
+        if inputText {
+            isInputTextSpeaking = false
+        } else {
+            isOutputTextSpeaking = false
+        }
+    }
+    
+    func detectLanguage(text: String) -> String {
+        let tagger = NSLinguisticTagger(tagSchemes: [.language], options: 0)
+        tagger.string = text
+        let language = tagger.dominantLanguage ?? "en-US" // Default to English if undetected
+        return language
+    }
+    func getSupportedLanguages() -> [String] {
+        let voices = AVSpeechSynthesisVoice.speechVoices()
+        var languageCodes: Set<String> = []
+        for voice in voices {
+            let code = String(voice.language.prefix(2)) // Get only the first two characters
+            languageCodes.insert(code)
+        }
+        return Array(languageCodes)
+    }
+    
+    func isLanguageSupported(text: String) -> Bool {
+        let detectedLanguage = detectLanguage(text: text)
+        let supportedLanguages = getSupportedLanguages()
+        
+        return supportedLanguages.contains(where: { $0.starts(with: detectedLanguage) })
+    }
+    
+    private func limitText(_ text: String) {
+        if text.count > characterLimit {
+            viewModel.inputText = String(text.prefix(characterLimit))
+        }
+    }
 }
 
 class PinStatus: ObservableObject {
@@ -213,9 +286,9 @@ struct ToggleSettingsView: View {
     var body: some View {
         VStack {
             HStack {
-                Toggle("Translate", isOn: $viewModel.config.translateTo
+                Toggle("to Language", isOn: $viewModel.config.translateTo
                     .onChange { viewModel.config.translateTo = $0; viewModel.saveConfiguration() })
-                Picker("Language", selection: $viewModel.config.selectedLanguage) {
+                Picker("", selection: $viewModel.config.selectedLanguage) {
                     ForEach(viewModel.getLanguages(), id: \.self) { language in
                         Text(language).tag(language)
                     }
@@ -242,4 +315,8 @@ struct ToggleSettingsView: View {
             .pickerStyle(SegmentedPickerStyle())
         }
     }
+    
+    
+    
+    
 }

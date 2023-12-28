@@ -14,8 +14,8 @@ class AppWindowService {
     private var chatWindow: NSWindow?
     private var reminderWindow: DraggableWindow?
     var chatWindowIsOpen = false
-    private let settingsTitle = "iChatGPT Settings"
-    private let chatTitle = "iChatGPT Chat"
+    private let settingsTitle = "iLexicon Pro Settings"
+    private let chatTitle = "iLexicon Pro"
     private let reminderTitle = "iChatGPT Reminder"
     
 
@@ -29,33 +29,41 @@ class AppWindowService {
         closeOtherWindows(except: settingsWindow)
     }
     
-    // Function to show Chat Window
-    func showChatWindow() {
-        if chatWindow == nil {
-            chatWindow = createWindow(with: ChatView(), title: chatTitle, width: 600, height: 400)
-        }
-        chatWindow?.makeKeyAndOrderFront(nil)
-        closeOtherWindows(except: chatWindow)
-    }
-    
+
     // Function to show Reminder Window
     func showReminderWindow() {
         DispatchQueue.main.async {
             if self.reminderWindow == nil {
                 let contentView = ReminderView()
                 self.reminderWindow = DraggableWindow(
-                    contentRect: NSRect(x: 0, y: 0, width: 420, height: 400),
-                    styleMask: [.resizable, .fullSizeContentView],
-                    backing: .buffered, defer: false)
-                
+                    contentRect: NSRect(x: 0, y: 0, width: 430, height: 900),
+                    styleMask: [.borderless, .fullSizeContentView],
+                    backing: .buffered, defer: false
+                )
+
+                self.reminderWindow?.titleVisibility = .hidden
+                self.reminderWindow?.isMovableByWindowBackground = true
                 self.configureReminderWindow(with: contentView)
                 self.reminderWindow?.isReleasedWhenClosed = false
+                
+                if let screen = NSScreen.main {
+                    let screenWidth = screen.frame.width
+                    let screenHeight = screen.frame.height
+                    let windowWidth: CGFloat = 400
+                    let windowHeight: CGFloat = 780
+                    let xPos = screenWidth - windowWidth - (screenWidth * 0.1)
+                    let yPos = screenHeight - windowHeight - (screenHeight * 0.1)
+                    
+                    self.reminderWindow?.setFrame(NSRect(x: xPos, y: yPos, width: windowWidth, height: windowHeight), display: true)
+                }
             }
-            
+
             self.reminderWindow?.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
             self.closeOtherWindows(except: self.reminderWindow)
         }
     }
+
     
     // Generic function to create a window
     private func createWindow<V: View>(with view: V, title: String, width: CGFloat, height: CGFloat) -> NSWindow {
@@ -83,11 +91,10 @@ class AppWindowService {
 
         reminderWindow?.isMovableByWindowBackground = true
         reminderWindow?.contentView?.wantsLayer = true
-        reminderWindow?.contentView?.layer?.cornerRadius = 20
+        reminderWindow?.contentView?.layer?.cornerRadius = 8
         reminderWindow?.contentView?.layer?.masksToBounds = true
         reminderWindow?.collectionBehavior = .canJoinAllSpaces
         reminderWindow?.minSize = NSMakeSize(200, 200)
-        reminderWindow?.maxSize = NSMakeSize(CGFloat.greatestFiniteMagnitude, CGFloat.greatestFiniteMagnitude)
     }
     
     // Function to close other windows except the one passed

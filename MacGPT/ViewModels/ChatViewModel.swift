@@ -106,6 +106,7 @@ class ChatViewModel: ObservableObject {
             }
         }
     }
+ 
     
     func getLanguages() -> [String] {
         return [
@@ -223,4 +224,5 @@ class ChatViewModel: ObservableObject {
             
         ].sorted()
     }
+
 }
