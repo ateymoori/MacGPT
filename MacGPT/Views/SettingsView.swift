@@ -33,7 +33,7 @@ struct SettingsView: View {
                         signInWithAppleButton
                     }
                     
-                    settingsScreen()
+                   // settingsScreen()
                     
                 }
                 .padding()

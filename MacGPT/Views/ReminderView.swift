@@ -8,6 +8,8 @@
 import SwiftUI
 import AVFoundation
 import KeyboardShortcuts
+import AppKit
+
 
 struct ReminderView: View {
     
@@ -21,7 +23,6 @@ struct ReminderView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 16, height: 16)
-                        .foregroundColor(.white)
                         .padding(.trailing, 10)
                         .padding(.top, 10)
                 }
@@ -64,8 +65,9 @@ struct ReminderView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black.opacity(0.75))
-        .cornerRadius(2)
+        .background(VisualEffectView(material: .menu, blendingMode: .withinWindow)
+            .overlay(Color.black.opacity(0.1)) // Slight black shade, adjust opacity as needed
+            .opacity(0.94))        .cornerRadius(2)
     }
     private func closeView() {
         AppWindowService.shared.closeReminderWindow()
@@ -88,3 +90,20 @@ struct settingsScreen: View {
     }
 }
 
+struct VisualEffectView: NSViewRepresentable {
+    var material: NSVisualEffectView.Material
+    var blendingMode: NSVisualEffectView.BlendingMode
+    
+    func makeNSView(context: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        view.material = material
+        view.blendingMode = blendingMode
+        view.state = .active
+        return view
+    }
+    
+    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
+        nsView.material = material
+        nsView.blendingMode = blendingMode
+    }
+}

@@ -180,9 +180,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     private func showContextMenu(for button: NSStatusBarButton) {
         let menu = NSMenu()
-        menu.addItem(withTitle: "Menu Item 1", action: #selector(menuItemAction(_:)), keyEquivalent: "").tag = MenuItemAction.menuItem1.rawValue
-        menu.addItem(withTitle: "Menu Item 2", action: #selector(menuItemAction(_:)), keyEquivalent: "").tag = MenuItemAction.menuItem2.rawValue
-        menu.addItem(.separator())
+//        menu.addItem(withTitle: "Menu Item 1", action: #selector(menuItemAction(_:)), keyEquivalent: "").tag = MenuItemAction.menuItem1.rawValue
+//        menu.addItem(withTitle: "Menu Item 2", action: #selector(menuItemAction(_:)), keyEquivalent: "").tag = MenuItemAction.menuItem2.rawValue
+//        menu.addItem(.separator())
         menu.addItem(withTitle: "Quit", action: #selector(menuItemAction(_:)), keyEquivalent: "q").tag = MenuItemAction.quit.rawValue
         statusBarItem.menu = menu
         statusBarItem.button?.performClick(nil)
