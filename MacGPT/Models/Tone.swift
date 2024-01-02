@@ -6,14 +6,14 @@
 //
 
 import Foundation
- 
+
 enum Tone: String, Codable, CaseIterable {
     case nuetral = "nuetral"
     case friendly = "friendly"
     case formal = "formal"
-    case negative = "negative"
-    case positive = "positive"
-
+    case likeATeacher = "likeAteacher"
+    
+    
     var displayName: String {
         switch self {
         case .nuetral:
@@ -22,10 +22,8 @@ enum Tone: String, Codable, CaseIterable {
             return "Friendly"
         case .formal:
             return "Formal"
-        case .negative:
-            return "Negative"
-        case .positive:
-            return "Positive"
+        case .likeATeacher:
+            return "Like a Teacher"
         }
     }
 }

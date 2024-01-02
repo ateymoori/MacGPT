@@ -71,6 +71,7 @@ class APIClient: NetworkServiceProtocol {
         }
     
     private func logResponse(_ response: AFDataResponse<Data?>, url: String, method: String, parameters: Parameters? = nil) {
+        print("###########################################")
         print("Request URL: \(url)")
         print("Method: \(method)")
         print("Headers: \(getRequestHeaders())")

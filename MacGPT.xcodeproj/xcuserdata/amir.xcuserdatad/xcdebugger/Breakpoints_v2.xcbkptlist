@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "111"
             endingLineNumber = "111"
-            landmarkName = "limitText(_:)"
+            landmarkName = "getLanguages()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

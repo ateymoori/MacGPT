@@ -70,15 +70,16 @@ struct ChatView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                VStack(alignment: .leading) {
+         
                     Text("i Lexicon Pro")
                         .font(.title2)
                         .fontWeight(.bold)
-                    Text(viewModel.isPremiumUser ? "Premium" : "Free")
-                        .font(.subheadline)
-                        .foregroundColor(viewModel.isPremiumUser ? Color.green : Color.orange)
+                if viewModel.isPremiumUser {
+                    Image("premium-logo") // Ensure this matches your asset name
+                                       .resizable()
+                                       .aspectRatio(contentMode: .fit)
+                                       .frame(height: 13)
                 }
-                
                 
                 Spacer()
                 
@@ -98,7 +99,6 @@ struct ChatView: View {
                     //                    .buttonStyle(BorderlessButtonStyle())
                 }
             }
-            .padding(.horizontal)
             
             ToggleSettingsView(viewModel: viewModel)
             
@@ -319,4 +319,35 @@ struct ToggleSettingsView: View {
     
     
     
+}
+
+
+extension Color {
+    static var customGreen: Color {
+        let colorScheme = NSApplication.shared.windows.first?.effectiveAppearance.name
+        switch colorScheme {
+        case .some(NSAppearance.Name.aqua), .some(NSAppearance.Name.vibrantLight):
+            // Light mode color
+            return Color(red: 0.0, green: 0.7, blue: 0.0)
+        case .some(NSAppearance.Name.darkAqua), .some(NSAppearance.Name.vibrantDark):
+            // Dark mode color - adjust these values as needed
+            return Color(red: 0.3, green: 1.0, blue: 0.3)
+        default:
+            return Color(red: 0.0, green: 0.7, blue: 0.0)
+        }
+    }
+
+    static var customOrange: Color {
+        let colorScheme = NSApplication.shared.windows.first?.effectiveAppearance.name
+        switch colorScheme {
+        case .some(NSAppearance.Name.aqua), .some(NSAppearance.Name.vibrantLight):
+            // Light mode color
+            return Color(red: 1.0, green: 0.55, blue: 0.0)
+        case .some(NSAppearance.Name.darkAqua), .some(NSAppearance.Name.vibrantDark):
+            // Dark mode color - adjust these values as needed
+            return Color(red: 1.0, green: 0.75, blue: 0.3)
+        default:
+            return Color(red: 1.0, green: 0.55, blue: 0.0)
+        }
+    }
 }
