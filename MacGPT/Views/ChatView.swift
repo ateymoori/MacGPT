@@ -244,9 +244,7 @@ struct ToggleSettingsView: View {
     
     var body: some View {
         VStack {
-            LanguageSelectionView( languageList: languageList).onAppear {
-                print("LanguageSelectionView is appearing \(languageList.languages.count)")
-            }
+            LanguageSelectionView( languageList: languageList)
             
             HStack {
                 Toggle("to Language", isOn: $viewModel.config.translateTo

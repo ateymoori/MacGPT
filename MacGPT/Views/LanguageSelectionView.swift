@@ -4,39 +4,75 @@
 //
 //  Created by Amirhossein Teymoori on 2024-01-04.
 //
-
 import SwiftUI
 import FlagKit
 
 struct LanguageSelectionView: View {
     @ObservedObject var languageList: LanguageListModel
-
+    @State private var showingCustomDialog = false
+    @State private var selectedLanguage: Language?
+    
     var body: some View {
-        Picker("Select Language", selection: $languageList.selectedLanguageCode) {
-            ForEach(languageList.languages) { language in
+        Button("Select Language") {
+            showingCustomDialog = true
+        }
+        .background(
+            // Close dialog when clicking outside
+            EmptyView().sheet(isPresented: $showingCustomDialog) {
+                CustomDialogView(languageList: languageList,
+                                 showingDialog: $showingCustomDialog,
+                                 selectedLanguage: $selectedLanguage)
+            }
+        )
+    }
+}
+
+struct CustomDialogView: View {
+    @ObservedObject var languageList: LanguageListModel
+    @Binding var showingDialog: Bool
+    @Binding var selectedLanguage: Language?
+    
+    var body: some View {
+        VStack {
+            List(languageList.languages) { language in
                 HStack {
-                    // Display the flag if available, otherwise use a placeholder
                     if let flagImage = language.flag?.originalImage {
                         Image(nsImage: flagImage)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 30, height: 20)
+                            .frame(width: 20, height: 15) // Smaller flag images
                     } else {
                         language.placeholderFlagImage
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 30, height: 20)
+                            .frame(width: 20, height: 15) // Adjusted size for placeholder
                     }
-                    Text("\(language.titleInEnglish) (\(language.titleInNative))")
+                    Text("  \(language.titleInEnglish) - (\(language.titleInNative))")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if language.id == selectedLanguage?.id {
+                        Image(systemName: "checkmark")
+                            .foregroundColor(.green)
+                    }
                 }
-                .tag(language.id)
+                .frame(height: 30) // Increased height of each row
+                .padding(.vertical, 4) // Increased space between rows
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    selectedLanguage = language
+                    showingDialog = false // Close the dialog upon selection
+                }
             }
         }
-        .pickerStyle(MenuPickerStyle())
-        .onChange(of: languageList.selectedLanguageCode) { newValue in
-            if let newCode = newValue {
-                languageList.selectLanguage(code: newCode)
+        .frame(width: 330, height: 500)
+        .onAppear {
+            if let selectedLanguage = selectedLanguage,
+               !languageList.languages.contains(where: { $0.id == selectedLanguage.id }) {
+                self.selectedLanguage = nil
             }
         }
+        .onTapGesture {
+            showingDialog = false // Close the dialog when clicking outside the list
+        }
+        .interactiveDismissDisabled(true)
     }
 }
