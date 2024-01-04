@@ -12,14 +12,54 @@ struct LanguageSelectionView: View {
     @State private var showingCustomDialog = false
     @State private var selectedLanguage: Language?
     
+    var selectedLanguageDisplay: String {
+        selectedLanguage?.titleInEnglish ?? "Select Language"
+    }
     var body: some View {
-        Button("Select Language") {
-            showingCustomDialog = true
+        
+        HStack {
+            Text("To Language : ")
+                .fontWeight(.semibold)
+            
+            Button(action: {
+                showingCustomDialog = true
+            }) {
+                
+                
+                if let flagImage = selectedLanguage?.flag?.originalImage {
+                    Image(nsImage: flagImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 15)
+                } else {
+                    selectedLanguage?.placeholderFlagImage
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 15)
+                }
+                Text(selectedLanguageTitle)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Spacer()
+                Image(systemName: "chevron.down")
+            }
+            .padding(.vertical, 4)
+            .contentShape(Rectangle())
         }
         .sheet(isPresented: $showingCustomDialog) {
             CustomDialogView(languageList: languageList,
                              showingDialog: $showingCustomDialog,
                              selectedLanguage: $selectedLanguage)
+        }
+    }
+    
+    
+    
+    private var selectedLanguageTitle: String {
+        if let selectedLanguage = selectedLanguage {
+            return "\(selectedLanguage.titleInEnglish) - (\(selectedLanguage.titleInNative))"
+        } else {
+            return "Select Language"
         }
     }
 }
