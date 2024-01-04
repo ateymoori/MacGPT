@@ -39,7 +39,7 @@ struct LanguageSelectionView: View {
                 }
                 Text(selectedLanguageTitle)
                     .frame(maxWidth: .infinity, alignment: .leading)
-
+                
                 Spacer()
                 Image(systemName: "chevron.down")
             }
@@ -63,7 +63,6 @@ struct LanguageSelectionView: View {
         }
     }
 }
-
 struct CustomDialogView: View {
     @ObservedObject var languageList: LanguageListModel
     @Binding var showingDialog: Bool
@@ -83,53 +82,66 @@ struct CustomDialogView: View {
     }
     
     var body: some View {
-        VStack {
-            TextField("Search...", text: $searchText)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-                .overlay(
-                    HStack {
-                        Spacer()
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.gray)
-                            .padding(.trailing, 24)
-                    }
-                )
-            
-            List(filteredLanguages, id: \.id) { language in
-                HStack {
-                    if let flagImage = language.flag?.originalImage {
-                        Image(nsImage: flagImage)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20, height: 15)
-                    } else {
-                        language.placeholderFlagImage
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20, height: 15)
-                    }
-                    Text("  \(language.titleInEnglish) - (\(language.titleInNative))")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    if language.id == selectedLanguage?.id {
-                        Image(systemName: "checkmark")
-                            .foregroundColor(.green)
-                    }
-                }
-                .frame(height: 30)
-                .padding(.vertical, 4)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    selectedLanguage = language
-                    showingDialog = false
-                }
+        ZStack {
+            // Invisible Button to close the dialog
+            Button(action: { showingDialog = false }) {
+                Rectangle()
+                    .foregroundColor(Color.clear)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .frame(width: 330, height: 500)
-        }
-        .onAppear {
-            if let selectedLanguage = selectedLanguage,
-               !languageList.languages.contains(where: { $0.id == selectedLanguage.id }) {
-                self.selectedLanguage = nil
+            .buttonStyle(PlainButtonStyle())
+            .zIndex(0)
+
+            // Dialog content
+            VStack {
+                TextField("Search...", text: $searchText)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                    .overlay(
+                        HStack {
+                            Spacer()
+                            Image(systemName: "magnifyingglass")
+                                .foregroundColor(.gray)
+                                .padding(.trailing, 24)
+                        }
+                    )
+                
+                List(filteredLanguages, id: \.id) { language in
+                    HStack {
+                        if let flagImage = language.flag?.originalImage {
+                            Image(nsImage: flagImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20, height: 15)
+                        } else {
+                            language.placeholderFlagImage
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20, height: 15)
+                        }
+                        Text("\(language.titleInEnglish) - (\(language.titleInNative))")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        if language.id == selectedLanguage?.id {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.green)
+                        }
+                    }
+                    .frame(height: 30)
+                    .padding(.vertical, 4)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        selectedLanguage = language
+                        showingDialog = false
+                    }
+                }
+                .frame(width: 330, height: 500)
+            }
+            .zIndex(1) // Ensure dialog content is above the invisible button
+            .onAppear {
+                if let selectedLanguage = selectedLanguage,
+                   !languageList.languages.contains(where: { $0.id == selectedLanguage.id }) {
+                    self.selectedLanguage = nil
+                }
             }
         }
     }
