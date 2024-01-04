@@ -16,14 +16,11 @@ struct LanguageSelectionView: View {
         Button("Select Language") {
             showingCustomDialog = true
         }
-        .background(
-            // Close dialog when clicking outside
-            EmptyView().sheet(isPresented: $showingCustomDialog) {
-                CustomDialogView(languageList: languageList,
-                                 showingDialog: $showingCustomDialog,
-                                 selectedLanguage: $selectedLanguage)
-            }
-        )
+        .sheet(isPresented: $showingCustomDialog) {
+            CustomDialogView(languageList: languageList,
+                             showingDialog: $showingCustomDialog,
+                             selectedLanguage: $selectedLanguage)
+        }
     }
 }
 
@@ -31,21 +28,46 @@ struct CustomDialogView: View {
     @ObservedObject var languageList: LanguageListModel
     @Binding var showingDialog: Bool
     @Binding var selectedLanguage: Language?
+    @State private var searchText = ""
+    
+    var filteredLanguages: [Language] {
+        if searchText.isEmpty {
+            return languageList.languages
+        } else {
+            return languageList.languages.filter { language in
+                language.titleInEnglish.lowercased().contains(searchText.lowercased()) ||
+                language.titleInNative.lowercased().contains(searchText.lowercased()) ||
+                language.id.lowercased().contains(searchText.lowercased())
+            }
+        }
+    }
     
     var body: some View {
         VStack {
-            List(languageList.languages) { language in
+            TextField("Search...", text: $searchText)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+                .overlay(
+                    HStack {
+                        Spacer()
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+                            .padding(.trailing, 24)
+                    }
+                )
+            
+            List(filteredLanguages, id: \.id) { language in
                 HStack {
                     if let flagImage = language.flag?.originalImage {
                         Image(nsImage: flagImage)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 20, height: 15) // Smaller flag images
+                            .frame(width: 20, height: 15)
                     } else {
                         language.placeholderFlagImage
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 20, height: 15) // Adjusted size for placeholder
+                            .frame(width: 20, height: 15)
                     }
                     Text("  \(language.titleInEnglish) - (\(language.titleInNative))")
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -54,25 +76,21 @@ struct CustomDialogView: View {
                             .foregroundColor(.green)
                     }
                 }
-                .frame(height: 30) // Increased height of each row
-                .padding(.vertical, 4) // Increased space between rows
+                .frame(height: 30)
+                .padding(.vertical, 4)
                 .contentShape(Rectangle())
                 .onTapGesture {
                     selectedLanguage = language
-                    showingDialog = false // Close the dialog upon selection
+                    showingDialog = false
                 }
             }
+            .frame(width: 330, height: 500)
         }
-        .frame(width: 330, height: 500)
         .onAppear {
             if let selectedLanguage = selectedLanguage,
                !languageList.languages.contains(where: { $0.id == selectedLanguage.id }) {
                 self.selectedLanguage = nil
             }
         }
-        .onTapGesture {
-            showingDialog = false // Close the dialog when clicking outside the list
-        }
-        .interactiveDismissDisabled(true)
     }
 }
