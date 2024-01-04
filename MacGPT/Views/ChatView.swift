@@ -8,49 +8,6 @@
 import SwiftUI
 import AVFoundation
 
-extension View {
-    func configureTextEditor() -> some View {
-        self
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 170, maxHeight: .infinity)
-            .font(.body)
-            .padding(4)
-            .lineSpacing(5)
-            .overlay(
-                VStack {
-                    HStack {
-                        Spacer()
-                        Button(action: {}) {
-                            Image(systemName: "icon_name")
-                        }
-                        .buttonStyle(BorderlessButtonStyle())
-                        .padding(.trailing, 8)
-                    }
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Text("Characters count / Limit")
-                    }
-                    .padding(.trailing, 8)
-                }, alignment: .topTrailing
-            )
-            .border(Color.secondary)
-    }
-}
-
-// Extension to detect changes in state
-extension Binding {
-    func onChange(_ handler: @escaping (Value) -> Void) -> Binding<Value> {
-        Binding(
-            get: { self.wrappedValue },
-            set: { newValue in
-                self.wrappedValue = newValue
-                handler(newValue)
-            }
-        )
-    }
-}
-
-
 struct ChatView: View {
     @ObservedObject private var sharedTextModel = SharedTextModel.shared
     
@@ -70,15 +27,15 @@ struct ChatView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-         
-                    Text("i Lexicon Pro")
-                        .font(.title2)
-                        .fontWeight(.bold)
+                
+                Text("i Lexicon Pro")
+                    .font(.title2)
+                    .fontWeight(.bold)
                 if viewModel.isPremiumUser {
                     Image("premium-logo") // Ensure this matches your asset name
-                                       .resizable()
-                                       .aspectRatio(contentMode: .fit)
-                                       .frame(height: 13)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 13)
                 }
                 
                 Spacer()
@@ -159,10 +116,8 @@ struct ChatView: View {
                 .lineSpacing(5)
                 .border(Color.secondary)
             
-            // New HStack for character counter and buttons
             HStack {
-                Spacer() // Pushes content to the right
-                
+                Spacer()
                 
                 Button(action: {copyToClipboard(text: viewModel.outputText)}) {
                     Image(systemName: "doc.on.clipboard.fill")
@@ -247,14 +202,14 @@ struct ChatView: View {
     func detectLanguage(text: String) -> String {
         let tagger = NSLinguisticTagger(tagSchemes: [.language], options: 0)
         tagger.string = text
-        let language = tagger.dominantLanguage ?? "en-US" // Default to English if undetected
+        let language = tagger.dominantLanguage ?? "en-US"
         return language
     }
     func getSupportedLanguages() -> [String] {
         let voices = AVSpeechSynthesisVoice.speechVoices()
         var languageCodes: Set<String> = []
         for voice in voices {
-            let code = String(voice.language.prefix(2)) // Get only the first two characters
+            let code = String(voice.language.prefix(2))
             languageCodes.insert(code)
         }
         return Array(languageCodes)
@@ -316,38 +271,5 @@ struct ToggleSettingsView: View {
         }
     }
     
-    
-    
-    
 }
 
-
-extension Color {
-    static var customGreen: Color {
-        let colorScheme = NSApplication.shared.windows.first?.effectiveAppearance.name
-        switch colorScheme {
-        case .some(NSAppearance.Name.aqua), .some(NSAppearance.Name.vibrantLight):
-            // Light mode color
-            return Color(red: 0.0, green: 0.7, blue: 0.0)
-        case .some(NSAppearance.Name.darkAqua), .some(NSAppearance.Name.vibrantDark):
-            // Dark mode color - adjust these values as needed
-            return Color(red: 0.3, green: 1.0, blue: 0.3)
-        default:
-            return Color(red: 0.0, green: 0.7, blue: 0.0)
-        }
-    }
-
-    static var customOrange: Color {
-        let colorScheme = NSApplication.shared.windows.first?.effectiveAppearance.name
-        switch colorScheme {
-        case .some(NSAppearance.Name.aqua), .some(NSAppearance.Name.vibrantLight):
-            // Light mode color
-            return Color(red: 1.0, green: 0.55, blue: 0.0)
-        case .some(NSAppearance.Name.darkAqua), .some(NSAppearance.Name.vibrantDark):
-            // Dark mode color - adjust these values as needed
-            return Color(red: 1.0, green: 0.75, blue: 0.3)
-        default:
-            return Color(red: 1.0, green: 0.55, blue: 0.0)
-        }
-    }
-}
