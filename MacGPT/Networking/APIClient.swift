@@ -71,22 +71,22 @@ class APIClient: NetworkServiceProtocol {
         }
     
     private func logResponse(_ response: AFDataResponse<Data?>, url: String, method: String, parameters: Parameters? = nil) {
-        print("###########################################")
-        print("Request URL: \(url)")
-        print("Method: \(method)")
-        print("Headers: \(getRequestHeaders())")
-        if let parameters = parameters {
-            print("Parameters: \(parameters)")
-        }
-        if let statusCode = response.response?.statusCode {
-            print("Status Code: \(statusCode)")
-        }
-        if let data = response.data, let responseString = String(data: data, encoding: .utf8) {
-            print("Response: \(responseString)")
-        }
-        if let error = response.error {
-            print("Error: \(error.localizedDescription)")
-        }
+//        print("###########################################")
+//        print("Request URL: \(url)")
+//        print("Method: \(method)")
+//        print("Headers: \(getRequestHeaders())")
+//        if let parameters = parameters {
+//            print("Parameters: \(parameters)")
+//        }
+//        if let statusCode = response.response?.statusCode {
+//            print("Status Code: \(statusCode)")
+//        }
+//        if let data = response.data, let responseString = String(data: data, encoding: .utf8) {
+//            print("Response: \(responseString)")
+//        }
+//        if let error = response.error {
+//            print("Error: \(error.localizedDescription)")
+//        }
     }
  
     

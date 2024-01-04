@@ -57,6 +57,8 @@ struct ChatView: View {
                 }
             }
             
+            
+            
             ToggleSettingsView(viewModel: viewModel)
             
             
@@ -237,18 +239,24 @@ class PinStatus: ObservableObject {
 
 struct ToggleSettingsView: View {
     @ObservedObject var viewModel: ChatViewModel
+    @StateObject var languageList = LanguageListModel()
+
     
     var body: some View {
         VStack {
+            LanguageSelectionView( languageList: languageList).onAppear {
+                print("LanguageSelectionView is appearing \(languageList.languages.count)")
+            }
+            
             HStack {
                 Toggle("to Language", isOn: $viewModel.config.translateTo
                     .onChange { viewModel.config.translateTo = $0; viewModel.saveConfiguration() })
-                Picker("", selection: $viewModel.config.selectedLanguage) {
-                    ForEach(viewModel.getLanguages(), id: \.self) { language in
-                        Text(language).tag(language)
-                    }
-                }
-                .disabled(!viewModel.config.translateTo)
+                                Picker("", selection: $viewModel.config.selectedLanguage) {
+                                    ForEach(viewModel.getLanguages(), id: \.self) { language in
+                                        Text(language).tag(language)
+                                    }
+                                }
+                                .disabled(!viewModel.config.translateTo)
             }
             
             HStack {
@@ -272,4 +280,4 @@ struct ToggleSettingsView: View {
     }
     
 }
-
+ 

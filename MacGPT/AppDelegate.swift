@@ -115,7 +115,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func showPopoverIfNeeded() {
-        print("showPopoverIfNeeded")
         guard let button = statusBarItem.button, !popover.isShown else { return }
         NSApp.activate(ignoringOtherApps: true)
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)

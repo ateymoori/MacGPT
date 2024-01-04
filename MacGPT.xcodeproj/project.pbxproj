@@ -16,6 +16,12 @@
 		296450F32B46E0C800F0D0C3 /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296450F22B46E0C800F0D0C3 /* ColorExtensions.swift */; };
 		296450F52B46E1CA00F0D0C3 /* ClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296450F42B46E1CA00F0D0C3 /* ClipboardService.swift */; };
 		296450F72B46E1E300F0D0C3 /* SpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296450F62B46E1E300F0D0C3 /* SpeechService.swift */; };
+		296450FB2B46E68200F0D0C3 /* FlagKit in Frameworks */ = {isa = PBXBuildFile; productRef = 296450FA2B46E68200F0D0C3 /* FlagKit */; };
+		296450FD2B46E73A00F0D0C3 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296450FC2B46E73A00F0D0C3 /* Language.swift */; };
+		296450FF2B46E76700F0D0C3 /* LanguageListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296450FE2B46E76700F0D0C3 /* LanguageListModel.swift */; };
+		296451012B46E92000F0D0C3 /* LanguageSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296451002B46E92000F0D0C3 /* LanguageSelectionView.swift */; };
+		296451042B4717EA00F0D0C3 /* SwiftUIX in Frameworks */ = {isa = PBXBuildFile; productRef = 296451032B4717EA00F0D0C3 /* SwiftUIX */; };
+		296451062B4718D500F0D0C3 /* SwiftUIX in Frameworks */ = {isa = PBXBuildFile; productRef = 296451052B4718D500F0D0C3 /* SwiftUIX */; };
 		297B6B812B36092F009B707C /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 297B6B802B36092F009B707C /* icon.icns */; };
 		297B6B842B362670009B707C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B832B362670009B707C /* SettingsView.swift */; };
 		297B6B882B3645C6009B707C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B6B872B3645C6009B707C /* SettingsViewModel.swift */; };
@@ -69,6 +75,9 @@
 		296450F22B46E0C800F0D0C3 /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		296450F42B46E1CA00F0D0C3 /* ClipboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardService.swift; sourceTree = "<group>"; };
 		296450F62B46E1E300F0D0C3 /* SpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechService.swift; sourceTree = "<group>"; };
+		296450FC2B46E73A00F0D0C3 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
+		296450FE2B46E76700F0D0C3 /* LanguageListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageListModel.swift; sourceTree = "<group>"; };
+		296451002B46E92000F0D0C3 /* LanguageSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageSelectionView.swift; sourceTree = "<group>"; };
 		297B6B802B36092F009B707C /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		297B6B832B362670009B707C /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		297B6B872B3645C6009B707C /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
@@ -104,9 +113,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				296451042B4717EA00F0D0C3 /* SwiftUIX in Frameworks */,
 				297E96062B3B77EC00640FE5 /* Alamofire in Frameworks */,
 				297CA6572B348A2200706628 /* JWTDecode in Frameworks */,
+				296451062B4718D500F0D0C3 /* SwiftUIX in Frameworks */,
 				297E96032B3B562700640FE5 /* KeyboardShortcuts in Frameworks */,
+				296450FB2B46E68200F0D0C3 /* FlagKit in Frameworks */,
 				297E96002B3B501400640FE5 /* ShortcutRecorder in Frameworks */,
 				297CA65A2B34A2B000706628 /* StoreKit.framework in Frameworks */,
 			);
@@ -138,6 +150,7 @@
 				2928218D2B1CC81D008D46CD /* ModelInfoView.swift */,
 				7EDEF6F42B21CC8100635E20 /* ReminderView.swift */,
 				7EDEF6F62B21CFAD00635E20 /* DraggableWindow.swift */,
+				296451002B46E92000F0D0C3 /* LanguageSelectionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -162,6 +175,8 @@
 				297B6B9E2B3656A2009B707C /* QuestionResponse.swift */,
 				297E95F62B3B0B4A00640FE5 /* UserRequest.swift */,
 				297E95FC2B3B242C00640FE5 /* UserResponse.swift */,
+				296450FC2B46E73A00F0D0C3 /* Language.swift */,
+				296450FE2B46E76700F0D0C3 /* LanguageListModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -261,6 +276,9 @@
 				297E95FF2B3B501400640FE5 /* ShortcutRecorder */,
 				297E96022B3B562700640FE5 /* KeyboardShortcuts */,
 				297E96052B3B77EC00640FE5 /* Alamofire */,
+				296450FA2B46E68200F0D0C3 /* FlagKit */,
+				296451032B4717EA00F0D0C3 /* SwiftUIX */,
+				296451052B4718D500F0D0C3 /* SwiftUIX */,
 			);
 			productName = MacGPT;
 			productReference = 29DEE7C62B0829AF00F5492D /* iLexicon.app */;
@@ -295,6 +313,8 @@
 				297E95FE2B3B501400640FE5 /* XCRemoteSwiftPackageReference "ShortcutRecorder" */,
 				297E96012B3B562700640FE5 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				297E96042B3B77EC00640FE5 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				296450F92B46E68200F0D0C3 /* XCRemoteSwiftPackageReference "FlagKit" */,
+				296451022B4717EA00F0D0C3 /* XCRemoteSwiftPackageReference "SwiftUIX" */,
 			);
 			productRefGroup = 29DEE7C72B0829AF00F5492D /* Products */;
 			projectDirPath = "";
@@ -325,11 +345,13 @@
 				297B6B9F2B3656A2009B707C /* QuestionResponse.swift in Sources */,
 				296450F12B46E00C00F0D0C3 /* BindingExtensions.swift in Sources */,
 				297E95FD2B3B242C00640FE5 /* UserResponse.swift in Sources */,
+				296450FF2B46E76700F0D0C3 /* LanguageListModel.swift in Sources */,
 				296450F52B46E1CA00F0D0C3 /* ClipboardService.swift in Sources */,
 				7EDEF6F52B21CC8100635E20 /* ReminderView.swift in Sources */,
 				7EDEF6F72B21CFAD00635E20 /* DraggableWindow.swift in Sources */,
 				297B6B9B2B365465009B707C /* Tone.swift in Sources */,
 				2983EC442B30D8DD00198174 /* KeyChainService.swift in Sources */,
+				296451012B46E92000F0D0C3 /* LanguageSelectionView.swift in Sources */,
 				297B6B912B364E2A009B707C /* NetworkServiceProtocol.swift in Sources */,
 				292821832B17D80B008D46CD /* ScreenshotService.swift in Sources */,
 				297B6B842B362670009B707C /* SettingsView.swift in Sources */,
@@ -344,6 +366,7 @@
 				29DEE7E52B0A41C100F5492D /* AppWindowService.swift in Sources */,
 				297B6B992B36540F009B707C /* ChatViewConfigurationModel.swift in Sources */,
 				297B6B9D2B365684009B707C /* QuestionRequest.swift in Sources */,
+				296450FD2B46E73A00F0D0C3 /* Language.swift in Sources */,
 				292821862B17D852008D46CD /* OCRService.swift in Sources */,
 				296450EF2B46DFF900F0D0C3 /* ViewExtensions.swift in Sources */,
 				29DEE7DB2B0A30D400F5492D /* ChatView.swift in Sources */,
@@ -580,6 +603,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		296450F92B46E68200F0D0C3 /* XCRemoteSwiftPackageReference "FlagKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/madebybowtie/FlagKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.0;
+			};
+		};
+		296451022B4717EA00F0D0C3 /* XCRemoteSwiftPackageReference "SwiftUIX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftUIX/SwiftUIX.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.9;
+			};
+		};
 		297CA6552B348A2200706628 /* XCRemoteSwiftPackageReference "JWTDecode" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/auth0/JWTDecode.swift";
@@ -615,6 +654,20 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		296450FA2B46E68200F0D0C3 /* FlagKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 296450F92B46E68200F0D0C3 /* XCRemoteSwiftPackageReference "FlagKit" */;
+			productName = FlagKit;
+		};
+		296451032B4717EA00F0D0C3 /* SwiftUIX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 296451022B4717EA00F0D0C3 /* XCRemoteSwiftPackageReference "SwiftUIX" */;
+			productName = SwiftUIX;
+		};
+		296451052B4718D500F0D0C3 /* SwiftUIX */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftUIX;
+		};
 		297CA6562B348A2200706628 /* JWTDecode */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 297CA6552B348A2200706628 /* XCRemoteSwiftPackageReference "JWTDecode" */;
