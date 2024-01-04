@@ -8,137 +8,23 @@
 import SwiftUI
 import AVFoundation
 
+
 struct ChatView: View {
     @ObservedObject private var sharedTextModel = SharedTextModel.shared
-    
-    @State private var outputText: String = ""
-    let characterLimit = 2000
-    @State private var isLoading: Bool = false
-    @ObservedObject private var pinStatus = PinStatus.shared
-    
-    @State private var isInputTextSpeaking: Bool = false
-    @State private var isOutputTextSpeaking: Bool = false
-    
-    
     @StateObject private var viewModel = ChatViewModel()
+    @State private var isInputTextSpeaking = false
+    @State private var isOutputTextSpeaking = false
     let speechSynthesizer = AVSpeechSynthesizer()
-    
+    let characterLimit = 2000
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                
-                Text("i Lexicon Pro")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                if viewModel.isPremiumUser {
-                    Image("premium-logo") // Ensure this matches your asset name
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 13)
-                }
-                
-                Spacer()
-                
-                HStack {
-                    Button(action: togglePin) {
-                        Image(systemName: pinStatus.isPinned ? "pin.fill" : "pin.slash.fill")
-                    }
-                    .buttonStyle(BorderlessButtonStyle())
-                    
-                    Button(action: showReminder) {
-                        Image(systemName: "questionmark.circle")
-                    }
-                    .buttonStyle(BorderlessButtonStyle())
-                    //                    Button(action: showSettings) {
-                    //                        Image(systemName: "gearshape.fill")
-                    //                    }
-                    //                    .buttonStyle(BorderlessButtonStyle())
-                }
-            }
-            
-            
-            
+            headerView
             ToggleSettingsView(viewModel: viewModel)
-            
-            
-            TextEditor(text: $viewModel.inputText.onChange(limitText))
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 170, maxHeight: .infinity)
-                .font(.body)
-                .padding(4)
-                .lineSpacing(5)
-                .border(Color.secondary)
-            
-            HStack {
-                Spacer()
-                Text("\(viewModel.inputText.count)/\(characterLimit)")
-                    .padding(.trailing, 8)
-                
-                Button(action: pasteClipboard) {
-                    Image(systemName: "arrow.right.doc.on.clipboard")
-                }
-                .buttonStyle(BorderlessButtonStyle())
-                
-                Button(action: {
-                    if self.isInputTextSpeaking {
-                        self.stopSpeaking(inputText: true)
-                    } else {
-                        self.speakText(text: viewModel.inputText, inputText: true)
-                    }
-                }) {
-                    Image(systemName: self.isInputTextSpeaking ? "stop.fill" : "speaker.wave.2.fill")
-                }
-                .buttonStyle(BorderlessButtonStyle())
-                .foregroundColor(isLanguageSupported(text: viewModel.inputText) ? .green : .red)
-            }
-            .padding([.bottom, .trailing], 0)
-            
-            
-            HStack {
-                Button(action: {
-                    
-                    viewModel.translateText()
-                }) {
-                    Text("Proceed")
-                }
-                
-                
-                if viewModel.isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
-                        .scaleEffect(0.75)
-                        .padding(.leading, 8)
-                }
-            }
-            
-            TextEditor(text: $viewModel.outputText)
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 170, maxHeight: .infinity)
-                .font(.body)
-                .padding(4)
-                .lineSpacing(5)
-                .border(Color.secondary)
-            
-            HStack {
-                Spacer()
-                
-                Button(action: {copyToClipboard(text: viewModel.outputText)}) {
-                    Image(systemName: "doc.on.clipboard.fill")
-                }.buttonStyle(BorderlessButtonStyle())
-                
-                Button(action: {
-                    if self.isOutputTextSpeaking {
-                        self.stopSpeaking(inputText: false)
-                    } else {
-                        self.speakText(text: viewModel.outputText, inputText: false)
-                    }
-                }) {
-                    Image(systemName: self.isOutputTextSpeaking ? "stop.fill" : "speaker.wave.2.fill")
-                }
-                .buttonStyle(BorderlessButtonStyle())
-                .foregroundColor(isLanguageSupported(text: viewModel.outputText) ? .green : .red)
-            }
-            .padding([.bottom, .trailing], 0)
-            
+            inputTextView
+            actionButtons
+            outputTextView
+            outputActions
             Spacer()
         }
         .padding(.horizontal)
@@ -146,42 +32,135 @@ struct ChatView: View {
         .onReceive(sharedTextModel.$inputText) { newText in
             viewModel.inputText = newText
         }
-        .onAppear {
-            NotificationCenter.default.addObserver(
-                forName: .chatViewIsVisible,
-                object: nil,
-                queue: .main) { [weak viewModel] _ in
-                    viewModel?.getUser()
-                }
-        }.onDisappear {
-            NotificationCenter.default.removeObserver(self, name: .chatViewIsVisible, object: nil)
+        .onAppear { viewModel.getUser() }
+    }
+    
+    private var headerView: some View {
+        HStack {
+            Text("i Lexicon Pro")
+                .font(.title2)
+                .fontWeight(.bold)
+            
+            if viewModel.isPremiumUser {
+                Image("premium-logo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 13)
+            }
+            
+            Spacer()
+            
+            HStack {
+                pinButton
+                reminderButton
+            }
         }
+    }
+    
+    private var pinButton: some View {
+        Button(action: togglePin) {
+            Image(systemName: PinStatus.shared.isPinned ? "pin.fill" : "pin.slash.fill")
+        }
+        .buttonStyle(BorderlessButtonStyle())
+    }
+    
+    private var reminderButton: some View {
+        Button(action: showReminder) {
+            Image(systemName: "questionmark.circle")
+        }
+        .buttonStyle(BorderlessButtonStyle())
+    }
+    
+    private var inputTextView: some View {
+        TextEditor(text: $viewModel.inputText.onChange(limitText))
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 170, maxHeight: .infinity)
+            .font(.body)
+            .padding(4)
+            .lineSpacing(5)
+            .border(Color.secondary)
+    }
+    
+    private var actionButtons: some View {
+        HStack {
+            Button("Proceed") {
+                viewModel.translateText()
+            }
+            Spacer()
+            Text("\(viewModel.inputText.count)/\(characterLimit)")
+                .padding(.trailing, 8)
+            
+            Button(action: pasteClipboard) {
+                Image(systemName: "arrow.right.doc.on.clipboard")
+            }
+            .buttonStyle(BorderlessButtonStyle())
+            
+            speakButton(for: viewModel.inputText, isSpeaking: $isInputTextSpeaking, isInputText: true)
+            
+            if viewModel.isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .scaleEffect(0.75)
+                    .padding(.leading, 8)
+            }
+        }
+        .padding([.bottom, .trailing], 0)
+    }
+    
+    private var outputTextView: some View {
+        TextEditor(text: $viewModel.outputText)
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 170, maxHeight: .infinity)
+            .font(.body)
+            .padding(4)
+            .lineSpacing(5)
+            .border(Color.secondary)
+    }
+    
+    private var outputActions: some View {
+        HStack {
+            Spacer()
+            
+            Button(action: { copyToClipboard(text: viewModel.outputText) }) {
+                Image(systemName: "doc.on.clipboard.fill")
+            }
+            .buttonStyle(BorderlessButtonStyle())
+            
+            speakButton(for: viewModel.outputText, isSpeaking: $isOutputTextSpeaking, isInputText: false)
+        }
+        .padding([.bottom, .trailing], 0)
+    }
+    
+    private func speakButton(for text: String, isSpeaking: Binding<Bool>, isInputText: Bool) -> some View {
+        Button(action: {
+            if isSpeaking.wrappedValue {
+                stopSpeaking(inputText: isInputText)
+            } else {
+                speakText(text: text, inputText: isInputText)
+            }
+        }) {
+            Image(systemName: isSpeaking.wrappedValue ? "stop.fill" : "speaker.wave.2.fill")
+        }
+        .buttonStyle(BorderlessButtonStyle())
+        .foregroundColor(isLanguageSupported(text: text) ? .green : .red)
     }
     
     private func togglePin() {
-        pinStatus.isPinned.toggle()
+        PinStatus.shared.isPinned.toggle()
     }
     
-    func pasteClipboard() {
-        if let clipboardContents = NSPasteboard.general.string(forType: .string) {
-            sharedTextModel.inputText = clipboardContents
-        }
+    private func pasteClipboard() {
+        sharedTextModel.inputText = NSPasteboard.general.string(forType: .string) ?? ""
     }
     
-    func copyToClipboard(text: String) {
+    private func copyToClipboard(text: String) {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(text, forType: .string)
     }
     
-    func showSettings() {
-        AppWindowService.shared.showSettingsWindow()
-    }
-    func showReminder() {
+    private func showReminder() {
         AppWindowService.shared.showReminderWindow()
     }
     
-    
-    func speakText(text: String, inputText: Bool) {
+    private func speakText(text: String, inputText: Bool) {
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: detectLanguage(text: text))
         speechSynthesizer.speak(utterance)
@@ -192,7 +171,7 @@ struct ChatView: View {
         }
     }
     
-    func stopSpeaking(inputText: Bool) {
+    private func stopSpeaking(inputText: Bool) {
         speechSynthesizer.stopSpeaking(at: .immediate)
         if inputText {
             isInputTextSpeaking = false
@@ -201,81 +180,82 @@ struct ChatView: View {
         }
     }
     
-    func detectLanguage(text: String) -> String {
+    private func detectLanguage(text: String) -> String {
         let tagger = NSLinguisticTagger(tagSchemes: [.language], options: 0)
         tagger.string = text
-        let language = tagger.dominantLanguage ?? "en-US"
-        return language
-    }
-    func getSupportedLanguages() -> [String] {
-        let voices = AVSpeechSynthesisVoice.speechVoices()
-        var languageCodes: Set<String> = []
-        for voice in voices {
-            let code = String(voice.language.prefix(2))
-            languageCodes.insert(code)
-        }
-        return Array(languageCodes)
+        return tagger.dominantLanguage ?? "en-US"
     }
     
-    func isLanguageSupported(text: String) -> Bool {
+    private func isLanguageSupported(text: String) -> Bool {
         let detectedLanguage = detectLanguage(text: text)
-        let supportedLanguages = getSupportedLanguages()
-        
-        return supportedLanguages.contains(where: { $0.starts(with: detectedLanguage) })
+        return AVSpeechSynthesisVoice.speechVoices().contains { $0.language.starts(with: detectedLanguage) }
     }
     
     private func limitText(_ text: String) {
-        if text.count > characterLimit {
-            viewModel.inputText = String(text.prefix(characterLimit))
-        }
+        viewModel.inputText = String(text.prefix(characterLimit))
     }
 }
+
+// ToggleSettingsView remains the same
+
 
 class PinStatus: ObservableObject {
     static let shared = PinStatus()
     @Published var isPinned: Bool = false
 }
 
-
 struct ToggleSettingsView: View {
     @ObservedObject var viewModel: ChatViewModel
     @StateObject var languageList = LanguageListModel()
 
-    
     var body: some View {
         VStack {
-            LanguageSelectionView( languageList: languageList)
-            
-            HStack {
-                Toggle("to Language", isOn: $viewModel.config.translateTo
-                    .onChange { viewModel.config.translateTo = $0; viewModel.saveConfiguration() })
-                                Picker("", selection: $viewModel.config.selectedLanguage) {
-                                    ForEach(viewModel.getLanguages(), id: \.self) { language in
-                                        Text(language).tag(language)
-                                    }
-                                }
-                                .disabled(!viewModel.config.translateTo)
-            }
-            
-            HStack {
-                Toggle("Correct Dictation", isOn: $viewModel.config.correctDictation
-                    .onChange { viewModel.config.correctDictation = $0; viewModel.saveConfiguration() })
-                Toggle("Correct Grammar", isOn: $viewModel.config.correctGrammar
-                    .onChange { viewModel.config.correctGrammar = $0; viewModel.saveConfiguration() })
-                
-                Toggle("Summarize", isOn: $viewModel.config.summarizeText
-                    .onChange { viewModel.config.summarizeText = $0; viewModel.saveConfiguration() })
-                Spacer()
-            }
-            
-            Picker("Tune", selection: $viewModel.config.selectedTone) {
-                ForEach(Tone.allCases, id: \.self) { tone in
-                    Text(tone.displayName).tag(tone.rawValue)
-                }
-            }
-            .pickerStyle(SegmentedPickerStyle())
+            LanguageSelectionView(languageList: languageList)
+
+            languageToggleView
+
+            dictationAndGrammarToggles
+
+            tonePicker
         }
     }
-    
+
+    private var languageToggleView: some View {
+        HStack {
+            Toggle("to Language", isOn: $viewModel.config.translateTo.onChange(applyConfigurationChange))
+            languagePicker
+                .disabled(!viewModel.config.translateTo)
+        }
+    }
+
+    private var languagePicker: some View {
+        Picker("", selection: $viewModel.config.selectedLanguage) {
+            ForEach(viewModel.getLanguages(), id: \.self) { language in
+                Text(language).tag(language)
+            }
+        }
+    }
+
+    private var dictationAndGrammarToggles: some View {
+        HStack {
+            Toggle("Correct Dictation", isOn: $viewModel.config.correctDictation.onChange(applyConfigurationChange))
+            Toggle("Correct Grammar", isOn: $viewModel.config.correctGrammar.onChange(applyConfigurationChange))
+            Toggle("Summarize", isOn: $viewModel.config.summarizeText.onChange(applyConfigurationChange))
+            Spacer()
+        }
+    }
+
+    private var tonePicker: some View {
+        Picker("Tune", selection: $viewModel.config.selectedTone) {
+            ForEach(Tone.allCases, id: \.self) { tone in
+                Text(tone.displayName).tag(tone.rawValue)
+            }
+        }
+        .pickerStyle(SegmentedPickerStyle())
+    }
+
+    private func applyConfigurationChange(_ value: Bool) {
+        viewModel.config.translateTo = value
+        viewModel.saveConfiguration()
+    }
 }
- 
