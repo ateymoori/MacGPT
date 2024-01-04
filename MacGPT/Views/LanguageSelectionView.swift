@@ -7,39 +7,19 @@
 import SwiftUI
 import FlagKit
 
+
 struct LanguageSelectionView: View {
     @ObservedObject var languageList: LanguageListModel
     @State private var showingCustomDialog = false
     @State private var selectedLanguage: Language?
-    
-    var selectedLanguageDisplay: String {
-        selectedLanguage?.titleInEnglish ?? "Select Language"
-    }
+
     var body: some View {
-        
         HStack {
             Text("To Language : ")
                 .fontWeight(.semibold)
             
-            Button(action: {
-                showingCustomDialog = true
-            }) {
-                
-                
-                if let flagImage = selectedLanguage?.flag?.originalImage {
-                    Image(nsImage: flagImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 15)
-                } else {
-                    selectedLanguage?.placeholderFlagImage
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 15)
-                }
-                Text(selectedLanguageTitle)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
+            Button(action: { showingCustomDialog = true }) {
+                languageDisplay
                 Spacer()
                 Image(systemName: "chevron.down")
             }
@@ -47,101 +27,107 @@ struct LanguageSelectionView: View {
             .contentShape(Rectangle())
         }
         .sheet(isPresented: $showingCustomDialog) {
-            CustomDialogView(languageList: languageList,
-                             showingDialog: $showingCustomDialog,
-                             selectedLanguage: $selectedLanguage)
+            CustomDialogView(languageList: languageList, showingDialog: $showingCustomDialog, selectedLanguage: $selectedLanguage)
         }
     }
-    
-    
-    
-    private var selectedLanguageTitle: String {
-        if let selectedLanguage = selectedLanguage {
-            return "\(selectedLanguage.titleInEnglish) - (\(selectedLanguage.titleInNative))"
-        } else {
-            return "Select Language"
+
+    private var languageDisplay: some View {
+        Group {
+            if let flagImage = selectedLanguage?.flag?.originalImage {
+                Image(nsImage: flagImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 15)
+            } else {
+                selectedLanguage?.placeholderFlagImage
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 15)
+            }
+            Text(selectedLanguageTitle)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+
+    private var selectedLanguageTitle: String {
+        selectedLanguage.map { "\($0.titleInEnglish) - (\($0.titleInNative))" } ?? "Select Language"
     }
 }
+
 struct CustomDialogView: View {
     @ObservedObject var languageList: LanguageListModel
     @Binding var showingDialog: Bool
     @Binding var selectedLanguage: Language?
     @State private var searchText = ""
-    
-    var filteredLanguages: [Language] {
-        if searchText.isEmpty {
-            return languageList.languages
-        } else {
-            return languageList.languages.filter { language in
-                language.titleInEnglish.lowercased().contains(searchText.lowercased()) ||
-                language.titleInNative.lowercased().contains(searchText.lowercased()) ||
-                language.id.lowercased().contains(searchText.lowercased())
-            }
-        }
-    }
-    
+
     var body: some View {
         ZStack {
-            // Invisible Button to close the dialog
             Button(action: { showingDialog = false }) {
-                Rectangle()
-                    .foregroundColor(Color.clear)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                Color.clear.frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .buttonStyle(PlainButtonStyle())
             .zIndex(0)
 
-            // Dialog content
             VStack {
-                TextField("Search...", text: $searchText)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                    .overlay(
-                        HStack {
-                            Spacer()
-                            Image(systemName: "magnifyingglass")
-                                .foregroundColor(.gray)
-                                .padding(.trailing, 24)
-                        }
-                    )
-                
-                List(filteredLanguages, id: \.id) { language in
-                    HStack {
-                        if let flagImage = language.flag?.originalImage {
-                            Image(nsImage: flagImage)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20, height: 15)
-                        } else {
-                            language.placeholderFlagImage
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20, height: 15)
-                        }
-                        Text("\(language.titleInEnglish) - (\(language.titleInNative))")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        if language.id == selectedLanguage?.id {
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.green)
-                        }
-                    }
-                    .frame(height: 30)
-                    .padding(.vertical, 4)
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        selectedLanguage = language
-                        showingDialog = false
-                    }
-                }
-                .frame(width: 330, height: 500)
+                searchField
+                languageListContainer
             }
-            .zIndex(1) // Ensure dialog content is above the invisible button
-            .onAppear {
-                if let selectedLanguage = selectedLanguage,
-                   !languageList.languages.contains(where: { $0.id == selectedLanguage.id }) {
-                    self.selectedLanguage = nil
+            .zIndex(1)
+        }
+    }
+
+    private var searchField: some View {
+        TextField("Search...", text: $searchText)
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .padding()
+            .overlay(
+                HStack {
+                    Spacer()
+                    Image(systemName: "magnifyingglass").foregroundColor(.gray).padding(.trailing, 24)
                 }
+            )
+    }
+
+    private var languageListContainer: some View {
+        List(filteredLanguages, id: \.id) { language in
+            languageRow(for: language)
+        }
+        .frame(width: 330, height: 500)
+    }
+
+    private var filteredLanguages: [Language] {
+        searchText.isEmpty ? languageList.languages : languageList.languages.filter { language in
+            language.titleInEnglish.lowercased().contains(searchText.lowercased()) ||
+            language.titleInNative.lowercased().contains(searchText.lowercased()) ||
+            language.id.lowercased().contains(searchText.lowercased())
+        }
+    }
+
+    private func languageRow(for language: Language) -> some View {
+        HStack {
+            languageImage(for: language)
+            Text("\(language.titleInEnglish) - (\(language.titleInNative))").frame(maxWidth: .infinity, alignment: .leading)
+            if language.id == selectedLanguage?.id {
+                Image(systemName: "checkmark").foregroundColor(.green)
+            }
+        }
+        .frame(height: 30)
+        .padding(.vertical, 4)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            withAnimation {
+                selectedLanguage = language
+                showingDialog = false
+            }
+        }
+    }
+
+    private func languageImage(for language: Language) -> some View {
+        Group {
+            if let flagImage = language.flag?.originalImage {
+                Image(nsImage: flagImage).resizable().scaledToFit().frame(width: 20, height: 15)
+            } else {
+                language.placeholderFlagImage.resizable().scaledToFit().frame(width: 20, height: 15)
             }
         }
     }
