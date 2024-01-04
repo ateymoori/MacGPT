@@ -16,97 +16,84 @@ class ChatViewModel: ObservableObject {
     @Published var config: ChatViewConfigurationmodel
     @Published var isPremiumUser: Bool = false
 
+    private var cancellables = Set<AnyCancellable>()
     private let userDefaults = UserDefaults.standard
     private let configKey = "chatViewConfiguration"
-    private var cancellables = Set<AnyCancellable>()
-    
     private let apiClient = APIClient()
     
     init() {
-        if let data = userDefaults.data(forKey: configKey),
-           let savedConfig = try? JSONDecoder().decode(ChatViewConfigurationmodel.self, from: data) {
-            config = savedConfig
-        } else {
-            config = ChatViewConfigurationmodel()
-        }
-        
-        $config
-            .debounce(for: 0.5, scheduler: RunLoop.main)
-            .sink { [weak self] _ in self?.saveConfiguration() }
-            .store(in: &cancellables)
+        config = UserDefaults.standard.object(ChatViewConfigurationmodel.self, with: configKey) ?? ChatViewConfigurationmodel()
+        observeConfigChanges()
     }
     
     func translateText() {
         guard !inputText.isEmpty else { return }
         isLoading = true
-        
-        let request = QuestionRequest(
-                   question: inputText,
-                   toLanguage: config.translateTo ? config.selectedLanguage : nil,
-                   translate: config.translateTo,
-                   correctGrammar: config.correctGrammar,
-                   correctDictation: config.correctDictation,
-                   summarize: config.summarizeText,
-                   tone: config.selectedTone.rawValue
-               )
-        
-        guard let requestData = try? JSONEncoder().encode(request) else {
-            isLoading = false
-            outputText = "Failed to encode the request"
-            return
-        }
-        
-        apiClient.postData(to: "translate", body: requestData) { [weak self] result in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                switch result {
-                case .success(let data):
-                    if let response = try? JSONDecoder().decode(QuestionResponse.self, from: data) {
-                        self?.outputText = response.answer
-                    } else {
-                        self?.outputText = "Failed to decode the response"
-                    }
-                case .failure(let error):
-                    self?.outputText = "Error: \(error.localizedDescription)"
-                }
-            }
+        let request = createQuestionRequest()
+
+        apiClient.postData(to: "translate", body: requestData(from: request)) { [weak self] result in
+            DispatchQueue.main.async { self?.handleTranslationResult(result) }
         }
     }
-    func saveConfiguration() {
-        if let data = try? JSONEncoder().encode(config) {
-            userDefaults.set(data, forKey: configKey)
-        }
-    }
-    
+
     func getUser() {
         apiClient.postData(to: "user", body: nil) { [weak self] result in
             switch result {
             case .success(let data):
-                do {
-                    // Attempt to decode the JSON data into UserResponse
-                    let userResponse = try JSONDecoder().decode(UserResponse.self, from: data)
-                    
-                    // Now you can access the properties of userResponse
-                    print("Premium: \(userResponse.premium)")
-                    print("Total Used Tokens: \(userResponse.totalUsedTokens)")
-                    print("API Calls: \(userResponse.apiCalls)")
-                    print("Total Cost: \(userResponse.totalCost)")
-                    self?.isPremiumUser = userResponse.premium
-
-                    
-                    // You can store the userResponse in your view model or perform any other actions here.
-                    
-                } catch {
-                    print("Error decoding JSON: \(error)")
-                    // Handle decoding error here
-                }
+                self?.updateUser(from: data)
             case .failure(let error):
                 print("Error: \(error)")
-                // Handle the network request error here
             }
         }
     }
- 
+
+    private func observeConfigChanges() {
+        $config
+            .debounce(for: 0.5, scheduler: RunLoop.main)
+            .sink { [weak self] _ in self?.saveConfiguration() }
+            .store(in: &cancellables)
+    }
+
+    private func createQuestionRequest() -> QuestionRequest {
+        QuestionRequest(
+            question: inputText,
+            toLanguage: config.translateTo ? config.selectedLanguage : nil,
+            translate: config.translateTo,
+            correctGrammar: config.correctGrammar,
+            correctDictation: config.correctDictation,
+            summarize: config.summarizeText,
+            tone: config.selectedTone.rawValue
+        )
+    }
+
+    private func requestData(from request: QuestionRequest) -> Data? {
+        try? JSONEncoder().encode(request)
+    }
+
+    private func handleTranslationResult(_ result: Result<Data, NetworkError>) {
+        isLoading = false
+        switch result {
+        case .success(let data):
+            outputText = decodedOutput(from: data) ?? "Failed to decode the response"
+        case .failure(let networkError):
+            outputText = "Network Error: \(networkError.localizedDescription)"
+        }
+    }
+
+    private func decodedOutput(from data: Data) -> String? {
+        try? JSONDecoder().decode(QuestionResponse.self, from: data).answer
+    }
+
+    private func updateUser(from data: Data) {
+        if let userResponse = try? JSONDecoder().decode(UserResponse.self, from: data) {
+            isPremiumUser = userResponse.premium
+            // Additional actions based on userResponse
+        }
+    }
+
+    func saveConfiguration() {
+        userDefaults.setObject(config, forKey: configKey)
+    }
     
     func getLanguages() -> [String] {
         return [
@@ -225,4 +212,18 @@ class ChatViewModel: ObservableObject {
         ].sorted()
     }
 
+}
+
+
+extension UserDefaults {
+    func object<T: Decodable>(_ type: T.Type, with key: String) -> T? {
+        guard let data = self.data(forKey: key) else { return nil }
+        return try? JSONDecoder().decode(type, from: data)
+    }
+
+    func setObject<T: Encodable>(_ object: T, forKey key: String) {
+        if let data = try? JSONEncoder().encode(object) {
+            self.set(data, forKey: key)
+        }
+    }
 }

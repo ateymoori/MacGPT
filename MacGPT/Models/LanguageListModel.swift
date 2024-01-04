@@ -8,7 +8,6 @@
 import SwiftUI
 
 
-
 class LanguageListModel: ObservableObject {
     @Published var languages: [Language]
     @Published var selectedLanguageCode: String?
