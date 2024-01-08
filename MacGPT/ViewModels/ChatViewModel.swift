@@ -76,8 +76,7 @@ class ChatViewModel: ObservableObject {
     private func createQuestionRequest() -> QuestionRequest {
         QuestionRequest(
             question: inputText,
-            toLanguage:  "\(selectedLanguage?.titleInEnglish ?? "Enlish American") - \(selectedLanguage?.titleInNative ?? "English native")" ,
-            translate: config.toDifferentLanguage,
+            toLanguage: selectedLanguage?.titleInEnglish ,
             correctGrammar: config.correctGrammar,
             correctDictation: config.correctDictation,
             summarize: config.summarizeText,

@@ -82,9 +82,8 @@ struct ChatView: View {
     
     private var actionButtons: some View {
         HStack {
-            Button("Proceed") {
-                viewModel.translateText()
-            }
+            LoadingButton(text: "Proceed", isLoading: viewModel.isLoading, action: viewModel.translateText)
+
             Spacer()
             Text("\(viewModel.inputText.count)/\(characterLimit)")
                 .padding(.trailing, 8)
@@ -95,13 +94,7 @@ struct ChatView: View {
             .buttonStyle(BorderlessButtonStyle())
             
             speakButton(for: viewModel.inputText, isSpeaking: $isInputTextSpeaking, isInputText: true)
-            
-            if viewModel.isLoading {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-                    .scaleEffect(0.75)
-                    .padding(.leading, 8)
-            }
+
         }
         .padding([.bottom, .trailing], 0)
     }

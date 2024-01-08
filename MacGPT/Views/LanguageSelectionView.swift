@@ -1,6 +1,4 @@
-//
-//  LanguageSelectionView.swift
-//  iLexicon
+ //  iLexicon
 //
 //  Created by Amirhossein Teymoori on 2024-01-04.
 //
@@ -23,8 +21,6 @@ struct LanguageSelectionView: View {
                 Spacer()
                 Image(systemName: "chevron.down")
             }
-            .padding(.vertical, 4)
-            .contentShape(Rectangle())
         }
         .sheet(isPresented: $showingCustomDialog) {
             CustomDialogView(languageList: languageList, showingDialog: $showingCustomDialog, selectedLanguage: $selectedLanguage)
@@ -61,37 +57,29 @@ struct CustomDialogView: View {
     @State private var searchText = ""
 
     var body: some View {
-        ZStack {
-            Button(action: { showingDialog = false }) {
-                Color.clear.frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-            .buttonStyle(PlainButtonStyle())
-            .zIndex(0)
-
-            VStack {
-                searchField
-                languageListContainer
-            }
-            .zIndex(1)
-        }
-    }
-
-    private var searchField: some View {
-        TextField("Search...", text: $searchText)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .padding()
-            .overlay(
-                HStack {
-                    Spacer()
-                    Image(systemName: "magnifyingglass").foregroundColor(.gray).padding(.trailing, 24)
+        VStack {
+            HStack {
+                Spacer()
+                Button(action: { showingDialog = false }) {
+                    Image(systemName: "xmark.circle")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
                 }
-            )
-    }
+                .buttonStyle(PlainButtonStyle()) // This ensures no additional button styling is applied
+            }
+            .padding(.trailing, 10)
+            
+            TextField("Search...", text: $searchText)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding(.horizontal)
 
-    private var languageListContainer: some View {
-        List(filteredLanguages, id: \.id) { language in
-            languageRow(for: language)
+            List(filteredLanguages, id: \.id) { language in
+                languageRow(for: language)
+            }
+            .listStyle(PlainListStyle())
         }
+        .padding(.top, 10)
         .frame(width: 330, height: 500)
     }
 
@@ -105,29 +93,22 @@ struct CustomDialogView: View {
 
     private func languageRow(for language: Language) -> some View {
         HStack {
-            languageImage(for: language)
+            if let flagImage = language.flag?.originalImage {
+                Image(nsImage: flagImage).resizable().scaledToFit().frame(width: 20, height: 15)
+            } else {
+                language.placeholderFlagImage.resizable().scaledToFit().frame(width: 20, height: 15)
+            }
             Text("\(language.titleInEnglish) - (\(language.titleInNative))").frame(maxWidth: .infinity, alignment: .leading)
             if language.id == selectedLanguage?.id {
                 Image(systemName: "checkmark").foregroundColor(.green)
             }
         }
-        .frame(height: 30)
         .padding(.vertical, 4)
         .contentShape(Rectangle())
         .onTapGesture {
             withAnimation {
                 selectedLanguage = language
                 showingDialog = false
-            }
-        }
-    }
-
-    private func languageImage(for language: Language) -> some View {
-        Group {
-            if let flagImage = language.flag?.originalImage {
-                Image(nsImage: flagImage).resizable().scaledToFit().frame(width: 20, height: 15)
-            } else {
-                language.placeholderFlagImage.resizable().scaledToFit().frame(width: 20, height: 15)
             }
         }
     }
