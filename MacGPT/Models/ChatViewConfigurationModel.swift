@@ -11,8 +11,8 @@ struct ChatViewConfigurationmodel: Codable {
     var correctDictation: Bool = false
     var correctGrammar: Bool = false
     var selectedTone: Tone = .nuetral
-    var translateTo: Bool = false
-    var selectedLanguage: String = "English (US) American"
+    var toDifferentLanguage: Bool = false
+    var toLanguage: String = "English (US) American"
     var summarizeText: Bool = false
 }
 

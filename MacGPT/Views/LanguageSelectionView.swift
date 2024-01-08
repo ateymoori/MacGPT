@@ -11,7 +11,7 @@ import FlagKit
 struct LanguageSelectionView: View {
     @ObservedObject var languageList: LanguageListModel
     @State private var showingCustomDialog = false
-    @State private var selectedLanguage: Language?
+    @Binding var selectedLanguage: Language?
 
     var body: some View {
         HStack {

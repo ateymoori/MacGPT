@@ -52,7 +52,7 @@ class APIClient: NetworkServiceProtocol {
     }
 
     func performOCR(withBase64Image base64Image: String, completion: @escaping (Result<(text: String, locale: String), NetworkError>) -> Void) {
-            let url = baseURL.appendingPathComponent("ocr") // Endpoint in your Laravel API
+            let url = baseURL.appendingPathComponent("ocr")
 
             let parameters: [String: Any] = [
                 "image": base64Image
@@ -71,22 +71,22 @@ class APIClient: NetworkServiceProtocol {
         }
     
     private func logResponse(_ response: AFDataResponse<Data?>, url: String, method: String, parameters: Parameters? = nil) {
-//        print("###########################################")
-//        print("Request URL: \(url)")
-//        print("Method: \(method)")
-//        print("Headers: \(getRequestHeaders())")
-//        if let parameters = parameters {
-//            print("Parameters: \(parameters)")
-//        }
-//        if let statusCode = response.response?.statusCode {
-//            print("Status Code: \(statusCode)")
-//        }
-//        if let data = response.data, let responseString = String(data: data, encoding: .utf8) {
-//            print("Response: \(responseString)")
-//        }
-//        if let error = response.error {
-//            print("Error: \(error.localizedDescription)")
-//        }
+        print("###########################################")
+        print("Request URL: \(url)")
+        print("Method: \(method)")
+        print("Headers: \(getRequestHeaders())")
+        if let parameters = parameters {
+            print("Parameters: \(parameters)")
+        }
+        if let statusCode = response.response?.statusCode {
+            print("Status Code: \(statusCode)")
+        }
+        if let data = response.data, let responseString = String(data: data, encoding: .utf8) {
+            print("Response: \(responseString)")
+        }
+        if let error = response.error {
+            print("Error: \(error.localizedDescription)")
+        }
     }
  
     

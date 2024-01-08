@@ -20,7 +20,7 @@ struct ChatView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             headerView
-            ToggleSettingsView(viewModel: viewModel)
+            QuestionSettingsView(viewModel: viewModel)
             inputTextView
             actionButtons
             outputTextView
@@ -196,46 +196,29 @@ struct ChatView: View {
     }
 }
 
-// ToggleSettingsView remains the same
-
 
 class PinStatus: ObservableObject {
     static let shared = PinStatus()
     @Published var isPinned: Bool = false
 }
 
-struct ToggleSettingsView: View {
+struct QuestionSettingsView: View {
     @ObservedObject var viewModel: ChatViewModel
     @StateObject var languageList = LanguageListModel()
-
+    
     var body: some View {
         VStack {
-            LanguageSelectionView(languageList: languageList)
-
-            languageToggleView
-
+            LanguageSelectionView(languageList: viewModel.languageListModel, selectedLanguage: $viewModel.selectedLanguage)
+                .onChange(of: viewModel.selectedLanguage) { newLanguage in
+                    viewModel.selectLanguage(code: newLanguage?.id ?? "")
+                }
+            
             dictationAndGrammarToggles
-
+            
             tonePicker
         }
     }
-
-    private var languageToggleView: some View {
-        HStack {
-            Toggle("to Language", isOn: $viewModel.config.translateTo.onChange(applyConfigurationChange))
-            languagePicker
-                .disabled(!viewModel.config.translateTo)
-        }
-    }
-
-    private var languagePicker: some View {
-        Picker("", selection: $viewModel.config.selectedLanguage) {
-            ForEach(viewModel.getLanguages(), id: \.self) { language in
-                Text(language).tag(language)
-            }
-        }
-    }
-
+    
     private var dictationAndGrammarToggles: some View {
         HStack {
             Toggle("Correct Dictation", isOn: $viewModel.config.correctDictation.onChange(applyConfigurationChange))
@@ -244,7 +227,7 @@ struct ToggleSettingsView: View {
             Spacer()
         }
     }
-
+    
     private var tonePicker: some View {
         Picker("Tune", selection: $viewModel.config.selectedTone) {
             ForEach(Tone.allCases, id: \.self) { tone in
@@ -253,9 +236,9 @@ struct ToggleSettingsView: View {
         }
         .pickerStyle(SegmentedPickerStyle())
     }
-
+    
     private func applyConfigurationChange(_ value: Bool) {
-        viewModel.config.translateTo = value
+        viewModel.config.toDifferentLanguage = value
         viewModel.saveConfiguration()
     }
 }
